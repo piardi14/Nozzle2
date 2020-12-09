@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "5eYUieM994ow5vcBM23L+8PPTcWJATeX87NQ5Di43m5m+7A/pH152T0ih6YNwb4NxLX8fE+EmF92oAJ+xSfxTA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\sarar\\source\\repos\\sararuano\\Nozzle\\NozzleLib\\NozzleLib\\NozzleLib.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sarar\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\sarar\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,27 @@
+C:\Users\gerar\Source\Repos\gerardsoldevilla99\Nozzle\NozzleLib\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.deps.json
+C:\Users\gerar\Source\Repos\gerardsoldevilla99\Nozzle\NozzleLib\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\gerar\Source\Repos\gerardsoldevilla99\Nozzle\NozzleLib\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\gerar\Source\Repos\gerardsoldevilla99\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csprojAssemblyReference.cache
+C:\Users\gerar\Source\Repos\gerardsoldevilla99\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfoInputs.cache
+C:\Users\gerar\Source\Repos\gerardsoldevilla99\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfo.cs
+C:\Users\gerar\Source\Repos\gerardsoldevilla99\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csproj.CoreCompileInputs.cache
+C:\Users\gerar\Source\Repos\gerardsoldevilla99\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\gerar\Source\Repos\gerardsoldevilla99\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle\NozzleLib\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.deps.json
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle\NozzleLib\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle\NozzleLib\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csprojAssemblyReference.cache
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfoInputs.cache
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfo.cs
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csproj.CoreCompileInputs.cache
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.deps.json
+C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfoInputs.cache
+C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfo.cs
+C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csproj.CoreCompileInputs.cache
+C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csprojAssemblyReference.cache

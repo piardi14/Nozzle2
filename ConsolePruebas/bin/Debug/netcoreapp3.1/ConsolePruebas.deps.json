@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "ConsolePruebas/1.0.0": {
+        "dependencies": {
+          "NozzleLib": "1.0.0"
+        },
+        "runtime": {
+          "ConsolePruebas.dll": {}
+        }
+      },
+      "NozzleLib/1.0.0": {
+        "runtime": {
+          "NozzleLib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ConsolePruebas/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NozzleLib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
