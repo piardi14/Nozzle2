@@ -5,10 +5,6 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NozzleLib", "NozzleLib\NozzleLib.csproj", "{8B0CAA85-1C8D-4687-9702-5261491083DB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "..\ConsoleApp1\ConsoleApp1.csproj", "{23E77EEC-E752-4654-BC0B-858DD6D71909}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimuladorNozzle", "SimuladorNozzle\SimuladorNozzle.csproj", "{D4D644E6-6742-4514-9928-7DB64F20CF26}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{8B0CAA85-1C8D-4687-9702-5261491083DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B0CAA85-1C8D-4687-9702-5261491083DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B0CAA85-1C8D-4687-9702-5261491083DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23E77EEC-E752-4654-BC0B-858DD6D71909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23E77EEC-E752-4654-BC0B-858DD6D71909}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23E77EEC-E752-4654-BC0B-858DD6D71909}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23E77EEC-E752-4654-BC0B-858DD6D71909}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4D644E6-6742-4514-9928-7DB64F20CF26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4D644E6-6742-4514-9928-7DB64F20CF26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4D644E6-6742-4514-9928-7DB64F20CF26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4D644E6-6742-4514-9928-7DB64F20CF26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
