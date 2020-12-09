@@ -185,11 +185,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sarar\\Source\\Repos\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
+      "projectUniqueName": "C:\\Users\\sarar\\Source\\Repos\\Nozzle22\\NozzleLib\\NozzleLib.csproj",
       "projectName": "NozzleLib",
-      "projectPath": "C:\\Users\\sarar\\Source\\Repos\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
+      "projectPath": "C:\\Users\\sarar\\Source\\Repos\\Nozzle22\\NozzleLib\\NozzleLib.csproj",
       "packagesPath": "C:\\Users\\sarar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sarar\\Source\\Repos\\Nozzle2\\NozzleLib\\obj\\",
+      "outputPath": "C:\\Users\\sarar\\Source\\Repos\\Nozzle22\\NozzleLib\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\sarar\\AppData\\Roaming\\NuGet\\NuGet.Config",

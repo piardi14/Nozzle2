@@ -25,3 +25,12 @@ C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\obj\Debug\netst
 C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.dll
 C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.pdb
 C:\Users\sarar\Source\Repos\sararuano\Nozzle\NozzleLib\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csprojAssemblyReference.cache
+C:\Users\sarar\source\repos\Nozzle22\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.deps.json
+C:\Users\sarar\source\repos\Nozzle22\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\sarar\source\repos\Nozzle22\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\sarar\source\repos\Nozzle22\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csprojAssemblyReference.cache
+C:\Users\sarar\source\repos\Nozzle22\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfoInputs.cache
+C:\Users\sarar\source\repos\Nozzle22\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfo.cs
+C:\Users\sarar\source\repos\Nozzle22\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csproj.CoreCompileInputs.cache
+C:\Users\sarar\source\repos\Nozzle22\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\sarar\source\repos\Nozzle22\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.pdb
