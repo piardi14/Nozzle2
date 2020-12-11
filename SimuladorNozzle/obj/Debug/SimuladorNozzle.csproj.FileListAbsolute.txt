@@ -1,0 +1,3 @@
+C:\Users\sarar\source\repos\Nozzle22\SimuladorNozzle\obj\Debug\SimuladorNozzle.csprojAssemblyReference.cache
+C:\Users\sarar\source\repos\Nozzle22\SimuladorNozzle\obj\Debug\App.g.cs
+C:\Users\sarar\source\repos\Nozzle22\SimuladorNozzle\obj\Debug\SimuladorNozzle_MarkupCompile.cache
