@@ -45,7 +45,7 @@ namespace SimuladorNozzle
             createBrushesList();
             // computa todos los valores especificados
             nozzlesim.ComputeUntilPos(500);
-            SetChartV();
+            SetChart();
         }
 
         //INITIAL SETTINGS
@@ -101,6 +101,7 @@ namespace SimuladorNozzle
                 if (maximum == true)
                 {
                     MessageBox.Show("The maximum number of plots enabled to show are 10," + "\n" + "if some position are important delete another first");
+                
                 }
                 else
                 {
@@ -117,7 +118,7 @@ namespace SimuladorNozzle
                 Brush colorBrush = new SolidColorBrush(colorset);
                 button.Background = colorBrush;
             }
-            SetChartV();
+            SetChart();
             
             
 
@@ -277,6 +278,86 @@ namespace SimuladorNozzle
         {
             Button button = buttChart30;
             ClickButtonChart(button);
+        }
+        private void MaxDensity_Click(object sender, RoutedEventArgs e)
+        {
+            row0.Height = new GridLength(320);
+            chartD.Height = 300;
+            col0.Width = new GridLength(490);
+            row1.Height = new GridLength(0);
+            col1.Width = new GridLength(0);
+            MaxDensity.Visibility = Visibility.Hidden;
+            MinDensity.Visibility = Visibility.Visible;
+        }
+        private void MaxVelocity_Click(object sender, RoutedEventArgs e)
+        {
+            row0.Height = new GridLength(320);
+            chartV.Height = 300;
+            col0.Width = new GridLength(0);
+            row1.Height = new GridLength(0);
+            col1.Width = new GridLength(490);
+            MaxVelocity.Visibility = Visibility.Hidden;
+            MinVelocity.Visibility = Visibility.Visible;
+        }
+        private void MaxTemperature_Click(object sender, RoutedEventArgs e)
+        {
+            row1.Height = new GridLength(320);
+            chartT.Height = 300;
+            col0.Width = new GridLength(490);
+            row0.Height = new GridLength(0);
+            col1.Width = new GridLength(0);
+            MaxTemperature.Visibility = Visibility.Hidden;
+            MinTemperature.Visibility = Visibility.Visible;
+        }
+        private void MaxPressure_Click(object sender, RoutedEventArgs e)
+        {
+            row1.Height = new GridLength(320);
+            chartP.Height = 300;
+            col0.Width = new GridLength(0);
+            row0.Height = new GridLength(0);
+            col1.Width = new GridLength(490);
+            MaxPressure.Visibility = Visibility.Hidden;
+            MinPressure.Visibility = Visibility.Visible;
+        }
+        private void MinDensity_Click(object sender, RoutedEventArgs e)
+        {
+            row0.Height = new GridLength(175);
+            chartD.Height = 155;
+            col0.Width = new GridLength(235);
+            row1.Height = new GridLength(175);
+            col1.Width = new GridLength(235);
+            MaxDensity.Visibility = Visibility.Visible;
+            MinDensity.Visibility = Visibility.Hidden;
+        }
+        private void MinVelocity_Click(object sender, RoutedEventArgs e)
+        {
+            row0.Height = new GridLength(175);
+            chartV.Height = 155;
+            col0.Width = new GridLength(235);
+            row1.Height = new GridLength(175);
+            col1.Width = new GridLength(235);
+            MaxVelocity.Visibility = Visibility.Visible;
+            MinVelocity.Visibility = Visibility.Hidden;
+        }
+        private void MinTemperature_Click(object sender, RoutedEventArgs e)
+        {
+            row0.Height = new GridLength(175);
+            chartT.Height = 155;
+            col0.Width = new GridLength(235);
+            row1.Height = new GridLength(175);
+            col1.Width = new GridLength(235);
+            MaxTemperature.Visibility = Visibility.Visible;
+            MinTemperature.Visibility = Visibility.Hidden;
+        }
+        private void MinPressure_Click(object sender, RoutedEventArgs e)
+        {
+            row0.Height = new GridLength(175);
+            chartP.Height = 155;
+            col0.Width = new GridLength(235);
+            row1.Height = new GridLength(175);
+            col1.Width = new GridLength(235);
+            MaxPressure.Visibility = Visibility.Visible;
+            MinPressure.Visibility = Visibility.Hidden;
         }
 
         //FUNCTIONS SIMULATOR
@@ -824,15 +905,6 @@ namespace SimuladorNozzle
 
         //FUNCTIONS CHARTS
 
-        //public void setCharts()
-        //{
-        //    Values1 = new ChartValues<double> { 3, 4, 6, 3, 2, 6 };
-        //    Values2 = new ChartValues<double> { 5, 3, 5, 7, 3, 9 };
-        //    DataContext = this;
-        //}
-
-
-
         public void createBrushesList()
         {
             brushesList = new List<Brush>();
@@ -846,9 +918,6 @@ namespace SimuladorNozzle
             brushesList.Add(Brushes.Aqua);
             brushesList.Add(Brushes.DarkBlue);
             brushesList.Add(Brushes.Pink);
-
-
-
         }
         public void createRecColors(List<Brush> brushes)
         {
@@ -884,7 +953,7 @@ namespace SimuladorNozzle
                 i++;
             }
         }
-        public void SetChartV()
+        public void SetChart()
         {
             int filaCount = nozzlesim.GetRow(0).Count;
             List<List<double>> listV = new List<List<double>>();
@@ -892,17 +961,28 @@ namespace SimuladorNozzle
             List<List<double>> listT = new List<List<double>>();
             List<List<double>> listD = new List<List<double>>();
             int i = 0;
-            int steps = 10; // suitable, between 1% to 2%, (for 500 samples between 5 and 10)
+            int steps = 20; // suitable, between 1% to 2%, (for 500 samples between 5 and 10)
             List<Brush> ListBrush = new List<Brush>();
             int posBrushes = 0;
+            List<double> dimensinlesValues;
+            if (DimensionlessButton.IsChecked==false)
+            {
+                // T V P D
+                double[] dimArray = nozzlesim.getDimensionalValues();
+                dimensinlesValues = new List<double> {dimArray[2],dimArray[3]/100, dimArray[1], dimArray[4] };
+            }
+            else
+            {
+                dimensinlesValues = new List<double> {1,1,1,1};
+            }
             foreach (int pos in posChart)
             {
                 if (pos == 1)
                 {
-                    listV.Add(nozzlesim.GetColumnPar(i, "V", steps));
-                    listP.Add(nozzlesim.GetColumnPar(i, "P", steps));
-                    listT.Add(nozzlesim.GetColumnPar(i, "T", steps));
-                    listD.Add(nozzlesim.GetColumnPar(i, "D", steps));
+                    listV.Add(nozzlesim.GetColumnPar(i, "V", steps, dimensinlesValues));
+                    listP.Add(nozzlesim.GetColumnPar(i, "P", steps, dimensinlesValues));
+                    listT.Add(nozzlesim.GetColumnPar(i, "T", steps, dimensinlesValues));
+                    listD.Add(nozzlesim.GetColumnPar(i, "D", steps, dimensinlesValues));
                     ListBrush.Add(brushesList[posBrushes]);
                     posBrushes++;
                 }
@@ -1210,7 +1290,53 @@ namespace SimuladorNozzle
             }
         }
 
+        private void DimensionlessButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DimensionlessButton.IsChecked == true)
+            {
+                yAxisD.MaxValue = 1.5;
+                yAxisD.MinValue = 0;
+                yAxisD.Title = "Density [ ]";
+                yAxisV.MaxValue = 2.3;
+                yAxisV.MinValue = -0.1;
+                yAxisV.Title = "Velocity [ ]";
+                yAxisT.MaxValue = 1.3;
+                yAxisT.MinValue = 0.2;
+                yAxisT.Title = "Temperature [ ]";
+                yAxisP.MaxValue = 420;
+                yAxisP.MinValue = -20;
+                yAxisP.Title = "Pressure [ ]";
+            }
+            else
+            {
+                double[] dimArray = nozzlesim.getDimensionalValues();
+                List<double> dimensinlesValues = new List<double> { dimArray[2], dimArray[3], dimArray[1], dimArray[4] };
+                yAxisD.MaxValue = 1.5 * dimensinlesValues[3];
+                yAxisD.MinValue = 0 * dimensinlesValues[3];
+                yAxisD.Title = "Density [ kg / m^3 ]";
+                yAxisV.MaxValue = 2.3 * dimensinlesValues[0];
+                yAxisV.MinValue = -0.1 * dimensinlesValues[0];
+                yAxisV.Title = "Velocity [ m / s ]";
+                yAxisT.MaxValue = 1.3 * dimensinlesValues[2];
+                yAxisT.MinValue = 0.2 * dimensinlesValues[2];
+                yAxisT.Title = "Temperature [ ºC ]";
+                yAxisP.MaxValue = 420 * dimensinlesValues[1]/100;
+                yAxisP.MinValue = -20 * dimensinlesValues[1]/100;
+                yAxisP.Title = "Pressure [ hPa ]";
 
+
+            }
+
+            SetChart();
+
+
+
+        }
+
+        private void DimensionlessButton_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

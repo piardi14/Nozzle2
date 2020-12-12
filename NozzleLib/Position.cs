@@ -11,7 +11,7 @@ namespace NozzleLib
         double p;       //pressure in the cell
         double A;       //area in the position of the cell
         double M;
-
+        double R = 286;
         //CONSTRUCTORS
         public Position(double x, double T, double ro, double V, double A)
         {
@@ -19,7 +19,7 @@ namespace NozzleLib
             this.T = T;
             this.ro = ro;
             this.V = V;
-            this.p = T*ro;
+            this.p = T*ro*R;
             this.A = A;
             this.M = MachNumber();
         }

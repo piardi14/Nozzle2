@@ -107,5 +107,11 @@
       <Name>NozzleLib</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="maximizeCharts.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="minimizeCharts.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
