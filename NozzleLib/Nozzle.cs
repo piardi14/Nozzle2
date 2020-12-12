@@ -36,10 +36,6 @@ namespace NozzleLib
                 SetPosition(0, i, pos);
                 i++;
             }
-
-
-            // computa todos los valores
-            ComputeUntilPos(20);
         }
 
         //FUNCTIONS
@@ -63,6 +59,27 @@ namespace NozzleLib
         public List<double> getTimeList()
         {
             return TimeList;
+        }
+        public List<double> getTimeList(int steps)
+        {
+            List<double> Times = new List<double>();
+            int i = 0;
+            int initStep = 0;
+            while (i < this.TimeList.Count)
+            {
+                if (initStep == 0)
+                {
+                    Times.Add(TimeList[i]);
+                    
+                }
+                if (initStep == steps)
+                {
+                    initStep = -1;
+                }
+                initStep++;
+                i++;
+            }
+            return Times;
         }
         public List<double> createListArea(int t)
         {
@@ -183,41 +200,50 @@ namespace NozzleLib
             }
             return fila;
         }
-        public List<double> GetColumnPar(int col, string parameter)
+        public List<double> GetColumnPar(int col, string parameter, int steps)
         {
             List<double> columna = new List<double>();
             int i = 0;
+            int initStep = 0;
             while (i < malla.GetLength(0))
             {
-                Position pos = GetPosition(i, col);
-                if (pos != null)
+                if (initStep == 0)
                 {
-                    double value;
-                    if (parameter == "x")
-                        value = pos.GetX();
-                    else if (parameter == "T")
-                        value = pos.GetTemperature();
-                    else if (parameter == "D")
-                        value = pos.GetDensity();
-                    else if (parameter == "V")
-                        value = pos.GetVelocity();
-                    else if (parameter == "P")
-                        value = pos.GetPressure();
-                    else if (parameter == "A")
-                        value = pos.GetArea();
-                    else if (parameter == "M")
-                        value = pos.MachNumber();
-                    else
-                        value = -2;
+                    Position pos = GetPosition(i, col);
+                    if (pos != null)
+                    {
+                        double value;
+                        if (parameter == "x")
+                            value = Math.Round(pos.GetX(), 4);
+                        else if (parameter == "T")
+                            value = Math.Round(pos.GetTemperature(), 4);
+                        else if (parameter == "D")
+                            value = Math.Round(pos.GetDensity(), 4);
+                        else if (parameter == "V")
+                            value = Math.Round(pos.GetVelocity(), 4);
+                        else if (parameter == "P")
+                            value = Math.Round(pos.GetPressure(), 4);
+                        else if (parameter == "A")
+                            value = Math.Round(pos.GetArea(), 4);
+                        else if (parameter == "M")
+                            value = Math.Round(pos.MachNumber(), 4);
+                        else
+                            value = -2;
 
-                    if (value != -2)
-                        columna.Add(value);
-                    i++;
+                        if (value != -2)
+                            columna.Add(value);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else
+                if (initStep == steps)
                 {
-                    break;
+                    initStep = -1;
                 }
+                initStep++;
+                i++;
             }
             return columna;
         }
@@ -273,7 +299,7 @@ namespace NozzleLib
         public void SetDeltaTime(double deltatime)
         {
             this.deltatime = deltatime;
-            this.TimeList.Add(TimeList[TimeList.Count-1]+deltatime);
+            this.TimeList.Add(Math.Round(TimeList[TimeList.Count-1]+deltatime,3));
         }
         public void ComputeNextTime()
         {
