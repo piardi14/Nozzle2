@@ -103,8 +103,10 @@
 
 
                     <StackPanel x:Name="PanelCol3" Margin="5,5,5,5" Grid.Column="2" Background="#FFE5E5E5">
-                        <Grid Margin="5,5,0,5" Height="50" Width="200" >
+                        <Grid x:Name="gridButtChart" Margin="5,10,10,0" Height="80" Width="400" HorizontalAlignment="Right" >
                             <Grid.RowDefinitions>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
                                 <RowDefinition ></RowDefinition>
                                 <RowDefinition ></RowDefinition>
                             </Grid.RowDefinitions>
@@ -113,98 +115,165 @@
                                 <ColumnDefinition ></ColumnDefinition>
                                 <ColumnDefinition ></ColumnDefinition>
                                 <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="buttChart0" Grid.Row="0" Grid.Column="0" Content="x = 0" Background="#FFE8E8E8" Margin="1,1,1.4,0" Click="buttChart0_Click" Height="23" VerticalAlignment="Top"></Button>
+                            <Button x:Name="buttChart0" Grid.Row="0" Grid.Column="0" FontSize="10" Content="x = 0" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart0_Click" ></Button>
                             <!--possible color of activated #FF999090-->
-                            <Button x:Name="buttChart1" Grid.Row="0" Grid.Column="1" Content="x = 1" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart1_Click"></Button>
-                            <Button x:Name="buttChart2" Grid.Row="0" Grid.Column="2" Content="x = 2" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart2_Click"></Button>
-                            <Button x:Name="buttChart3" Grid.Row="0" Grid.Column="3" Content="x = 3" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart3_Click"></Button>
+                            <Button x:Name="buttChart1" Grid.Row="0" Grid.Column="1" FontSize="10" Content="x = 0.1" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart1_Click"></Button>
+                            <Button x:Name="buttChart2" Grid.Row="0" Grid.Column="2" FontSize="10" Content="x = 0.2" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart2_Click"></Button>
+                            <Button x:Name="buttChart3" Grid.Row="0" Grid.Column="3" FontSize="10" Content="x = 0.3" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart3_Click"></Button>
+
+                            <Button x:Name="buttChart4" Grid.Row="0" Grid.Column="4" FontSize="10" Content="x = 0.4" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart4_Click" ></Button>
+                            <Button x:Name="buttChart5" Grid.Row="0" Grid.Column="5" FontSize="10" Content="x = 0.5" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart5_Click" ></Button>
+                            <Button x:Name="buttChart6" Grid.Row="0" Grid.Column="6" FontSize="10" Content="x = 0.6" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart6_Click" ></Button>
+                            <Button x:Name="buttChart7" Grid.Row="0" Grid.Column="7" FontSize="10" Content="x = 0.7" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart7_Click" ></Button>
+                            <Button x:Name="buttChart8" Grid.Row="0" Grid.Column="8" FontSize="10" Content="x = 0.8" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart8_Click" ></Button>
+                            <Button x:Name="buttChart9" Grid.Row="0" Grid.Column="9" FontSize="10" Content="x = 0.9" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart9_Click" ></Button>
+                            <Button x:Name="buttChart10" Grid.Row="1" Grid.Column="0" FontSize="10" Content="x = 1  " Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart10_Click" ></Button>
+
+                            <Button x:Name="buttChart11" Grid.Row="1" Grid.Column="1" FontSize="10" Content="x = 1.1" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart11_Click" ></Button>
+                            <Button x:Name="buttChart12" Grid.Row="1" Grid.Column="2" FontSize="10" Content="x = 1.2" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart12_Click" ></Button>
+                            <Button x:Name="buttChart13" Grid.Row="1" Grid.Column="3" FontSize="10" Content="x = 1.3" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart13_Click" ></Button>
+                            <Button x:Name="buttChart14" Grid.Row="1" Grid.Column="4" FontSize="10" Content="x = 1.4" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart14_Click" ></Button>
+                            <Button x:Name="buttChart15" Grid.Row="1" Grid.Column="5" FontSize="10" Content="x = 1.5" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart15_Click" ></Button>
+                            <Button x:Name="buttChart16" Grid.Row="1" Grid.Column="6" FontSize="10" Content="x = 1.6" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart16_Click" ></Button>
+                            <Button x:Name="buttChart17" Grid.Row="1" Grid.Column="7" FontSize="10" Content="x = 1.7" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart17_Click" ></Button>
+                            <Button x:Name="buttChart18" Grid.Row="1" Grid.Column="8" FontSize="10" Content="x = 1.8" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart18_Click" ></Button>
+                            <Button x:Name="buttChart19" Grid.Row="1" Grid.Column="9" FontSize="10" Content="x = 1.9" Background="#FFE8E8E8" Margin="1,1.4,1,0" Height="15" VerticalAlignment="Top" Click="buttChart19_Click" ></Button>
+                            <Button x:Name="buttChart20" Grid.Row="2" Grid.Column="0" FontSize="10" Content="x = 2  " Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart20_Click" ></Button>
+
+
+                            <Button x:Name="buttChart21" Grid.Row="2" Grid.Column="1" FontSize="10" Content="x = 2.1" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart21_Click" ></Button>
+                            <Button x:Name="buttChart22" Grid.Row="2" Grid.Column="2" FontSize="10" Content="x = 2.2" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart22_Click" ></Button>
+                            <Button x:Name="buttChart23" Grid.Row="2" Grid.Column="3" FontSize="10" Content="x = 2.3" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart23_Click" ></Button>
+                            <Button x:Name="buttChart24" Grid.Row="2" Grid.Column="4" FontSize="10" Content="x = 2.4" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart24_Click" ></Button>
+                            <Button x:Name="buttChart25" Grid.Row="2" Grid.Column="5" FontSize="10" Content="x = 2.5" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart25_Click" ></Button>
+                            <Button x:Name="buttChart26" Grid.Row="2" Grid.Column="6" FontSize="10" Content="x = 2.6" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart26_Click" ></Button>
+                            <Button x:Name="buttChart27" Grid.Row="2" Grid.Column="7" FontSize="10" Content="x = 2.7" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart27_Click" ></Button>
+                            <Button x:Name="buttChart28" Grid.Row="2" Grid.Column="8" FontSize="10" Content="x = 2.8" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart28_Click" ></Button>
+                            <Button x:Name="buttChart29" Grid.Row="2" Grid.Column="9" FontSize="10" Content="x = 2.9" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart29_Click" ></Button>
+                            <Button x:Name="buttChart30" Grid.Row="3" Grid.Column="0" FontSize="10" Content="x = 3  " Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart30_Click" ></Button>
+
+                        </Grid>
+                        <Grid x:Name="gridRecChart" Margin="5,-78,10,0" Height="80" Width="400" VerticalAlignment="Top" HorizontalAlignment="Right" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
                         </Grid>
                         <Grid Margin="5,5,5,5" Height="350" >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition ></ColumnDefinition>
                                 <ColumnDefinition ></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition ></RowDefinition>
-                                <RowDefinition Height="50"></RowDefinition>
+                                <RowDefinition ></RowDefinition>
                             </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="5,5,5,5">
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="5,0,5,0">
+                                
                                 <Label Content="Density" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="12"></Label>
-                                <chart:CartesianChart x:Name="chartD" Height="140" Background="White" Series="{Binding SeriesCollection}" >
+                                <lvc:CartesianChart x:Name="chartD" LegendLocation="None" Height="155"  Margin="0,0,0.6,0" >
 
-                                    <!--<chart:CartesianChart.Content>
-                                        <TextBlock HorizontalAlignment="Center" FontSize="12" Margin="0,5,0,5">Average phase progresion</TextBlock>
-                                    </chart:CartesianChart.Content>
-                                    <chart:CartesianChart.AxisY>
-                                        <chart:Axis x:Name="YAxisP" MaxValue="1.1" MinValue="0.7" LabelFormatter="{Binding YFormatter}"  />
-                                    </chart:CartesianChart.AxisY>
-                                    <chart:CartesianChart.AxisX>
-                                        <chart:Axis x:Name="XAxisP"  Labels="{Binding timeChart}"  />
-                                    </chart:CartesianChart.AxisX>-->
-
-                                </chart:CartesianChart>
-                            </StackPanel>
-                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,5,5,5">
-                                <Label Content="Velocity" HorizontalAlignment="Center" VerticalAlignment="Top"  FontSize="12"></Label>
-                                <!--<lvc:CartesianChart Background="White" Height="140" >
-                                    <lvc:CartesianChart.Series>
-                                        <lvc:LineSeries Values="{Binding Values1}" StrokeThickness="2" StrokeDashArray="3" Stroke="#6BBA45" Fill="Transparent" LineSmoothness="0" PointGeometrySize="10"  />
-                                        <lvc:LineSeries Values="{Binding Values2}" StrokeThickness="2" StrokeDashArray="3" Stroke="#1C8FC5" Fill="Transparent" LineSmoothness="0" PointGeometrySize="10" /> 
-                                        -->
-                                <!--PointForeround="#222E31"-->
-                                <!--
-                                    </lvc:CartesianChart.Series>
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis Title="Density ( )" MaxValue="1.5" MinValue="0" ></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
                                     <lvc:CartesianChart.AxisX>
-                                        <lvc:Axis IsMerged="True">
-                                            <lvc:Axis.Separator>
-                                                <lvc:Separator StrokeThickness="1" StrokeDashArray="2">
+                                        <lvc:Axis x:Name="xAxisD" Title="Time ( seconds )">
+                                            <lvc:Axis.Separator >
+                                                <lvc:Separator Step="1" StrokeThickness="1.5" StrokeDashArray="4">
                                                     <lvc:Separator.Stroke>
                                                         <SolidColorBrush Color="#404F56" />
                                                     </lvc:Separator.Stroke>
                                                 </lvc:Separator>
                                             </lvc:Axis.Separator>
                                         </lvc:Axis>
-                                    </lvc:CartesianChart.AxisX>
-                                    <lvc:CartesianChart.AxisY>
-                                        <lvc:Axis IsMerged="True">
-                                            <lvc:Axis.Separator>
-                                                <lvc:Separator StrokeThickness="1.5" StrokeDashArray="4">
-                                                    <lvc:Separator.Stroke>
-                                                        <SolidColorBrush Color="#404F56" />
-                                                    </lvc:Separator.Stroke>
-                                                </lvc:Separator>
-                                            </lvc:Axis.Separator>
-                                        </lvc:Axis>
-                                    </lvc:CartesianChart.AxisY>
-                                </lvc:CartesianChart>-->
-
-                                <lvc:CartesianChart Series="{Binding SeriesV}" LegendLocation="None"  Height="251" Margin="0,0,0.6,0" >
-
-                                    <!--https://lvcharts.net/App/examples/v1/wpf/Basic%20Line%20Chart-->
-                                    <lvc:CartesianChart.AxisY>
-                                        <lvc:Axis Title="Velocity ( m / s )" ></lvc:Axis>
-                                        <!--LabelFormatter="{Binding YFormatter}"-->
-                                    </lvc:CartesianChart.AxisY>
-                                    <lvc:CartesianChart.AxisX>
-                                        <lvc:Axis Title="Time ( seconds )" Labels="{Binding Labels}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
                                 </lvc:CartesianChart>
-
-
-
+                                
                             </StackPanel>
-                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="5,5,5,5">
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,0,5,0">
+                                
+                                <Label Content="Velocity" HorizontalAlignment="Center" VerticalAlignment="Top"  FontSize="12"></Label>
+                                <lvc:CartesianChart x:Name="chartV" LegendLocation="None" Height="155"  Margin="0,0,0.6,0" >
+
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis Title="Velocity ( )" MaxValue="2.3" MinValue="-0.1" ></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis x:Name="xAxisV" Title="Time ( seconds )">
+                                            <lvc:Axis.Separator >
+                                                <lvc:Separator Step="1" StrokeThickness="1.5" StrokeDashArray="4">
+                                                    <lvc:Separator.Stroke>
+                                                        <SolidColorBrush Color="#404F56" />
+                                                    </lvc:Separator.Stroke>
+                                                </lvc:Separator>
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                </lvc:CartesianChart>
+                                
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="5,0,5,0">
+                                
                                 <Label Content="Temperature" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="12"></Label>
-                                <chart:CartesianChart x:Name="chartT" Height="140" Background= "White" Series="{Binding casillasP}" >
-
-                                </chart:CartesianChart>
+                                <lvc:CartesianChart x:Name="chartT" LegendLocation="None" Height="150"  Margin="0,0,0.6,0" >
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis Title="Temperature ( )" MaxValue="1.3" MinValue="0.2" ></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis x:Name="xAxisT" Title="Time ( seconds )">
+                                            <lvc:Axis.Separator >
+                                                <lvc:Separator Step="1" StrokeThickness="1.5" StrokeDashArray="4">
+                                                    <lvc:Separator.Stroke>
+                                                        <SolidColorBrush Color="#404F56" />
+                                                    </lvc:Separator.Stroke>
+                                                </lvc:Separator>
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                </lvc:CartesianChart>
+                                
                             </StackPanel>
-                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,5,5,5">
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,5,0">
                                 <Label Content="Pressure" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="12"></Label>
-                                <chart:CartesianChart x:Name="chartP" Height="140" Background="White" Series="{Binding casillasP}" >
+                                <lvc:CartesianChart x:Name="chartP" LegendLocation="None" Height="150"  Margin="0,0,0,0" >
 
-                                </chart:CartesianChart>
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis Title="Pressure ( )" MaxValue="1.5" MinValue="-0.1" ></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis x:Name="xAxisP" Title="Time ( seconds )">
+                                            <lvc:Axis.Separator >
+                                                <lvc:Separator Step="1" StrokeThickness="1.5" StrokeDashArray="4">
+                                                    <lvc:Separator.Stroke>
+                                                        <SolidColorBrush Color="#404F56" />
+                                                    </lvc:Separator.Stroke>
+                                                </lvc:Separator>
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                </lvc:CartesianChart>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
