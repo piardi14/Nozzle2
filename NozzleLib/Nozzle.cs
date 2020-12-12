@@ -81,6 +81,11 @@ namespace NozzleLib
             }
             return Times;
         }
+        public double[] getDimensionalValues()
+        {
+            return dimensionalvalues;
+        }
+
         public List<double> createListArea(int t)
         {
             List<double> Area = new List<double>();
@@ -149,6 +154,7 @@ namespace NozzleLib
             dimensionalvalues[2] = Math.Sqrt(gamma * R * T0);
             dimensionalvalues[3] = T0*ro0*R;
             dimensionalvalues[4] = ro0;
+
         }
         public List<Position> GetRow (int row)
         {
@@ -200,7 +206,7 @@ namespace NozzleLib
             }
             return fila;
         }
-        public List<double> GetColumnPar(int col, string parameter, int steps)
+        public List<double> GetColumnPar(int col, string parameter, int steps, List<double> dimValues )
         {
             List<double> columna = new List<double>();
             int i = 0;
@@ -216,13 +222,13 @@ namespace NozzleLib
                         if (parameter == "x")
                             value = Math.Round(pos.GetX(), 4);
                         else if (parameter == "T")
-                            value = Math.Round(pos.GetTemperature(), 4);
+                            value = Math.Round(pos.GetTemperature()*dimValues[2], 4);
                         else if (parameter == "D")
-                            value = Math.Round(pos.GetDensity(), 4);
+                            value = Math.Round(pos.GetDensity()* dimValues[3], 4);
                         else if (parameter == "V")
-                            value = Math.Round(pos.GetVelocity(), 4);
+                            value = Math.Round(pos.GetVelocity()*dimValues[0], 4);
                         else if (parameter == "P")
-                            value = Math.Round(pos.GetPressure(), 4);
+                            value = Math.Round(pos.GetPressure()* dimValues[1], 4);
                         else if (parameter == "A")
                             value = Math.Round(pos.GetArea(), 4);
                         else if (parameter == "M")
