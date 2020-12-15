@@ -10,8 +10,19 @@ namespace NozzleLib
         double V;       //velocity in the cell
         double p;       //pressure in the cell
         double A;       //area in the position of the cell
+        int i;          //divisions of the nozzle
         double M;
         double R = 286;
+
+        public int I { get; set; }
+        public double Position_x { get; set; }
+        public double Area { get; set; }
+        public double Density { get; set; }
+        public double Velocity { get; set; }
+        public double Temperature { get; set; }
+        public double Pressure { get; set; }
+        public double Mach { get; set; }
+
         //CONSTRUCTORS
         public Position(double x, double T, double ro, double V, double A)
         {
@@ -24,7 +35,17 @@ namespace NozzleLib
             this.M = MachNumber();
         }
 
-
+        public Position (double x, double T, double ro, double V, double A, int i)
+        {
+            this.I = i;
+            this.Position_x = x;
+            this.Area = A;
+            this.Density = ro;
+            this.Velocity = V;
+            this.Temperature = T;
+            this.Pressure = T * ro;
+            this.Mach = V / Math.Sqrt(T);
+        }
 
         //FUNCTIONS
         //Variable Extraction
