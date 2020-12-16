@@ -73,7 +73,8 @@
                                 </Grid>
                                 <StackPanel x:Name="NozzlePanel" Margin="0,5,5,5" Grid.Column="0" Grid.Row="1" Background="White">
 
-                                    <Canvas x:Name="NozzleCanvas" Width="445" Height="400"></Canvas>
+                                    <Canvas x:Name="NozzleCanvas" Width="445" Height="400">
+                                    </Canvas>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
@@ -87,7 +88,7 @@
                                     <ColumnDefinition></ColumnDefinition>
                                     <ColumnDefinition></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="NextStepButton" Height="60" Width="60" Content="Next" Background="#FF8B8B8B" Grid.Column="0"/>
+                                <Button x:Name="NextStepButton" Height="60" Width="60" Content="Next" Background="#FF8B8B8B" Grid.Column="0" Click="NextStepButton_Click"/>
                                 <Button x:Name="AutoButton" Height="60" Width="60" Content="Auto" Background="#FF8B8B8B" Grid.Column="1"/>
                                 <Button x:Name="PauseButton" Height="60" Width="60" Content="Pause" Background="#FF8B8B8B" Grid.Column="2"/>
                                 <Button x:Name="RestartButton" Height="60" Width="60" Content="Restart" Background="#FF8B8B8B" Grid.Column="3"/>
@@ -317,16 +318,22 @@
                             </StackPanel>
                         </Grid>
                     </StackPanel>
-
-
-
                 </Grid>
             </TabItem>
             <TabItem Name="PDFTab" Header="PDF">
                 <Grid Background="#FFE5E5E5" Height="375" Width="775"  Margin="0,0,0,0"/>
             </TabItem>
             <TabItem Name="AndersonTab" Header="Anderson Tables">
-                <Grid Background="#FFE5E5E5" Height="375" Width="775"  Margin="0,0,0,0"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="17*"/>
+                        <ColumnDefinition Width="858*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Name="DataGrid1" Margin="0,0,0,0" Width="710" Height="388" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="3" Loaded="DataGrid1_Loaded">
+                    </DataGrid>
+                </Grid>
+                    <!--<Grid Background="#FFE5E5E5" Height="375" Width="775"  Margin="0,0,0,0"/>-->
             </TabItem>
         </TabControl>
 

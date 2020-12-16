@@ -10,12 +10,16 @@ namespace NozzleLib
         double R = 286;
         double deltax;
         double deltatime;
-        List<double> TimeList= new List<double> { 0 };
+        List<double> TimeList = new List<double> { 0 };
         double C;                       //Courant value
         Position[,] malla;              //Position matrix rows=time steps and columns=space divisions
         int N;                     //Number of space divisions, 31 by default (Anderson value)
         double[] dimensionalvalues;     //Initial values to obtain dimensional values to magnitudes [L, T0, a0, p0, ro0]
         double throatposition;          //where is the throat
+
+        public List<Position> position_initial_conditions { get; set; }
+        //public List<Position> position_first_time_step { get; set; }
+        //public List<Position> position_after_1400_time_steps { get; set; }
 
         public Nozzle(double L, double T0, double ro0, double C, int N)
         {
@@ -25,14 +29,15 @@ namespace NozzleLib
             this.N = N;
             this.C = C;
             this.malla = new Position[1401, N];
+            this.position_initial_conditions = new List<Position>();
             int i = 0;
             while (i < N)
             {
-
-
                 double xi = 0 + i * deltax;
                 double temp = 1 - 0.2314 * xi;
                 Position pos = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Math.Pow(xi - throatposition, 2));
+                Position initial_conditions = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Math.Pow(xi - throatposition, 2),i+1);
+                position_initial_conditions.Add(initial_conditions);
                 SetPosition(0, i, pos);
                 i++;
             }

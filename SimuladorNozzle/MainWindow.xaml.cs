@@ -29,6 +29,7 @@ namespace SimuladorNozzle
         List<int> posChart = new List<int>();                               // Select positions to show on the chart
         List<List<Rectangle>> recListChart= new List<List<Rectangle>>();
         List<Brush> brushesList;
+        int steps;
 
         Nozzle nozzlesim = new Nozzle(3, 800, 0.5, 0.5, 31);                   //Nozzle where we would simulate
         public MainWindow()
@@ -46,6 +47,9 @@ namespace SimuladorNozzle
             // computa todos los valores especificados
             nozzlesim.ComputeUntilPos(500);
             SetChart();
+
+            //inizialitzem el step
+            steps = 1;
         }
 
         //INITIAL SETTINGS
@@ -619,6 +623,14 @@ namespace SimuladorNozzle
                 if (propind == 0)
                 {
                     value = nozzle.GetPosition(t, count).GetTemperature();
+                    if (value > 1)
+                    {
+                        value = 1;
+                    }
+                    else if (value < 0)
+                    {
+                        value = 0;
+                    }
                 }
                 else if (propind == 1)
                 {
@@ -686,7 +698,7 @@ namespace SimuladorNozzle
                 R = Convert.ToByte(Math.Round(r, 0));
                 G = 0;
                 double b = 0 + i * 32 / change;
-                B = Convert.ToByte(Math.Round(b, 0));
+                B = Convert.ToByte(Math.Round(b, 1));
 
             }
             else if (i < 2 * change)
@@ -1336,6 +1348,27 @@ namespace SimuladorNozzle
         private void DimensionlessButton_Checked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void DataGrid1_Loaded(object sender, RoutedEventArgs e)
+        {
+            List<Position> una_lista = nozzlesim.position_initial_conditions;
+            DataGrid1.ItemsSource = una_lista;
+        }
+
+        private void NextStepButton_Click(object sender, RoutedEventArgs e)
+        {
+            nozzlesim.ComputeNextTime();
+            //double deltatime = nozzlesim.ComputeDeltaTime(steps);
+            //int i = 0;
+            //List<double> value = new List<double>(); ;
+            //while (i < 31)
+            //{
+            //    value.Add(nozzlesim.GetPosition(steps, i).GetTemperature());
+            //    i = i + 1;
+            //}
+            CreateNozzle(nozzlesim, steps);
+            steps = steps + 1;
         }
     }
 }
