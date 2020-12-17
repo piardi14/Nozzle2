@@ -30,7 +30,7 @@ namespace NozzleLib
             this.T = T;
             this.ro = ro;
             this.V = V;
-            this.p = T*ro*R;
+            this.p = T*ro;
             this.A = A;
             this.M = MachNumber();
         }

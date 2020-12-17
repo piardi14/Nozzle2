@@ -115,7 +115,7 @@ namespace SimuladorNozzle
         //CONTROLS SIMULATOR
         private void PropertiesBoxSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CreateNozzle(nozzlesim, 0);             //**de moment 0 el temps, pero ja veurem quan tingui un timestep diferent
+            CreateNozzle(nozzlesim, steps);             //**de moment 0 el temps, pero ja veurem quan tingui un timestep diferent
         }
 
         //CONTROLS CHARTS
@@ -774,12 +774,12 @@ namespace SimuladorNozzle
             else if (propind == 2)
             {
                 max = maxD;
-                min = maxD;
+                min = minD;
             }
             else if (propind == 3)
             {
                 max = maxP;
-                min = maxP;
+                min = minP;
             }
             byte A = 255;
             byte R;
