@@ -42,7 +42,10 @@ namespace NozzleLib
                 i++;
             }
         }
+        public Nozzle()
+        {
 
+        }
         //FUNCTIONS
         public Position GetPosition(int t, int i)
         {

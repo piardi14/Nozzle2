@@ -53,6 +53,7 @@ namespace SimuladorNozzle
         public MainWindow()
         {
             InitializeComponent();
+
             CreateIndicator(400);
             PropertiesBoxSelection.Items.Add("Temperature");
             PropertiesBoxSelection.Items.Add("Velocity");
@@ -67,6 +68,14 @@ namespace SimuladorNozzle
             calculateMinMax();
             //inizialitzem el step
             steps = 0;
+
+            // hacemos no visibles los labels de step y time
+            labelStep.Visibility = Visibility.Hidden;
+            labelTime.Visibility = Visibility.Hidden;
+            // Hacemos Visibles los rectangulos transpoarentes que no nos dejan clicar a ningun sitio
+            rectangleCharts.Visibility = Visibility.Visible;
+            rectanglePanel.Visibility = Visibility.Visible;
+
 
             //cramos charts
             //SetChart();
@@ -94,10 +103,14 @@ namespace SimuladorNozzle
                 {
                     PropertiesBoxSelection.SelectedIndex = 0;
 
+                    CreateButton.Content = "SIMULATING...";
+
                     double C = Convert.ToDouble(CourantTextBox.Text);
                     int divisions = Convert.ToInt32(DivisionsTextBox.Text);
-                    textStep.Content = "0";
-                    textTime.Content = "0";
+                    textStep.Content = "0"; labelStep.Visibility = Visibility.Visible;
+                    textTime.Content = "0"; labelTime.Visibility = Visibility.Visible;
+                    rectangleCharts.Visibility = Visibility.Hidden;
+                    rectanglePanel.Visibility = Visibility.Hidden;
                     initiated = true;
                     //nozzlesim = new Nozzle(3, 800, 0.5, C, divisions);
                     CreateNozzle(nozzlesim, 0);
@@ -126,55 +139,65 @@ namespace SimuladorNozzle
             double[] MaxMin = new double[2] { max + (max - min) / 20, min - (max - min) / 20 };
             return MaxMin;
         }
-
-        private void DimensionlessButton_Click(object sender, RoutedEventArgs e)
+        private void DimensionlessButton_Checked(object sender, RoutedEventArgs e)
         {
-            double[] MaxMinD = ampliate(maxD, minD);
-            double[] MaxMinV = ampliate(maxV, minV);
-            double[] MaxMinT = ampliate(maxT, minT);
-            double[] MaxMinP = ampliate(maxP, minP);
-            if (DimensionlessButton.IsChecked == true)
+            if (initiated == true)
             {
+                double[] MaxMinD = ampliate(maxD, minD);
+                double[] MaxMinV = ampliate(maxV, minV);
+                double[] MaxMinT = ampliate(maxT, minT);
+                double[] MaxMinP = ampliate(maxP, minP);
+                if (DimensionlessButton.IsChecked == true)
+                {
 
-                yAxisD.MaxValue = MaxMinD[0];
-                yAxisD.MinValue = MaxMinD[1];
-                yAxisD.Title = "Density [ ]";
-                chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
-                yAxisV.MaxValue = MaxMinV[0];
-                yAxisV.MinValue = MaxMinV[1];
-                yAxisV.Title = "Velocity [ ]";
-                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
-                yAxisT.MaxValue = MaxMinT[0];
-                yAxisT.MinValue = MaxMinT[1];
-                yAxisT.Title = "Temperature [ ]";
-                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
-                yAxisP.MaxValue = MaxMinP[0];
-                yAxisP.MinValue = MaxMinP[1];
-                yAxisP.Title = "Pressure [ ]";
-                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    yAxisD.MaxValue = MaxMinD[0];
+                    yAxisD.MinValue = MaxMinD[1];
+                    yAxisD.Title = "Density [ ]";
+                    chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    yAxisV.MaxValue = MaxMinV[0];
+                    yAxisV.MinValue = MaxMinV[1];
+                    yAxisV.Title = "Velocity [ ]";
+                    chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    yAxisT.MaxValue = MaxMinT[0];
+                    yAxisT.MinValue = MaxMinT[1];
+                    yAxisT.Title = "Temperature [ ]";
+                    chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    yAxisP.MaxValue = MaxMinP[0];
+                    yAxisP.MinValue = MaxMinP[1];
+                    yAxisP.Title = "Pressure [ ]";
+                    chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                }
+                else
+                {
+                    double[] dimArray = nozzlesim.getDimensionalValues();
+                    List<double> dimensinlesValues = new List<double> { dimArray[2], dimArray[3], dimArray[1], dimArray[4] };
+                    yAxisD.MaxValue = MaxMinD[0] * dimensinlesValues[3];
+                    yAxisD.MinValue = MaxMinD[1] * dimensinlesValues[3];
+                    chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    yAxisD.Title = "Density [ kg / m^3 ]";
+                    yAxisV.MaxValue = MaxMinV[0] * dimensinlesValues[0];
+                    yAxisV.MinValue = MaxMinV[1] * dimensinlesValues[0];
+                    chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    yAxisV.Title = "Velocity [ m / s ]";
+                    yAxisT.MaxValue = MaxMinT[0] * dimensinlesValues[2];
+                    yAxisT.MinValue = MaxMinT[1] * dimensinlesValues[2];
+                    chartT.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    yAxisT.Title = "Temperature [ ºC ]";
+                    yAxisP.MaxValue = MaxMinP[0] * dimensinlesValues[1] / 100;
+                    yAxisP.MinValue = MaxMinP[1] * dimensinlesValues[1] / 100;
+                    chartP.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    yAxisP.Title = "Pressure [ hPa ]";
+                }
+                SetChart();
             }
             else
             {
-                double[] dimArray = nozzlesim.getDimensionalValues();
-                List<double> dimensinlesValues = new List<double> { dimArray[2], dimArray[3], dimArray[1], dimArray[4] };
-                yAxisD.MaxValue = MaxMinD[0] * dimensinlesValues[3];
-                yAxisD.MinValue = MaxMinD[1] * dimensinlesValues[3];
-                chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
-                yAxisD.Title = "Density [ kg / m^3 ]";
-                yAxisV.MaxValue = MaxMinV[0] * dimensinlesValues[0];
-                yAxisV.MinValue = MaxMinV[1] * dimensinlesValues[0];
-                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
-                yAxisV.Title = "Velocity [ m / s ]";
-                yAxisT.MaxValue = MaxMinT[0] * dimensinlesValues[2];
-                yAxisT.MinValue = MaxMinT[1] * dimensinlesValues[2];
-                chartT.HorizontalAlignment = HorizontalAlignment.Stretch;
-                yAxisT.Title = "Temperature [ ºC ]";
-                yAxisP.MaxValue = MaxMinP[0] * dimensinlesValues[1] / 100;
-                yAxisP.MinValue = MaxMinP[1] * dimensinlesValues[1] / 100;
-                chartP.HorizontalAlignment = HorizontalAlignment.Stretch;
-                yAxisP.Title = "Pressure [ hPa ]";
+
             }
-            SetChart();
+        }
+        private void DimensionlessButton_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         public void ClickButtonChart(Button button)
@@ -1011,46 +1034,60 @@ namespace SimuladorNozzle
             int i = 0;
             int N = nozzlesim.GetDivisions();
             int J = nozzlesim.getTimeList().Count();
-            while (i<N)
+            if (nozzlesim.Getmalla() != null)
             {
-                List<Position> column = nozzlesim.GetColumn(i);
-                int j = 0;
-                while (j < J)
+                while (i < N)
                 {
-                    if (i == 0 && j == 0)
+                    List<Position> column = nozzlesim.GetColumn(i);
+                    int j = 0;
+                    while (j < J)
                     {
-                        minD = column[j].GetDensity(); maxD = minD;
-                        minP = column[j].GetPressure(); maxP = minP;
-                        minV = column[j].GetVelocity(); maxV = minV;
-                        minT = column[j].GetTemperature(); maxT = minT;
-                    }
-                    else
-                    {
-                        double density = column[j].GetDensity();
-                        if (maxD < density)
-                            maxD = density;
-                        else if (minD > density)
-                            minD = density;
-                        double pressure = column[j].GetPressure();
-                        if (maxP < pressure)
-                            maxP = pressure;
-                        else if (minP > pressure)
-                            minP = pressure;
-                        double velocity = column[j].GetVelocity();
-                        if (maxV < velocity)
-                            maxV = velocity;
-                        else if (minV > velocity)
-                            minV = velocity;
-                        double temperature = column[j].GetTemperature();
-                        if (maxT < temperature)
-                            maxT = temperature;
-                        else if (minT > temperature)
-                            minT = temperature;
+                        if (i == 0 && j == 0)
+                        {
+                            minD = column[j].GetDensity(); maxD = minD;
+                            minP = column[j].GetPressure(); maxP = minP;
+                            minV = column[j].GetVelocity(); maxV = minV;
+                            minT = column[j].GetTemperature(); maxT = minT;
+                        }
+                        else
+                        {
+                            double density = column[j].GetDensity();
+                            if (maxD < density)
+                                maxD = density;
+                            else if (minD > density)
+                                minD = density;
+                            double pressure = column[j].GetPressure();
+                            if (maxP < pressure)
+                                maxP = pressure;
+                            else if (minP > pressure)
+                                minP = pressure;
+                            double velocity = column[j].GetVelocity();
+                            if (maxV < velocity)
+                                maxV = velocity;
+                            else if (minV > velocity)
+                                minV = velocity;
+                            double temperature = column[j].GetTemperature();
+                            if (maxT < temperature)
+                                maxT = temperature;
+                            else if (minT > temperature)
+                                minT = temperature;
 
+                        }
+                        j++;
                     }
-                    j++;
+                    i++;
                 }
-                i++;
+            }
+            else
+            {
+                maxD = new double();
+                minD = new double();
+                maxV = new double();
+                minV = new double();
+                maxP = new double();
+                minP = new double();
+                maxT = new double();
+                minT = new double();
             }
         }
 
@@ -1556,7 +1593,41 @@ namespace SimuladorNozzle
             clock.Stop();
             NextStepButton.IsEnabled = true;
         }
-	}
+
+        private void RestartButton_Click(object sender, RoutedEventArgs e)
+        {
+            clock.Interval = new TimeSpan(10000000);
+            if (auto == false)
+            {
+                
+            }
+            else
+            {
+                clock.Stop();
+                NextStepButton.IsEnabled = true;
+                auto = false;
+                Color colorset = Color.FromRgb(232, 232, 232);
+                Brush colorBrush = new SolidColorBrush(colorset);
+                AutoButton.Background = colorBrush;
+                AutoButton.Content = "AUTO";
+            }
+            clockTime = new TimeSpan(0);
+            nozzlesim = new Nozzle();
+            calculateMinMax();
+            fillSelectedList();
+            steps=0;
+
+            labelStep.Visibility = Visibility.Hidden; textStep.Content = "";
+            labelTime.Visibility = Visibility.Hidden; textTime.Content = "";
+            // Hacemos Visibles los rectangulos transpoarentes que no nos dejan clicar a ningun sitio
+            rectangleCharts.Visibility = Visibility.Visible;
+            rectanglePanel.Visibility = Visibility.Visible;
+            
+            SetChart();
+        }
+
+        
+    }
 }
 
 

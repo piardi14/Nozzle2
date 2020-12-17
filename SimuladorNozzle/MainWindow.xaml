@@ -46,7 +46,7 @@
 								<TextBox x:Name="CourantTextBox" Margin="0,10,5,0" Height="30" Width="75" HorizontalAlignment="Right"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" />
 							</Grid>
 							<Button x:Name="DefaultValuesButton" Margin="0,10,5,0" Height="30" Width="120" HorizontalAlignment="Right" Content="Default Values" Background="#FFB4B4B4" Click="DefaultValuesButton_Click" FontWeight="Bold" />
-							<Button x:Name="CreateButton" Margin="0,25,0,0" Height="40" Width="150" Content="CREATE!" FontSize="20" FontWeight="Bold" BorderThickness="0" Background="DarkSalmon" Click="CreateButton_Click" >
+							<Button x:Name="CreateButton" Margin="0,25,0,0" Height="40" Width="150" Content="CREATE!" FontSize="20" FontWeight="Bold" BorderThickness="0" Background="DarkSalmon" Click="CreateButton_Click">
 								<Button.Effect>
 									<DropShadowEffect/>
 								</Button.Effect>
@@ -74,9 +74,17 @@
 								<StackPanel x:Name="NozzlePanel" Margin="0,5,5,5" Grid.Column="0" Grid.Row="1" Background="White">
 
 									<Canvas x:Name="NozzleCanvas" Width="445" Height="400">
-									</Canvas>
-								</StackPanel>
-							</Grid>
+                                        
+                                    </Canvas>
+                                    <StackPanel  VerticalAlignment="Top"  Margin="20,-390 ">
+                                        <Label x:Name="labelStep" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Content="Step:" Margin="10,0"/>
+                                        <Label x:Name="textStep" Content =""  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,-25,0,0" Width="46"/>
+                                        <Label x:Name="labelTime" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Time:" Margin="10,-10,25,0" />
+                                        <Label x:Name="textTime" Content ="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,-25,0,0" Width="46"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                
+                            </Grid>
 						</StackPanel>
 						<StackPanel x:Name="PanelControls" Margin="0,20,0,5" Height="120" Background="#FFE5E5E5">
 							<Grid Height="120" Margin="0,0,0,0">
@@ -96,20 +104,15 @@
 								<Button x:Name="NextStepButton" Margin="10,5,10,5" Height="60" Width="60" Content="Next"  Background="#FFE8E8E8" Grid.Column="0" Grid.Row="0" Click="NextStepButton_Click"/>
 								<Button x:Name="AutoButton" Margin="10,5,10,5" Height="60" Width="60" Content="Auto"  Background="#FFE8E8E8" Grid.Column="1" Click="AutoButton_Click"/>
 								<!--<Button x:Name="PauseButton" Margin="10,5,10,5" Height="60" Width="60" Content="Pause"  Background="#FFE8E8E8" Grid.Column="2" Click="PauseButton_Click"/>-->
-								<Button x:Name="RestartButton" Margin="10,5,10,5" Height="60" Width="60" Content="Restart"  Background="#FFE8E8E8" Grid.Column="2"/>
+								<Button x:Name="RestartButton" Margin="10,5,10,5" Height="60" Width="60" Content="Restart"  Background="#FFE8E8E8" Grid.Column="2" Click="RestartButton_Click"/>
 								<Button x:Name="DownloadButton" Margin="10,5,10,5" Height="60" Width="60" Content="Download"  Background="#FFE8E8E8" Grid.Column="3"/>
 								<Button x:Name="UploadButton" Margin="10,5,10,5" Height="60" Width="60" Content="Upload"  Background="#FFE8E8E8" Grid.Column="4"/>
-								<StackPanel Grid.Row="1" Grid.Column="0">
-									<Label  HorizontalAlignment="Left" VerticalAlignment="Top" Content="Step:" Margin="10,0"/>
-									<Label x:Name="textStep" Content =""  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,-25,0,0" Width="46"/>
-									<Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Time:" Margin="10,-10,25,0" />
-									<Label x:Name="textTime" Content ="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,-25,0,0" Width="46"/>
-								</StackPanel>
+								
 							</Grid>
 						</StackPanel>
+                        <Rectangle x:Name="rectanglePanel" Fill="Transparent" HorizontalAlignment="Stretch" Height="590" VerticalAlignment="Top" Margin="0,-594" Visibility="Hidden"/>
 
-
-					</StackPanel>
+                    </StackPanel>
 
 
 
@@ -197,7 +200,7 @@
 							<TextBlock TextWrapping="WrapWithOverflow" FontSize="14" Height="57"><Run Text="Selected "/><LineBreak/><Run Text="positions "/><LineBreak/><Run Text="for ploting"/></TextBlock>
 						</Label>
 
-						<CheckBox x:Name="DimensionlessButton" Content="Dimensionless" FontSize="16" HorizontalAlignment="Right" Margin=" 0,-15,20,0" Padding="4,-4,0,0" UseLayoutRounding="True" IsChecked="True" Cursor="Hand" BorderThickness="2" Click="DimensionlessButton_Click"/>
+						<CheckBox x:Name="DimensionlessButton" Content="Dimensionless" FontSize="16" HorizontalAlignment="Right" Margin=" 0,-15,20,0" Padding="4,-4,0,0" UseLayoutRounding="True" IsChecked="True" Cursor="Hand" BorderThickness="2" Click="DimensionlessButton_Click" Checked="DimensionlessButton_Checked"/>
 
 						<Grid x:Name="gridChart" Margin="0,5,0,0" Height="350" Background="#FFFFFFFF">
 
@@ -324,7 +327,7 @@
 								</lvc:CartesianChart>
 							</StackPanel>
 						</Grid>
-						<Rectangle x:Name="rectangleCharts" Fill="#FFFFFFFF" HorizontalAlignment="Stretch" Height="350" VerticalAlignment="Top" Margin="0,-350" Visibility="Hidden"/>
+						<Rectangle x:Name="rectangleCharts" Fill="Transparent" HorizontalAlignment="Stretch" Height="590" VerticalAlignment="Top" Margin="0,-441" Visibility="Hidden"/>
 					</StackPanel>
 				</Grid>
 			</TabItem>
