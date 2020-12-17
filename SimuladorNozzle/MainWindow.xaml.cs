@@ -104,11 +104,11 @@ namespace SimuladorNozzle
                     SetChart();
                 }
                 else
-                    MessageBox.Show("Set some parameters first," + "\n" + "chek if some of the boxes above are empty");
+                    MessageBox.Show("Set some parameters first," + "\n" + "check if some of the boxes above are empty");
             }
             else
             {
-                MessageBox.Show("Te simulation alreadey began");
+                MessageBox.Show("The simulation already began");
             }
         }
 
