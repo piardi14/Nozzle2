@@ -104,18 +104,18 @@ namespace SimuladorNozzle
                     SetChart();
                 }
                 else
-                    MessageBox.Show("Set some parameters first," + "\n" + "chek if some of the boxes above are empty");
+                    MessageBox.Show("Set some parameters first," + "\n" + "check if some of the boxes above are empty");
             }
             else
             {
-                MessageBox.Show("Te simulation alreadey began");
+                MessageBox.Show("The simulation already began");
             }
         }
 
         //CONTROLS SIMULATOR
         private void PropertiesBoxSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CreateNozzle(nozzlesim, 0);             //**de moment 0 el temps, pero ja veurem quan tingui un timestep diferent
+            CreateNozzle(nozzlesim, steps);             //**de moment 0 el temps, pero ja veurem quan tingui un timestep diferent
         }
 
         //CONTROLS CHARTS
@@ -721,14 +721,7 @@ namespace SimuladorNozzle
                 if (propind == 0)
                 {
                     value = nozzle.GetPosition(t, count).GetTemperature();
-                    if (value > 1)
-                    {
-                        value = 1;
-                    }
-                    else if (value < 0)
-                    {
-                        value = 0;
-                    }
+                   
                 }
                 else if (propind == 1)
                 {
@@ -774,12 +767,12 @@ namespace SimuladorNozzle
             else if (propind == 2)
             {
                 max = maxD;
-                min = maxD;
+                min = minD;
             }
             else if (propind == 3)
             {
                 max = maxP;
-                min = maxP;
+                min = minP;
             }
             byte A = 255;
             byte R;
