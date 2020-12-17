@@ -721,14 +721,7 @@ namespace SimuladorNozzle
                 if (propind == 0)
                 {
                     value = nozzle.GetPosition(t, count).GetTemperature();
-                    if (value > 1)
-                    {
-                        value = 1;
-                    }
-                    else if (value < 0)
-                    {
-                        value = 0;
-                    }
+                   
                 }
                 else if (propind == 1)
                 {
