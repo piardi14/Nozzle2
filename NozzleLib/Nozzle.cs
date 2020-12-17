@@ -65,12 +65,12 @@ namespace NozzleLib
         {
             return TimeList;
         }
-        public List<double> getTimeList(int steps)
+        public List<double> getTimeList(int steps, int finalStep)
         {
             List<double> Times = new List<double>();
             int i = 0;
             int initStep = 0;
-            while (i < this.TimeList.Count)
+            while (i < this.TimeList.Count && i<=finalStep)
             {
                 if (initStep == 0)
                 {
@@ -211,12 +211,12 @@ namespace NozzleLib
             }
             return fila;
         }
-        public List<double> GetColumnPar(int col, string parameter, int steps, List<double> dimValues )
+        public List<double> GetColumnPar(int col, string parameter, int steps, List<double> dimValues, int finStep )
         {
             List<double> columna = new List<double>();
             int i = 0;
             int initStep = 0;
-            while (i < malla.GetLength(0))
+            while (i < malla.GetLength(0) && i <= finStep)
             {
                 if (initStep == 0)
                 {
@@ -261,22 +261,18 @@ namespace NozzleLib
         public List<Position> GetColumn(int col)
         {
             List<Position> columna = new List<Position>();
-            int i = 0;
-            while (i < malla.GetLength(0))
+            int j = 0;
+            while (j < 1401)
             {
-                if (i == col)
-                {
-                    int j = 0;
-                    while (j < malla.GetLength(1))
-                    {
-                        columna[j] = malla[j, i];
-                        j++;
-                    }
-                    return columna;
-                }
-                i++;
+                if (malla[j, col] != null)
+                    columna.Add(malla[j, col]);
+                else
+                    break;
+                j++;
             }
-            return null;
+            return columna;
+                
+            
         }
         public Position[,] Getmalla()
         {

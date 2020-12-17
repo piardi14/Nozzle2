@@ -18,6 +18,7 @@ using LiveCharts.Wpf;
 using Brushes = System.Windows.Media.Brushes;
 
 using NozzleLib;
+using System.Windows.Threading;
 
 namespace SimuladorNozzle
 {
@@ -30,6 +31,23 @@ namespace SimuladorNozzle
         List<List<Rectangle>> recListChart= new List<List<Rectangle>>();
         List<Brush> brushesList;
         int steps;
+
+        DispatcherTimer clock= new DispatcherTimer();
+        bool auto = false;
+        TimeSpan clockTime;
+
+        bool initiated = false;
+
+        double maxT;
+        double maxV;
+        double maxD;
+        double maxP;
+        double minT;
+        double minV;
+        double minD;
+        double minP;
+
+
 
         Nozzle nozzlesim = new Nozzle(3, 800, 0.5, 0.5, 31);                   //Nozzle where we would simulate
         public MainWindow()
@@ -45,15 +63,24 @@ namespace SimuladorNozzle
 
             createBrushesList();
             // computa todos los valores especificados
-            nozzlesim.ComputeUntilPos(500);
-            SetChart();
-
+            nozzlesim.ComputeUntilPos(1401);
+            calculateMinMax();
             //inizialitzem el step
-            steps = 1;
+            steps = 0;
+
+            //cramos charts
+            //SetChart();
+
+            //Set the timer
+            clock.Tick += new EventHandler(clock_time_Tick);
+            clock.Interval = new TimeSpan(10000000); //Pongo por defecto que haga un tick cada 1 segundo
+            clockTime = new TimeSpan(0);
         }
 
-        //INITIAL SETTINGS
-        private void DefaultValuesButton_Click(object sender, RoutedEventArgs e)
+		
+
+		//INITIAL SETTINGS
+		private void DefaultValuesButton_Click(object sender, RoutedEventArgs e)
         {
             DivisionsTextBox.Text = "31";
             CourantTextBox.Text = "0.5";
@@ -61,13 +88,28 @@ namespace SimuladorNozzle
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            PropertiesBoxSelection.SelectedIndex = 0;
+            if (initiated == false)
+            {
+                if (DivisionsTextBox.Text != "" && CourantTextBox.Text != "")
+                {
+                    PropertiesBoxSelection.SelectedIndex = 0;
 
-            double C = Convert.ToDouble(CourantTextBox.Text);
-            int divisions = Convert.ToInt32(DivisionsTextBox.Text);
-            nozzlesim = new Nozzle(3, 800, 0.5, C, divisions);
-            CreateNozzle(nozzlesim, 0);
-
+                    double C = Convert.ToDouble(CourantTextBox.Text);
+                    int divisions = Convert.ToInt32(DivisionsTextBox.Text);
+                    textStep.Content = "0";
+                    textTime.Content = "0";
+                    initiated = true;
+                    //nozzlesim = new Nozzle(3, 800, 0.5, C, divisions);
+                    CreateNozzle(nozzlesim, 0);
+                    SetChart();
+                }
+                else
+                    MessageBox.Show("Set some parameters first," + "\n" + "chek if some of the boxes above are empty");
+            }
+            else
+            {
+                MessageBox.Show("Te simulation alreadey began");
+            }
         }
 
         //CONTROLS SIMULATOR
@@ -77,6 +119,64 @@ namespace SimuladorNozzle
         }
 
         //CONTROLS CHARTS
+
+
+        public double[] ampliate(double max, double min)
+        {
+            double[] MaxMin = new double[2] { max + (max - min) / 20, min - (max - min) / 20 };
+            return MaxMin;
+        }
+
+        private void DimensionlessButton_Click(object sender, RoutedEventArgs e)
+        {
+            double[] MaxMinD = ampliate(maxD, minD);
+            double[] MaxMinV = ampliate(maxV, minV);
+            double[] MaxMinT = ampliate(maxT, minT);
+            double[] MaxMinP = ampliate(maxP, minP);
+            if (DimensionlessButton.IsChecked == true)
+            {
+
+                yAxisD.MaxValue = MaxMinD[0];
+                yAxisD.MinValue = MaxMinD[1];
+                yAxisD.Title = "Density [ ]";
+                chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisV.MaxValue = MaxMinV[0];
+                yAxisV.MinValue = MaxMinV[1];
+                yAxisV.Title = "Velocity [ ]";
+                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisT.MaxValue = MaxMinT[0];
+                yAxisT.MinValue = MaxMinT[1];
+                yAxisT.Title = "Temperature [ ]";
+                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisP.MaxValue = MaxMinP[0];
+                yAxisP.MinValue = MaxMinP[1];
+                yAxisP.Title = "Pressure [ ]";
+                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+            }
+            else
+            {
+                double[] dimArray = nozzlesim.getDimensionalValues();
+                List<double> dimensinlesValues = new List<double> { dimArray[2], dimArray[3], dimArray[1], dimArray[4] };
+                yAxisD.MaxValue = MaxMinD[0] * dimensinlesValues[3];
+                yAxisD.MinValue = MaxMinD[1] * dimensinlesValues[3];
+                chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisD.Title = "Density [ kg / m^3 ]";
+                yAxisV.MaxValue = MaxMinV[0] * dimensinlesValues[0];
+                yAxisV.MinValue = MaxMinV[1] * dimensinlesValues[0];
+                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisV.Title = "Velocity [ m / s ]";
+                yAxisT.MaxValue = MaxMinT[0] * dimensinlesValues[2];
+                yAxisT.MinValue = MaxMinT[1] * dimensinlesValues[2];
+                chartT.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisT.Title = "Temperature [ ºC ]";
+                yAxisP.MaxValue = MaxMinP[0] * dimensinlesValues[1] / 100;
+                yAxisP.MinValue = MaxMinP[1] * dimensinlesValues[1] / 100;
+                chartP.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisP.Title = "Pressure [ hPa ]";
+            }
+            SetChart();
+        }
+
         public void ClickButtonChart(Button button)
         {
             int selectedPos = 0;
@@ -123,9 +223,6 @@ namespace SimuladorNozzle
                 button.Background = colorBrush;
             }
             SetChart();
-            
-            
-
         }
         private void buttChart0_Click(object sender, RoutedEventArgs e)
         {
@@ -292,6 +389,7 @@ namespace SimuladorNozzle
             col1.Width = new GridLength(0);
             MaxDensity.Visibility = Visibility.Hidden;
             MinDensity.Visibility = Visibility.Visible;
+            rectangleCharts.Visibility = Visibility.Hidden;
         }
         private void MaxVelocity_Click(object sender, RoutedEventArgs e)
         {
@@ -326,7 +424,7 @@ namespace SimuladorNozzle
         private void MinDensity_Click(object sender, RoutedEventArgs e)
         {
             row0.Height = new GridLength(175);
-            chartD.Height = 155;
+            chartD.Height = 150;
             col0.Width = new GridLength(235);
             row1.Height = new GridLength(175);
             col1.Width = new GridLength(235);
@@ -336,7 +434,7 @@ namespace SimuladorNozzle
         private void MinVelocity_Click(object sender, RoutedEventArgs e)
         {
             row0.Height = new GridLength(175);
-            chartV.Height = 155;
+            chartV.Height = 150;
             col0.Width = new GridLength(235);
             row1.Height = new GridLength(175);
             col1.Width = new GridLength(235);
@@ -346,7 +444,7 @@ namespace SimuladorNozzle
         private void MinTemperature_Click(object sender, RoutedEventArgs e)
         {
             row0.Height = new GridLength(175);
-            chartT.Height = 155;
+            chartT.Height = 150;
             col0.Width = new GridLength(235);
             row1.Height = new GridLength(175);
             col1.Width = new GridLength(235);
@@ -356,7 +454,7 @@ namespace SimuladorNozzle
         private void MinPressure_Click(object sender, RoutedEventArgs e)
         {
             row0.Height = new GridLength(175);
-            chartP.Height = 155;
+            chartP.Height = 150;
             col0.Width = new GridLength(235);
             row1.Height = new GridLength(175);
             col1.Width = new GridLength(235);
@@ -665,23 +763,23 @@ namespace SimuladorNozzle
             double min = 0;
             if (propind == 0)
             {
-                max = 1;
-                min = 0.3;
+                max = maxT;
+                min = minT;
             }
             else if (propind == 1)
             {
-                max = 2;
-                min = 0;
+                max = maxV;
+                min = minV;
             }
             else if (propind == 2)
             {
-                max = 1;
-                min = 0.04;
+                max = maxD;
+                min = maxD;
             }
             else if (propind == 3)
             {
-                max = 1;
-                min = 0.005;
+                max = maxP;
+                min = maxP;
             }
             byte A = 255;
             byte R;
@@ -915,6 +1013,54 @@ namespace SimuladorNozzle
 
         }
 
+        public void calculateMinMax()
+        {
+            int i = 0;
+            int N = nozzlesim.GetDivisions();
+            int J = nozzlesim.getTimeList().Count();
+            while (i<N)
+            {
+                List<Position> column = nozzlesim.GetColumn(i);
+                int j = 0;
+                while (j < J)
+                {
+                    if (i == 0 && j == 0)
+                    {
+                        minD = column[j].GetDensity(); maxD = minD;
+                        minP = column[j].GetPressure(); maxP = minP;
+                        minV = column[j].GetVelocity(); maxV = minV;
+                        minT = column[j].GetTemperature(); maxT = minT;
+                    }
+                    else
+                    {
+                        double density = column[j].GetDensity();
+                        if (maxD < density)
+                            maxD = density;
+                        else if (minD > density)
+                            minD = density;
+                        double pressure = column[j].GetPressure();
+                        if (maxP < pressure)
+                            maxP = pressure;
+                        else if (minP > pressure)
+                            minP = pressure;
+                        double velocity = column[j].GetVelocity();
+                        if (maxV < velocity)
+                            maxV = velocity;
+                        else if (minV > velocity)
+                            minV = velocity;
+                        double temperature = column[j].GetTemperature();
+                        if (maxT < temperature)
+                            maxT = temperature;
+                        else if (minT > temperature)
+                            minT = temperature;
+
+                    }
+                    j++;
+                }
+                i++;
+            }
+        }
+
         //FUNCTIONS CHARTS
 
         public void createBrushesList()
@@ -965,68 +1111,93 @@ namespace SimuladorNozzle
                 i++;
             }
         }
+        
         public void SetChart()
         {
-            int filaCount = nozzlesim.GetRow(0).Count;
-            List<List<double>> listV = new List<List<double>>();
-            List<List<double>> listP = new List<List<double>>();
-            List<List<double>> listT = new List<List<double>>();
-            List<List<double>> listD = new List<List<double>>();
-            int i = 0;
-            int steps = 20; // suitable, between 1% to 2%, (for 500 samples between 5 and 10)
-            List<Brush> ListBrush = new List<Brush>();
-            int posBrushes = 0;
-            List<double> dimensinlesValues;
-            if (DimensionlessButton.IsChecked==false)
+
+            double secondsperstep = Math.Round(Convert.ToDouble(clockTime.Minutes * 60 + clockTime.Seconds + clockTime.Milliseconds / 1000));
+            double division = secondsperstep / 3;
+            char[] disv_char = (division.ToString()).ToCharArray();
+
+            if ((auto == false) || (clock.Interval > new TimeSpan(30000000)) || (disv_char.Count() != 16 && clock.Interval < new TimeSpan(30000000)))
             {
-                // T V P D
-                double[] dimArray = nozzlesim.getDimensionalValues();
-                dimensinlesValues = new List<double> {dimArray[2],dimArray[3]/100, dimArray[1], dimArray[4] };
-            }
-            else
-            {
-                dimensinlesValues = new List<double> {1,1,1,1};
-            }
-            foreach (int pos in posChart)
-            {
-                if (pos == 1)
+                
+                List<List<double>> listV = new List<List<double>>();
+                List<List<double>> listP = new List<List<double>>();
+                List<List<double>> listT = new List<List<double>>();
+                List<List<double>> listD = new List<List<double>>();
+                int stepsChart; // suitable, between 1% to 2%, (for 500 samples between 5 and 10)
+
+                if (this.steps > 1000)
+                    stepsChart = 40;
+                else if (this.steps > 500)
+                    stepsChart = 20;
+                else if (this.steps > 250)
+                    stepsChart = 10;
+                else if (this.steps > 100)
+                    stepsChart = 5;
+                else if (this.steps > 50)
+                    stepsChart = 2;
+                else if (this.steps > 25)
+                    stepsChart = 1;
+                else
+                    stepsChart = 0;
+                int i = 0;
+                int finStep = steps;
+                List<Brush> ListBrush = new List<Brush>();
+                int posBrushes = 0;
+                List<double> dimensinlesValues;
+                if (DimensionlessButton.IsChecked == false)
                 {
-                    listV.Add(nozzlesim.GetColumnPar(i, "V", steps, dimensinlesValues));
-                    listP.Add(nozzlesim.GetColumnPar(i, "P", steps, dimensinlesValues));
-                    listT.Add(nozzlesim.GetColumnPar(i, "T", steps, dimensinlesValues));
-                    listD.Add(nozzlesim.GetColumnPar(i, "D", steps, dimensinlesValues));
-                    ListBrush.Add(brushesList[posBrushes]);
-                    posBrushes++;
+                    // T V P D
+                    double[] dimArray = nozzlesim.getDimensionalValues();
+                    dimensinlesValues = new List<double> { dimArray[2], dimArray[3] / 100, dimArray[1], dimArray[4] };
                 }
                 else
                 {
-                    listV.Add(new List<double>());
-                    listP.Add(new List<double>());
-                    listT.Add(new List<double>());
-                    listD.Add(new List<double>());
-                    ListBrush.Add(Brushes.Transparent);
+                    dimensinlesValues = new List<double> { 1, 1, 1, 1 };
                 }
-                i++;
+                foreach (int pos in posChart)
+                {
+                    if (pos == 1)
+                    {
+                        listV.Add(nozzlesim.GetColumnPar(i, "V", stepsChart, dimensinlesValues, finStep));
+                        listP.Add(nozzlesim.GetColumnPar(i, "P", stepsChart, dimensinlesValues, finStep));
+                        listT.Add(nozzlesim.GetColumnPar(i, "T", stepsChart, dimensinlesValues, finStep));
+                        listD.Add(nozzlesim.GetColumnPar(i, "D", stepsChart, dimensinlesValues, finStep));
+                        ListBrush.Add(brushesList[posBrushes]);
+                        posBrushes++;
+                    }
+                    else
+                    {
+                        listV.Add(new List<double>());
+                        listP.Add(new List<double>());
+                        listT.Add(new List<double>());
+                        listD.Add(new List<double>());
+                        ListBrush.Add(Brushes.Transparent);
+                    }
+                    i++;
+                }
+
+                createRecColors(ListBrush);
+
+                // create the array of times
+                List<double> timeList = nozzlesim.getTimeList(stepsChart, finStep);
+                var times = new string[timeList.Count];
+                i = 0;
+                foreach (double time in timeList)
+                {
+                    times[i] = (Math.Round(time, 3)).ToString();
+                    i++;
+                }
+
+
+                createChart(chartV, listV, ListBrush, xAxisV, times);
+                createChart(chartP, listP, ListBrush, xAxisP, times);
+                createChart(chartT, listT, ListBrush, xAxisT, times);
+                createChart(chartD, listD, ListBrush, xAxisD, times);
             }
-
-            createRecColors(ListBrush);
-
-            // create the array of times
-            List<double> timeList = nozzlesim.getTimeList(steps);
-            var times = new string[timeList.Count];
-            i = 0;
-            foreach (double time in timeList)
-            {
-                times[i] = (Math.Round(time, 3)).ToString();
-                i++;
-            }
-
-
-            createChart(chartV, listV, ListBrush, xAxisV, times);
-            createChart(chartP, listP, ListBrush, xAxisP, times);
-            createChart(chartT, listT, ListBrush, xAxisT, times);
-            createChart(chartD, listD, ListBrush, xAxisD, times);
-
+            
         }
 
         public void createChart(CartesianChart chart, List<List<double>> listV, List<Brush> ListBrush, Axis xAxis, string[] times)
@@ -1285,9 +1456,19 @@ namespace SimuladorNozzle
                     Stroke = ListBrush[30],
                 },
             };
+            double sep;
+            //if (steps = )
+            //    sep = 1;
+            //else
+            //    sep = Math.Round(steps / 2.0 ,0);
+            if (steps == 0)
+                sep = 1;
+            else
+                sep = steps;
+
 
             xAxis.Labels = times;
-            xAxis.Separator.Step = times.Count() / 4;
+            xAxis.Separator.Step = sep;
 
             DataContext = this;
         }
@@ -1302,53 +1483,6 @@ namespace SimuladorNozzle
             }
         }
 
-        private void DimensionlessButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (DimensionlessButton.IsChecked == true)
-            {
-                yAxisD.MaxValue = 1.5;
-                yAxisD.MinValue = 0;
-                yAxisD.Title = "Density [ ]";
-                yAxisV.MaxValue = 2.3;
-                yAxisV.MinValue = -0.1;
-                yAxisV.Title = "Velocity [ ]";
-                yAxisT.MaxValue = 1.3;
-                yAxisT.MinValue = 0.2;
-                yAxisT.Title = "Temperature [ ]";
-                yAxisP.MaxValue = 420;
-                yAxisP.MinValue = -20;
-                yAxisP.Title = "Pressure [ ]";
-            }
-            else
-            {
-                double[] dimArray = nozzlesim.getDimensionalValues();
-                List<double> dimensinlesValues = new List<double> { dimArray[2], dimArray[3], dimArray[1], dimArray[4] };
-                yAxisD.MaxValue = 1.5 * dimensinlesValues[3];
-                yAxisD.MinValue = 0 * dimensinlesValues[3];
-                yAxisD.Title = "Density [ kg / m^3 ]";
-                yAxisV.MaxValue = 2.3 * dimensinlesValues[0];
-                yAxisV.MinValue = -0.1 * dimensinlesValues[0];
-                yAxisV.Title = "Velocity [ m / s ]";
-                yAxisT.MaxValue = 1.3 * dimensinlesValues[2];
-                yAxisT.MinValue = 0.2 * dimensinlesValues[2];
-                yAxisT.Title = "Temperature [ ºC ]";
-                yAxisP.MaxValue = 420 * dimensinlesValues[1]/100;
-                yAxisP.MinValue = -20 * dimensinlesValues[1]/100;
-                yAxisP.Title = "Pressure [ hPa ]";
-
-
-            }
-
-            SetChart();
-
-
-
-        }
-
-        private void DimensionlessButton_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void DataGrid1_Loaded(object sender, RoutedEventArgs e)
         {
@@ -1356,9 +1490,14 @@ namespace SimuladorNozzle
             DataGrid1.ItemsSource = una_lista;
         }
 
+
+
+        // Controls of the STEP AUTO PAUSE...
+
+
         private void NextStepButton_Click(object sender, RoutedEventArgs e)
         {
-            nozzlesim.ComputeNextTime();
+            //nozzlesim.ComputeNextTime();
             //double deltatime = nozzlesim.ComputeDeltaTime(steps);
             //int i = 0;
             //List<double> value = new List<double>(); ;
@@ -1367,10 +1506,64 @@ namespace SimuladorNozzle
             //    value.Add(nozzlesim.GetPosition(steps, i).GetTemperature());
             //    i = i + 1;
             //}
-            CreateNozzle(nozzlesim, steps);
-            steps = steps + 1;
+            if (initiated == true)
+            {
+                steps = steps + 1;
+                textStep.Content = steps.ToString();
+                textTime.Content = nozzlesim.getTimeList()[steps].ToString()+" sec";
+                CreateNozzle(nozzlesim, steps);
+                SetChart();
+            }
+            else
+                MessageBox.Show("The simulate has to be initiated first," + "\n" + "create the nozzle to start!!");
         }
-    }
+
+
+        private void clock_time_Tick(object sender, EventArgs e)
+        {
+            steps = steps + 1;
+            clockTime = clockTime+clock.Interval;
+            textStep.Content = steps.ToString();
+            textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
+            CreateNozzle(nozzlesim, steps);
+            SetChart();
+        }
+
+        private void AutoButton_Click(object sender, RoutedEventArgs e)
+		{
+            if (initiated == true)
+            {
+                if (auto == false)
+                {
+                    clock.Start();
+                    NextStepButton.IsEnabled = false;
+                    auto = true;
+                    Color colorset = Color.FromRgb(153, 144, 144);
+                    Brush colorBrush = new SolidColorBrush(colorset);
+                    AutoButton.Background = colorBrush;
+                    AutoButton.Content = "PAUSE";
+                }
+                else
+                {
+                    clock.Stop();
+                    NextStepButton.IsEnabled = true;
+                    auto = false;
+                    Color colorset = Color.FromRgb(232, 232, 232);
+                    Brush colorBrush = new SolidColorBrush(colorset);
+                    AutoButton.Background = colorBrush;
+                    AutoButton.Content = "AUTO";
+                }
+            }
+            else
+                MessageBox.Show("The simulate has to be initiated first," + "\n" + "create the nozzle to start!!");
+        }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+		{
+            clock.Stop();
+            NextStepButton.IsEnabled = true;
+        }
+	}
 }
 
 
