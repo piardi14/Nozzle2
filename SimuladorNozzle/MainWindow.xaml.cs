@@ -789,23 +789,15 @@ namespace SimuladorNozzle
                     value = nozzle.GetPosition(t, count).GetPressure();
                 }
                 Color color = PrintColor(propind, value);
-                Rectangle rect = new Rectangle();
-                rect.Stroke = new SolidColorBrush(color);
-                rect.Fill = new SolidColorBrush(color);
-                rect.StrokeThickness = 2;
-                rect.Width = width;
-                rect.Height = 100 + (nozzle.GetPosition(0, count).GetArea() - 1) * 200 / 4.95;
-                Canvas.SetLeft(rect, 5 + width * count);
-                Canvas.SetTop(rect, 150 - (rect.Height - 100) * 100 / 200);
-                NozzleCanvas.Children.Add(rect);
 
                 Button rectbutton = new Button();
                 rectbutton.Background = new SolidColorBrush(color);
                 rectbutton.Name = "button"+Convert.ToString(count);
-                rectbutton.Height = rect.Height;
-                rectbutton.Width = rect.Width;
+                rectbutton.Height = 100 + (nozzle.GetPosition(0, count).GetArea() - 1) * 200 / 4.95;
+                rectbutton.Width = width;
+                rectbutton.BorderBrush= new SolidColorBrush(color);
                 Canvas.SetLeft(rectbutton, 5 + width * count);
-                Canvas.SetTop(rectbutton, 150 - (rect.Height - 100) * 100 / 200);
+                Canvas.SetTop(rectbutton, 150 - (rectbutton.Height - 100) * 100 / 200);
                 rectbutton.Click += Rectbutton_Click;
                 NozzleCanvas.Children.Add(rectbutton);
                 count++;
