@@ -31,6 +31,7 @@ namespace SimuladorNozzle
         List<int> posChart = new List<int>();                               // Select positions to show on the chart
         List<List<Rectangle>> recListChart= new List<List<Rectangle>>();
         List<Brush> brushesList;
+        List<Button> listaboton = new List<Button>();
         int steps;
 
         DispatcherTimer clock= new DispatcherTimer();
@@ -83,8 +84,12 @@ namespace SimuladorNozzle
 
             //Set the timer
             clock.Tick += new EventHandler(clock_time_Tick);
-            clock.Interval = new TimeSpan(10000000); //Pongo por defecto que haga un tick cada 1 segundo
+            clock.Interval = new TimeSpan(1000000); //Pongo por defecto que haga un tick cada 1 segundo
             clockTime = new TimeSpan(0);
+
+            //Pongo los botones del chart todos en una lista
+
+            CreateListaButtons();
         }
 
 		
@@ -758,6 +763,7 @@ namespace SimuladorNozzle
 
         private void CreateNozzle(Nozzle nozzle, int t)
         {
+            
             NozzleCanvas.Children.RemoveRange(0, NozzleCanvas.Children.Count);
             double width = 445 / (nozzle.GetDivisions());
             int count = 0;
@@ -792,9 +798,34 @@ namespace SimuladorNozzle
                 Canvas.SetLeft(rect, 5 + width * count);
                 Canvas.SetTop(rect, 150 - (rect.Height - 100) * 100 / 200);
                 NozzleCanvas.Children.Add(rect);
+
+                Button rectbutton = new Button();
+                rectbutton.Background = new SolidColorBrush(color);
+                rectbutton.Name = "button"+Convert.ToString(count);
+                rectbutton.Height = rect.Height;
+                rectbutton.Width = rect.Width;
+                Canvas.SetLeft(rectbutton, 5 + width * count);
+                Canvas.SetTop(rectbutton, 150 - (rect.Height - 100) * 100 / 200);
+                rectbutton.Click += Rectbutton_Click;
+                NozzleCanvas.Children.Add(rectbutton);
                 count++;
             }
 
+        }
+
+        private void Rectbutton_Click(object sender, RoutedEventArgs e)
+        {
+
+            Button button = (Button)sender;
+            string nombre = button.Name.Split('n')[1];
+            foreach(Button boton in listaboton)
+            {
+                if(boton.Name.Split('t')[3]==nombre)
+                {
+                    ClickButtonChart(boton);
+                }
+            }
+            
         }
 
         private Color PrintColor(int propind, double i)
@@ -1170,7 +1201,7 @@ namespace SimuladorNozzle
         {
 
             double secondsperstep = Math.Round(Convert.ToDouble(clockTime.Minutes * 60 + clockTime.Seconds + clockTime.Milliseconds / 1000));
-            double division = secondsperstep / 3;
+            double division = secondsperstep / 5;
             char[] disv_char = (division.ToString()).ToCharArray();
 
             if (nozzlesim.Getmalla() != null)
@@ -1641,7 +1672,7 @@ namespace SimuladorNozzle
         {
             Color colorset = Color.FromRgb(232, 232, 232);
             Brush colorBrush = new SolidColorBrush(colorset);
-            clock.Interval = new TimeSpan(10000000);
+            clock.Interval = new TimeSpan(1000000);
             if (auto == false)
             {
 
@@ -1746,7 +1777,42 @@ namespace SimuladorNozzle
             calculateMinMax();
 
         }
-        
+        private void CreateListaButtons()
+        {
+            listaboton.Add(buttChart0);
+            listaboton.Add(buttChart1);
+            listaboton.Add(buttChart2);
+            listaboton.Add(buttChart3);
+            listaboton.Add(buttChart4);
+            listaboton.Add(buttChart5);
+            listaboton.Add(buttChart6);
+            listaboton.Add(buttChart7);
+            listaboton.Add(buttChart8);
+            listaboton.Add(buttChart9);
+            listaboton.Add(buttChart10);
+            listaboton.Add(buttChart11);
+            listaboton.Add(buttChart12);
+            listaboton.Add(buttChart13);
+            listaboton.Add(buttChart14);
+            listaboton.Add(buttChart15);
+            listaboton.Add(buttChart16);
+            listaboton.Add(buttChart17);
+            listaboton.Add(buttChart18);
+            listaboton.Add(buttChart19);
+            listaboton.Add(buttChart20);
+            listaboton.Add(buttChart21);
+            listaboton.Add(buttChart22);
+            listaboton.Add(buttChart23);
+            listaboton.Add(buttChart24);
+            listaboton.Add(buttChart25);
+            listaboton.Add(buttChart26);
+            listaboton.Add(buttChart27);
+            listaboton.Add(buttChart28);
+            listaboton.Add(buttChart29);
+            listaboton.Add(buttChart30);
+
+        }
+
     }
 }
 
