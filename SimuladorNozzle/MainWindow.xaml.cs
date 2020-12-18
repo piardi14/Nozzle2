@@ -57,6 +57,7 @@ namespace SimuladorNozzle
             InitializeComponent();
 
             CreateIndicator(400);
+            Indicator.Visibility = Visibility.Hidden;
             PropertiesBoxSelection.Items.Add("Temperature");
             PropertiesBoxSelection.Items.Add("Velocity");
             PropertiesBoxSelection.Items.Add("Density");
@@ -79,6 +80,7 @@ namespace SimuladorNozzle
             // Hacemos Visibles los rectangulos transpoarentes que no nos dejan clicar a ningun sitio
             rectangleCharts.Visibility = Visibility.Visible;
             rectanglePanel.Visibility = Visibility.Visible;
+            rayahorizontal.Visibility = Visibility.Hidden;
 
             //cramos charts
             //SetChart();
@@ -118,6 +120,8 @@ namespace SimuladorNozzle
                     textTime.Content = "0"; labelTime.Visibility = Visibility.Visible;
                     rectangleCharts.Visibility = Visibility.Hidden;
                     rectanglePanel.Visibility = Visibility.Hidden;
+                    rayahorizontal.Visibility = Visibility.Visible;
+                    Indicator.Visibility = Visibility.Visible;
                     initiated = true;
 
 
@@ -1175,6 +1179,7 @@ namespace SimuladorNozzle
             brushesList.Add(Brushes.DarkBlue);
             brushesList.Add(Brushes.Pink);
         }
+
         public void createRecColors(List<Brush> brushes)
         {
             int i = 0;
@@ -1782,6 +1787,9 @@ namespace SimuladorNozzle
 
             MaxPressure.Visibility = Visibility.Visible;
             MinPressure.Visibility = Visibility.Hidden;
+
+            rayahorizontal.Visibility = Visibility.Hidden;
+            Indicator.Visibility = Visibility.Hidden;
 
             NozzleCanvas.Children.Clear();
             PropertiesBoxSelection.SelectedIndex = -1;
