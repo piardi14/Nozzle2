@@ -61,3 +61,12 @@ C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\Nozz
 C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csproj.CoreCompileInputs.cache
 C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.dll
 C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.deps.json
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csprojAssemblyReference.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfoInputs.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfo.cs
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csproj.CoreCompileInputs.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.pdb

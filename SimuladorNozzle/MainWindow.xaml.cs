@@ -51,7 +51,7 @@ namespace SimuladorNozzle
 
 
 
-        Nozzle nozzlesim = new Nozzle(3, 800, 0.5, 0.5, 31);                   //Nozzle where we would simulate
+        Nozzle nozzlesim /*= new Nozzle(3, 800, 0.5, 0.5, 31)*/;                   //Nozzle where we would simulate
         public MainWindow()
         {
             InitializeComponent();
@@ -62,14 +62,16 @@ namespace SimuladorNozzle
             PropertiesBoxSelection.Items.Add("Density");
             PropertiesBoxSelection.Items.Add("Pressure");
             // fill posChart of zeros
-            fillSelectedList();
+            //fillSelectedList();
 
-            createBrushesList();
-            // computa todos los valores especificados
-            nozzlesim.ComputeUntilPos(1401);
-            calculateMinMax();
-            //inizialitzem el step
-            steps = 0;
+            //createBrushesList();
+            //// computa todos los valores especificados
+            //nozzlesim.ComputeUntilPos(1401);
+            //calculateMinMax();
+            ////inizialitzem el step
+            //steps = 0;
+            //setDimensionlessCharts();
+            //CreateListaButtons();
 
             // hacemos no visibles los labels de step y time
             labelStep.Visibility = Visibility.Hidden;
@@ -78,7 +80,6 @@ namespace SimuladorNozzle
             rectangleCharts.Visibility = Visibility.Visible;
             rectanglePanel.Visibility = Visibility.Visible;
 
-            setDimensionlessCharts();
             //cramos charts
             //SetChart();
 
@@ -89,7 +90,6 @@ namespace SimuladorNozzle
 
             //Pongo los botones del chart todos en una lista
 
-            CreateListaButtons();
         }
 
 		
@@ -107,22 +107,37 @@ namespace SimuladorNozzle
             {
                 if (DivisionsTextBox.Text != "" && CourantTextBox.Text != "")
                 {
-                    PropertiesBoxSelection.SelectedIndex = 0;
+                    
 
                     CreateButton.Content = "SIMULATING...";
 
-                    double C = Convert.ToDouble(CourantTextBox.Text);
+                    decimal c = decimal.Parse(CourantTextBox.Text.Replace('.',','));
+                    double C = Convert.ToDouble(c);
                     int divisions = Convert.ToInt32(DivisionsTextBox.Text);
                     textStep.Content = "0"; labelStep.Visibility = Visibility.Visible;
                     textTime.Content = "0"; labelTime.Visibility = Visibility.Visible;
                     rectangleCharts.Visibility = Visibility.Hidden;
                     rectanglePanel.Visibility = Visibility.Hidden;
                     initiated = true;
-                    //nozzlesim = new Nozzle(3, 800, 0.5, C, divisions);
-                    //fillSelectedList();
-                    //nozzlesim.ComputeUntilPos(1401);
-                    //calculateMinMax();
-                    //setDimensionlessCharts();
+
+
+                    nozzlesim = new Nozzle(3, 800, 0.5, C, divisions);
+                    // computa todos los valores especificados
+                    nozzlesim.ComputeUntilPos(1401);
+                    calculateMinMax();
+                    //inizialitzem el step
+                    steps = 0;
+                    setDimensionlessCharts();
+                    CreateListaButtons();
+
+                    // fill posChart of zeros
+                    fillSelectedList();
+                    // create the brushes List
+                    createBrushesList();
+
+
+
+                    PropertiesBoxSelection.SelectedIndex = 0;
                     CreateNozzle(nozzlesim, 0);
                     SetChart();
                 }
@@ -1576,7 +1591,7 @@ namespace SimuladorNozzle
         }
 
 
-        private void DataGrid1_Loaded(object sender, RoutedEventArgs e)
+        public void DataGrid1_Loaded()
         {
             List<Position> una_lista = nozzlesim.position_initial_conditions;
             DataGrid1.ItemsSource = una_lista;

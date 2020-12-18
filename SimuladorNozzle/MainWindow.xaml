@@ -357,11 +357,12 @@
             <TabItem Name="AndersonTab" Header="Anderson Tables">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="17*"/>
-                        <ColumnDefinition Width="858*"/>
+                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition Width="14*"/>
+                        <ColumnDefinition Width="341*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Name="DataGrid1" Margin="0,0,0,0" Width="710" Height="388" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="3" Loaded="DataGrid1_Loaded">
+                    <DataGrid Name="DataGrid1" Margin="0,0,0,0" Width="710" Height="388" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Grid.ColumnSpan="2" >
                     </DataGrid>
                 </Grid>
                 <!--<Grid Background="#FFE5E5E5" Height="375" Width="775"  Margin="0,0,0,0"/>-->
