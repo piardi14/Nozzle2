@@ -7,14 +7,14 @@
         xmlns:chart="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="680" Width="1230">
+        Title="MainWindow" Height="680" Width="1280">
     <Grid Background="DarkSalmon" Margin="0,0,0,0">
         <TabControl Name="Pestañas" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top">
             <TabItem Name="SimulatorTab" Header="Simulator" Height="22" VerticalAlignment="Top">
-                <Grid Height="600" Width="1200" Margin="0,0,0,0">
+                <Grid Height="600" Width="1250" Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"></ColumnDefinition>
-                        <ColumnDefinition Width="500"></ColumnDefinition>
+                        <ColumnDefinition Width="550"></ColumnDefinition>
                         <ColumnDefinition ></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -57,9 +57,10 @@
                     </StackPanel>
                     <StackPanel x:Name="PanelCol2" Margin="5,5,5,5" Grid.Column="1">
                         <StackPanel x:Name="PanelSim" Height="450" Margin="0,0,0,0" Background="#FFCBCACA">
-                            <Grid Width="480" Height="440" Margin="5,5,0,0">
+                            <Grid Width="510" Height="440" Margin="5,5,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="450"></ColumnDefinition>
+                                    <ColumnDefinition Width="30"></ColumnDefinition>
                                     <ColumnDefinition></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -67,7 +68,7 @@
                                     <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <ComboBox x:Name="PropertiesBoxSelection" Margin="0,0,5,0" Grid.Column="0" Grid.Row="0" FontSize="14" FontWeight="Bold" SelectionChanged="PropertiesBoxSelection_SelectionChanged" />
-                                <Grid x:Name="Indicator" Grid.Column="1" Grid.Row="1" Width="50" Height="410">
+                                <Grid x:Name="Indicator" Grid.Column="1" Grid.Row="1" Width="30" Height="410">
                                     <Grid.RowDefinitions></Grid.RowDefinitions>
 
                                 </Grid>
