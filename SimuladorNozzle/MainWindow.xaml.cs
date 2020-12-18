@@ -77,7 +77,7 @@ namespace SimuladorNozzle
             // Hacemos Visibles los rectangulos transpoarentes que no nos dejan clicar a ningun sitio
             rectangleCharts.Visibility = Visibility.Visible;
             rectanglePanel.Visibility = Visibility.Visible;
-            // set the max and min of charts if calculated values
+
             setDimensionlessCharts();
             //cramos charts
             //SetChart();
@@ -119,6 +119,10 @@ namespace SimuladorNozzle
                     rectanglePanel.Visibility = Visibility.Hidden;
                     initiated = true;
                     //nozzlesim = new Nozzle(3, 800, 0.5, C, divisions);
+                    //fillSelectedList();
+                    //nozzlesim.ComputeUntilPos(1401);
+                    //calculateMinMax();
+                    //setDimensionlessCharts();
                     CreateNozzle(nozzlesim, 0);
                     SetChart();
                 }
@@ -823,6 +827,7 @@ namespace SimuladorNozzle
 
         private Color PrintColor(int propind, double i)
         {
+            
             double max = 1;
             double min = 0;
             if (propind == 0)
