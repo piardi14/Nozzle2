@@ -803,6 +803,7 @@ namespace SimuladorNozzle
                 count++;
             }
 
+
         }
 
         private void Rectbutton_Click(object sender, RoutedEventArgs e)
