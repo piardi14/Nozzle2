@@ -56,7 +56,7 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel x:Name="PanelCol2" Margin="5,5,5,5" Grid.Column="1">
-                        <StackPanel x:Name="PanelSim" Height="450" Margin="0,0,0,0" Background="#FFCBCACA">
+                        <StackPanel x:Name="PanelSim" Height="450" Margin="0,0,0,0" >
                             <Grid Width="510" Height="440" Margin="5,5,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="450"></ColumnDefinition>
@@ -65,40 +65,50 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
-                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition Height="350*"></RowDefinition>
+                                    <RowDefinition Height="38*"/>
+                                    <RowDefinition Height="23*"/>
                                 </Grid.RowDefinitions>
-                                <ComboBox x:Name="PropertiesBoxSelection" Margin="0,0,5,0" Grid.Column="0" Grid.Row="0" FontSize="14" FontWeight="Bold" SelectionChanged="PropertiesBoxSelection_SelectionChanged" />
-                                <Grid x:Name="Indicator" Grid.Column="1" Grid.Row="1" Width="30" Height="410">
+                                <ComboBox x:Name="PropertiesBoxSelection" Margin="0,0,4.6,0" Grid.Column="0" Grid.Row="0" FontSize="14" FontWeight="Bold" SelectionChanged="PropertiesBoxSelection_SelectionChanged" />
+                                <Grid x:Name="Indicator" Grid.Column="1" Width="30" Height="410" Margin="0.4,0,0,0.4" Grid.RowSpan="3" Grid.Row="1">
                                     <Grid.RowDefinitions></Grid.RowDefinitions>
 
                                 </Grid>
-                                <StackPanel x:Name="NozzlePanel" Margin="0,5,5,5" Grid.Column="0" Grid.Row="1" Background="White">
+                                <StackPanel x:Name="NozzlePanel" Margin="0,5,4.6,4.4" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3">
 
                                     <Canvas x:Name="NozzleCanvas" Width="445" Height="400">
 
                                     </Canvas>
-                                    <StackPanel  VerticalAlignment="Top"  Margin="20,-390 ">
-                                        <Label x:Name="labelStep" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Content="Step:" Margin="10,0"/>
-                                        <Label x:Name="textStep" Content =""  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,-25,0,0" Width="46"/>
-                                        <Label x:Name="labelTime" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Time:" Margin="10,-10,25,0" />
-                                        <Label x:Name="textTime" Content ="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,-25,0,0" Width="46"/>
+                                    <StackPanel  VerticalAlignment="Top"  Margin="20,-400 ">
+                                        <Label x:Name="labelStep" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Step:" Margin="10,0" FontWeight="Bold" />
+                                        <Label x:Name="textStep" Content =""  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,-25,0,0"  Width="72" FontWeight="Bold"/>
+                                        <Label x:Name="labelTime" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Time:" Margin="10,-10,25,0" FontWeight="Bold"/>
+                                        <Label x:Name="textTime" Content ="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,-25,0,0" Width="72" FontWeight="Bold"/>
                                     </StackPanel>
-                                    <!--<lvc:CartesianChart x:Name="rayahorizontal" Margin="5,-60,-5,0" LegendLocation="None" Height="0" HorizontalAlignment="Stretch">
-                                        <lvc:CartesianChart.AxisY>
-                                            <lvc:Axis Labels=""></lvc:Axis>
+                                    <StackPanel Margin="20,-55" VerticalAlignment="Top" Height="40" Width="400" HorizontalAlignment="Left">
+
+
+                                    </StackPanel>
+                                    <lvc:CartesianChart x:Name="rayahorizontal" Margin="5,-470,-18.2,-105" LegendLocation="None"  Height="350" Width="449" HorizontalAlignment="Left" RenderTransformOrigin="0.493,0.095" >
+                                        <lvc:CartesianChart.AxisY >
+                                            <lvc:Axis ShowLabels="False" Height="30" MinHeight="0" >
+                                                <lvc:Axis.Separator>
+                                                    <lvc:Separator Stroke="Transparent"/>
+                                                </lvc:Axis.Separator>
+                                            </lvc:Axis>
                                         </lvc:CartesianChart.AxisY>
                                         <lvc:CartesianChart.AxisX>
-                                            <lvc:Axis x:Name="xAxiscolores" Title="." MaxValue="3.1">
+                                            <lvc:Axis x:Name="xAxiscolores" MaxValue="3.1" Title="X/L" >
                                                 <lvc:Axis.Separator >
-                                                    <lvc:Separator Step="0.2" StrokeThickness="1.5" StrokeDashArray="8">
+                                                    <lvc:Separator Step="0.2"  StrokeThickness="1.5" StrokeDashArray="5">
                                                         <lvc:Separator.Stroke>
-                                                            <SolidColorBrush Color="#404F56" />
+                                                            <SolidColorBrush Color="#33404F56" />
                                                         </lvc:Separator.Stroke>
                                                     </lvc:Separator>
                                                 </lvc:Axis.Separator>
                                             </lvc:Axis>
                                         </lvc:CartesianChart.AxisX>
-                                    </lvc:CartesianChart>-->
+                                    </lvc:CartesianChart>
                                 </StackPanel>
 
                             </Grid>
