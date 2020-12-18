@@ -19,7 +19,6 @@ using Brushes = System.Windows.Media.Brushes;
 
 using NozzleLib;
 using System.Windows.Threading;
-using Prism.Services.Dialogs;
 using CredentialManagement;
 
 namespace SimuladorNozzle
@@ -1556,20 +1555,11 @@ namespace SimuladorNozzle
 
 
 
-        // Controls of the STEP AUTO PAUSE...
+        // Controls of the STEP AUTO PAUSE CLOCK...
 
 
         private void NextStepButton_Click(object sender, RoutedEventArgs e)
         {
-            //nozzlesim.ComputeNextTime();
-            //double deltatime = nozzlesim.ComputeDeltaTime(steps);
-            //int i = 0;
-            //List<double> value = new List<double>(); ;
-            //while (i < 31)
-            //{
-            //    value.Add(nozzlesim.GetPosition(steps, i).GetTemperature());
-            //    i = i + 1;
-            //}
             if (initiated == true)
             {
                 steps = steps + 1;
@@ -1595,6 +1585,11 @@ namespace SimuladorNozzle
 
         private void AutoButton_Click(object sender, RoutedEventArgs e)
 		{
+            Auto();
+        }
+
+        public void Auto()
+        {
             if (initiated == true)
             {
                 if (auto == false)
@@ -1621,7 +1616,6 @@ namespace SimuladorNozzle
             else
                 MessageBox.Show("The simulate has to be initiated first," + "\n" + "create the nozzle to start!!");
         }
-
         private void PauseButton_Click(object sender, RoutedEventArgs e)
 		{
             clock.Stop();
@@ -1630,19 +1624,27 @@ namespace SimuladorNozzle
 
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Hola", "Aviso",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            MessageBoxResult respuesta = MessageBox.Show(
+                "Se va a reiniciar el simulador, se perderán los cambios","Warning",MessageBoxButton.OKCancel);
 
-            DialogResult respuesta = MessageBox.Show(
-                "Se va a reiniciar el simulador, se van a perder los cambios",MessageBoxButton.YesNo);
-
+            switch (respuesta)
+            {
+                case MessageBoxResult.OK:
+                    Restart();
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+            
+        }
+        public void Restart()
+        {
             Color colorset = Color.FromRgb(232, 232, 232);
             Brush colorBrush = new SolidColorBrush(colorset);
             clock.Interval = new TimeSpan(10000000);
             if (auto == false)
             {
-                
+
             }
             else
             {
@@ -1656,7 +1658,7 @@ namespace SimuladorNozzle
             nozzlesim = new Nozzle();
             calculateMinMax();
             fillSelectedList();
-            steps=0;
+            steps = 0;
 
             labelStep.Visibility = Visibility.Hidden; textStep.Content = "";
             labelTime.Visibility = Visibility.Hidden; textTime.Content = "";
@@ -1666,7 +1668,7 @@ namespace SimuladorNozzle
             List<Brush> ListBrush = new List<Brush>();
             foreach (int pos in posChart)
             {
-                    ListBrush.Add(Brushes.Transparent);
+                ListBrush.Add(Brushes.Transparent);
             }
 
             createRecColors(ListBrush);
@@ -1709,7 +1711,7 @@ namespace SimuladorNozzle
             DivisionsTextBox.Text = "";
             CourantTextBox.Text = "";
             SetChart();
-            if (DimensionlessButton.IsChecked==true)
+            if (DimensionlessButton.IsChecked == true)
             { }
             else
             {
@@ -1742,8 +1744,8 @@ namespace SimuladorNozzle
             nozzlesim = new Nozzle(3, 800, 0.5, 0.5, 31);
             nozzlesim.ComputeUntilPos(1401);
             calculateMinMax();
-        }
 
+        }
         
     }
 }

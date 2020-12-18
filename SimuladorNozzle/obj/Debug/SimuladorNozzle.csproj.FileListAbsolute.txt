@@ -94,3 +94,7 @@ C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\Simu
 C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.csproj.CopyComplete
 C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.exe
 C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\CredentialManagement.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.xml
