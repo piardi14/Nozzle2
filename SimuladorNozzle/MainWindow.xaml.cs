@@ -28,15 +28,19 @@ namespace SimuladorNozzle
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<int> posChart = new List<int>();                               // Select positions to show on the chart
+        List<int> posChart;                               // Select positions to show on the chart
         List<List<Rectangle>> recListChart= new List<List<Rectangle>>();
         List<Brush> brushesList;
-        List<Button> listaboton = new List<Button>();
+        List<Button> listaboton;
         int steps;
 
         DispatcherTimer clock= new DispatcherTimer();
         bool auto = false;
         TimeSpan clockTime;
+
+        TimeSpan lastChartUpdate = new TimeSpan();
+        bool plotChanged = false;
+
 
         bool initiated = false;
 
@@ -55,6 +59,9 @@ namespace SimuladorNozzle
         public MainWindow()
         {
             InitializeComponent();
+
+            // mwake non enablen the button crate 
+            CreateButton.IsEnabled = false;
 
             CreateIndicator(400);
             Indicator.Visibility = Visibility.Hidden;
@@ -87,10 +94,9 @@ namespace SimuladorNozzle
 
             //Set the timer
             clock.Tick += new EventHandler(clock_time_Tick);
-            clock.Interval = new TimeSpan(1000000); //Pongo por defecto que haga un tick cada 1 segundo
+            clock.Interval = new TimeSpan(2000000); //Pongo por defecto que haga un tick cada 1 segundo
             clockTime = new TimeSpan(0);
 
-            //Pongo los botones del chart todos en una lista
 
         }
 
@@ -101,6 +107,7 @@ namespace SimuladorNozzle
         {
             DivisionsTextBox.Text = "31";
             CourantTextBox.Text = "0.5";
+            CreateButton.IsEnabled = true;
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
@@ -112,6 +119,9 @@ namespace SimuladorNozzle
                     
 
                     CreateButton.Content = "SIMULATING...";
+                    CreateButton.IsEnabled = false;
+                    DivisionsTextBox.IsEnabled = false;
+                    CourantTextBox.IsEnabled = false;
 
                     decimal c = decimal.Parse(CourantTextBox.Text.Replace('.',','));
                     double C = Convert.ToDouble(c);
@@ -126,14 +136,17 @@ namespace SimuladorNozzle
 
 
                     nozzlesim = new Nozzle(3, 800, 0.5, C, divisions);
+                    
+
                     // computa todos los valores especificados
                     nozzlesim.ComputeUntilPos(1401);
                     calculateMinMax();
                     //inizialitzem el step
                     steps = 0;
                     setDimensionlessCharts();
-                    CreateListaButtons();
 
+                    //create the buttons of the charts
+                    createButtCharts();
                     // fill posChart of zeros
                     fillSelectedList();
                     // create the brushes List
@@ -144,6 +157,7 @@ namespace SimuladorNozzle
                     PropertiesBoxSelection.SelectedIndex = 0;
                     CreateNozzle(nozzlesim, 0);
                     SetChart();
+                    clock.Start();
                 }
                 else
                     MessageBox.Show("Set some parameters first," + "\n" + "check if some of the boxes above are empty");
@@ -264,15 +278,9 @@ namespace SimuladorNozzle
             {
                 maximum = false;
             }
-            int pos;
-            if (button.Content.ToString().Split(' ')[2] == "1")
-                pos = 10;
-            else if (button.Content.ToString().Split(' ')[2] == "2")
-                pos = 20;
-            else if (button.Content.ToString().Split(' ')[2] == "3")
-                pos = 30;
-            else
-                pos = Convert.ToInt32(Convert.ToDouble(button.Content.ToString().Split(' ')[2]));
+
+            int pos = Convert.ToInt32(Convert.ToDecimal(button.Content.ToString().Split(' ')[2])*10);
+
             int showed = posChart[pos];
             if (showed == 0)   // pint of gray
             {
@@ -296,164 +304,165 @@ namespace SimuladorNozzle
                 Brush colorBrush = new SolidColorBrush(colorset);
                 button.Background = colorBrush;
             }
+            plotChanged = true;
             SetChart();
         }
-        private void buttChart0_Click(object sender, RoutedEventArgs e)
+        private void buttChart_Click(object sender, RoutedEventArgs e)
         {
-            Button button = buttChart0;
+            Button button = (Button)sender;
             ClickButtonChart(button);
         }
         
-        private void buttChart1_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart1;
-            ClickButtonChart(button);
-        }
-        private void buttChart2_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart2;
-            ClickButtonChart(button);
-        }
-        private void buttChart3_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart3;
-            ClickButtonChart(button);
-        }
-        private void buttChart4_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart4;
-            ClickButtonChart(button);
-        }
-        private void buttChart5_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart5;
-            ClickButtonChart(button);
-        }
-        private void buttChart6_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart6;
-            ClickButtonChart(button);
-        }
-        private void buttChart7_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart7;
-            ClickButtonChart(button);
-        }
-        private void buttChart8_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart8;
-            ClickButtonChart(button);
-        }
-        private void buttChart9_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart9;
-            ClickButtonChart(button);
-        }
-        private void buttChart10_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart10;
-            ClickButtonChart(button);
-        }
-        private void buttChart11_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart11;
-            ClickButtonChart(button);
-        }
-        private void buttChart12_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart12;
-            ClickButtonChart(button);
-        }
-        private void buttChart13_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart13;
-            ClickButtonChart(button);
-        }
-        private void buttChart14_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart14;
-            ClickButtonChart(button);
-        }
-        private void buttChart15_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart15;
-            ClickButtonChart(button);
-        }
-        private void buttChart16_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart16;
-            ClickButtonChart(button);
-        }
-        private void buttChart17_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart17;
-            ClickButtonChart(button);
-        }
-        private void buttChart18_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart18;
-            ClickButtonChart(button);
-        }
-        private void buttChart19_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart19;
-            ClickButtonChart(button);
-        }
-        private void buttChart20_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart20;
-            ClickButtonChart(button);
-        }
-        private void buttChart21_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart21;
-            ClickButtonChart(button);
-        }
-        private void buttChart22_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart22;
-            ClickButtonChart(button);
-        }
-        private void buttChart23_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart23;
-            ClickButtonChart(button);
-        }
-        private void buttChart24_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart24;
-            ClickButtonChart(button);
-        }
-        private void buttChart25_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart25;
-            ClickButtonChart(button);
-        }
-        private void buttChart26_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart26;
-            ClickButtonChart(button);
-        }
-        private void buttChart27_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart27;
-            ClickButtonChart(button);
-        }
-        private void buttChart28_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart28;
-            ClickButtonChart(button);
-        }
-        private void buttChart29_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart29;
-            ClickButtonChart(button);
-        }
-        private void buttChart30_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = buttChart30;
-            ClickButtonChart(button);
-        }
+        //private void buttChart1_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart1;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart2_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart2;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart3_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart3;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart4_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart4;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart5_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart5;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart6_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart6;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart7_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart7;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart8_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart8;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart9_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart9;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart10_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart10;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart11_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart11;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart12_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart12;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart13_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart13;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart14_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart14;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart15_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart15;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart16_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart16;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart17_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart17;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart18_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart18;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart19_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart19;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart20_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart20;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart21_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart21;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart22_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart22;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart23_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart23;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart24_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart24;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart25_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart25;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart26_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart26;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart27_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart27;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart28_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart28;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart29_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart29;
+        //    ClickButtonChart(button);
+        //}
+        //private void buttChart30_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = buttChart30;
+        //    ClickButtonChart(button);
+        //}
         private void MaxDensity_Click(object sender, RoutedEventArgs e)
         {
             row0.Height = new GridLength(320);
@@ -826,7 +835,8 @@ namespace SimuladorNozzle
                 count++;
             }
 
-
+            // crea el valor maximo del chart del nozzle
+            xAxiscolores.MaxValue = Convert.ToDouble(nozzlesim.GetDivisions()) / 10;
         }
 
         private void Rectbutton_Click(object sender, RoutedEventArgs e)
@@ -1180,11 +1190,53 @@ namespace SimuladorNozzle
             brushesList.Add(Brushes.Pink);
         }
 
+        public void createButtCharts()
+        {
+            //< !--< Button x: Name = "buttChart0" Grid.Row = "0" Grid.Column = "0" FontSize = "10" Content = "x = 0" Background = "#FFE8E8E8" Margin = "1,1,1,1" Click = "buttChart0_Click" Cursor = "Hand" ></ Button >
+            
+            int filas = (nozzlesim.GetDivisions() - 1) / 10 + 1; // if div == 31;  4 filas
+            int i = 0;
+            listaboton = new List<Button>();
+            while (i<filas)
+            {
+
+                gridButtChart.RowDefinitions.Add(new RowDefinition());
+                gridRecChart.RowDefinitions.Add(new RowDefinition());
+                int j = 0;
+                while (j<10)
+                {
+                    Color color = Color.FromRgb(232, 232, 232);
+                    Button button = new Button();
+                    button.Background = new SolidColorBrush(color);
+                    button.Name = "buttChart" + Convert.ToString(i*10+j);
+                    button.Content = "x = " + Convert.ToString(Convert.ToDouble(i * 10 + j)/10);
+                    if (filas>=5)
+                        button.FontSize = 9;
+                    else
+                        button.FontSize = 10;
+
+                    button.VerticalContentAlignment = VerticalAlignment.Center;
+                    button.Margin =new Thickness(1,1,1,1);
+                    button.Cursor = Cursors.Hand;
+                    button.Click += buttChart_Click;
+                    Grid.SetRow(button, i);
+                    Grid.SetColumn(button, j);
+                    gridButtChart.Children.Add(button);
+                    listaboton.Add(button);
+                    j++;
+                    if (i == filas - 1)
+                        break;
+                }
+                i++;
+            }
+            
+        }
+
+
+
         public void createRecColors(List<Brush> brushes)
         {
             int i = 0;
-           
-            
             gridRecChart.Children.Clear();
             while (i < gridRecChart.RowDefinitions.Count)
             {
@@ -1192,7 +1244,7 @@ namespace SimuladorNozzle
                 int j = 0;
                 while (j < gridRecChart.ColumnDefinitions.Count)
                 {
-                    if (i == 3 && j == 1)
+                    if (i == gridRecChart.RowDefinitions.Count-1 && j == 1)
                         break;
                     
                     Rectangle rec = new Rectangle();
@@ -1218,74 +1270,79 @@ namespace SimuladorNozzle
         public void SetChart()
         {
 
-            double secondsperstep = Math.Round(Convert.ToDouble(clockTime.Minutes * 60 + clockTime.Seconds + clockTime.Milliseconds / 1000));
-            double division = secondsperstep / 5;
-            char[] disv_char = (division.ToString()).ToCharArray();
+            
 
             if (nozzlesim.Getmalla() != null)
             {
-                if ((auto == false) || (clock.Interval > new TimeSpan(30000000)) || (disv_char.Count() != 16 && clock.Interval < new TimeSpan(30000000)))
+                List<List<double>> listV = new List<List<double>>();
+                List<List<double>> listP = new List<List<double>>();
+                List<List<double>> listT = new List<List<double>>();
+                List<List<double>> listD = new List<List<double>>();
+                int stepsChart; // suitable, between 1% to 2%, (for 500 samples between 5 and 10)
+
+                if (this.steps > 1000)
+                    stepsChart = 40;
+                else if (this.steps > 500)
+                    stepsChart = 20;
+                else if (this.steps > 250)
+                    stepsChart = 10;
+                else if (this.steps > 100)
+                    stepsChart = 5;
+                else if (this.steps > 50)
+                    stepsChart = 2;
+                else if (this.steps > 25)
+                    stepsChart = 1;
+                else
+                    stepsChart = 0;
+                int i = 0;
+                int finStep = steps;
+                List<Brush> ListBrush = new List<Brush>();
+                int posBrushes = 0;
+                List<double> dimensinlesValues;
+                if (DimensionlessButton.IsChecked == false)
                 {
-
-                    List<List<double>> listV = new List<List<double>>();
-                    List<List<double>> listP = new List<List<double>>();
-                    List<List<double>> listT = new List<List<double>>();
-                    List<List<double>> listD = new List<List<double>>();
-                    int stepsChart; // suitable, between 1% to 2%, (for 500 samples between 5 and 10)
-
-                    if (this.steps > 1000)
-                        stepsChart = 40;
-                    else if (this.steps > 500)
-                        stepsChart = 20;
-                    else if (this.steps > 250)
-                        stepsChart = 10;
-                    else if (this.steps > 100)
-                        stepsChart = 5;
-                    else if (this.steps > 50)
-                        stepsChart = 2;
-                    else if (this.steps > 25)
-                        stepsChart = 1;
-                    else
-                        stepsChart = 0;
-                    int i = 0;
-                    int finStep = steps;
-                    List<Brush> ListBrush = new List<Brush>();
-                    int posBrushes = 0;
-                    List<double> dimensinlesValues;
-                    if (DimensionlessButton.IsChecked == false)
+                    // T V P D
+                    double[] dimArray = nozzlesim.getDimensionalValues();
+                    dimensinlesValues = new List<double> { dimArray[2], dimArray[3] / 100, dimArray[1], dimArray[4] };
+                }
+                else
+                {
+                    dimensinlesValues = new List<double> { 1, 1, 1, 1 };
+                }
+                foreach (int pos in posChart)
+                {
+                    if (pos == 1)
                     {
-                        // T V P D
-                        double[] dimArray = nozzlesim.getDimensionalValues();
-                        dimensinlesValues = new List<double> { dimArray[2], dimArray[3] / 100, dimArray[1], dimArray[4] };
+                        listV.Add(nozzlesim.GetColumnPar(i, "V", stepsChart, dimensinlesValues, finStep));
+                        listP.Add(nozzlesim.GetColumnPar(i, "P", stepsChart, dimensinlesValues, finStep));
+                        listT.Add(nozzlesim.GetColumnPar(i, "T", stepsChart, dimensinlesValues, finStep));
+                        listD.Add(nozzlesim.GetColumnPar(i, "D", stepsChart, dimensinlesValues, finStep));
+                        ListBrush.Add(brushesList[posBrushes]);
+                        posBrushes++;
                     }
                     else
                     {
-                        dimensinlesValues = new List<double> { 1, 1, 1, 1 };
+                        listV.Add(new List<double>());
+                        listP.Add(new List<double>());
+                        listT.Add(new List<double>());
+                        listD.Add(new List<double>());
+                        ListBrush.Add(Brushes.Transparent);
                     }
-                    foreach (int pos in posChart)
-                    {
-                        if (pos == 1)
-                        {
-                            listV.Add(nozzlesim.GetColumnPar(i, "V", stepsChart, dimensinlesValues, finStep));
-                            listP.Add(nozzlesim.GetColumnPar(i, "P", stepsChart, dimensinlesValues, finStep));
-                            listT.Add(nozzlesim.GetColumnPar(i, "T", stepsChart, dimensinlesValues, finStep));
-                            listD.Add(nozzlesim.GetColumnPar(i, "D", stepsChart, dimensinlesValues, finStep));
-                            ListBrush.Add(brushesList[posBrushes]);
-                            posBrushes++;
-                        }
-                        else
-                        {
-                            listV.Add(new List<double>());
-                            listP.Add(new List<double>());
-                            listT.Add(new List<double>());
-                            listD.Add(new List<double>());
-                            ListBrush.Add(Brushes.Transparent);
-                        }
-                        i++;
-                    }
+                    i++;
+                }
 
-                    createRecColors(ListBrush);
-
+                createRecColors(ListBrush);
+                int sel = 0;
+                foreach (int pos in posChart)
+                    if (pos == 1)
+                        sel++;
+                int maxUpdate=1;
+                if (sel > 4)
+                    maxUpdate = 2;
+                if (lastChartUpdate > new TimeSpan(maxUpdate * 10000000) && plotChanged == true)
+                {
+                    plotChanged = false;
+                    lastChartUpdate = new TimeSpan(0);
                     // create the array of times
                     List<double> timeList = nozzlesim.getTimeList(stepsChart, finStep);
                     var times = new string[timeList.Count];
@@ -1302,6 +1359,8 @@ namespace SimuladorNozzle
                     createChart(chartT, listT, ListBrush, xAxisT, times);
                     createChart(chartD, listD, ListBrush, xAxisD, times);
                 }
+
+                
             }
             else
             {
@@ -1314,281 +1373,45 @@ namespace SimuladorNozzle
 
         public void createChart(CartesianChart chart, List<List<double>> listV, List<Brush> ListBrush, Axis xAxis, string[] times)
         {
-            chart.Series = new SeriesCollection
+
+
+            chart.Series = new SeriesCollection();
+            int i = 0;
+            while (i<listV.Count)
             {
-                new LineSeries
+                LineSeries linSerie =new LineSeries
                 {
-                    Title = "x = 0",
-                    //Values =  new ChartValues<double>(listV[0]),
-                    Values =  new ChartValues<double>(listV[0]),
+                    Title = "x = "+(i/10.0).ToString(),
+                    Name="lineChart_"+i.ToString(),
+                    Values = new ChartValues<double>(listV[i]),
                     PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[0],
-                },
-                new LineSeries
-                {
-                    Title = "x = 0.1",
-                    Values =  new ChartValues<double>(listV[1]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[1],
-                },
-                new LineSeries
-                {
-                    Title = "x = 0.2",
-                    Values =  new ChartValues<double>(listV[2]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[2],
-                },
-                new LineSeries
-                {
-                    Title = "x = 0.3",
-                    Values =  new ChartValues<double>(listV[3]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[3],
-                },
-                new LineSeries
-                {
-                    Title = "x = 0.4",
-                    Values =  new ChartValues<double>(listV[4]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[4],
+                    Fill = Brushes.Transparent,
+                    Stroke = ListBrush[i],
+                };
+                chart.Series.Add(linSerie);
+                i++;
+            }
+            int u = 0;
+            
 
-                },
-                new LineSeries
-                {
-                    Title = "x = 0.5",
-                    Values =  new ChartValues<double>(listV[5]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[5],
-
-                },
-                new LineSeries
-                {
-                    Title = "x = 0.6",
-                    Values =  new ChartValues<double>(listV[6]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[6],
-                },
-                new LineSeries
-                {
-                    Title = "x = 0.7",
-                    Values =  new ChartValues<double>(listV[7]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[7],
-                },
-                new LineSeries
-                {
-                    Title = "x = 0.8",
-                    Values =  new ChartValues<double>(listV[8]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[8],
-                },
-                new LineSeries
-                {
-                    Title = "x = 0.9",
-                    Values =  new ChartValues<double>(listV[9]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[9],
-                },
-                new LineSeries
-                {
-                    Title = "x = 1",
-                    Values =  new ChartValues<double>(listV[10]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[10],
-                },
-                new LineSeries
-                {
-                    Title = "x = 1.1",
-                    Values =  new ChartValues<double>(listV[11]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[11],
-                },
-                new LineSeries
-                {
-                    Title = "x = 1.2",
-                    Values =  new ChartValues<double>(listV[12]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[12],
-                },
-                new LineSeries
-                {
-                    Title = "x = 1.3",
-                    Values =  new ChartValues<double>(listV[13]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[13],
-                },
-                new LineSeries
-                {
-                    Title = "x = 1.4",
-                    Values =  new ChartValues<double>(listV[14]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[14],
-                },
-                new LineSeries
-                {
-                    Title = "x = 1.5",
-                    Values =  new ChartValues<double>(listV[15]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[15],
-                },
-                new LineSeries
-                {
-                    Title = "x = 1.6",
-                    Values =  new ChartValues<double>(listV[16]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[16],
-                },
-                new LineSeries
-                {
-                    Title = "x = 1.7",
-                    Values =  new ChartValues<double>(listV[17]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[17],
-                },
-                new LineSeries
-                {
-                    Title = "x = 1.8",
-                    Values =  new ChartValues<double>(listV[18]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[18],
-                },
-                new LineSeries
-                {
-                    Title = "x = 1.9",
-                    Values =  new ChartValues<double>(listV[19]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[19],
-                },
-                new LineSeries
-                {
-                    Title = "x = 2.0",
-                    Values =  new ChartValues<double>(listV[20]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[20],
-                },
-                new LineSeries
-                {
-                    Title = "x = 2.1",
-                    Values =  new ChartValues<double>(listV[21]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[21],
-                },
-                new LineSeries
-                {
-                    Title = "x = 2.2",
-                    Values =  new ChartValues<double>(listV[22]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[22],
-                },
-                new LineSeries
-                {
-                    Title = "x = 2.3",
-                    Values =  new ChartValues<double>(listV[23]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[23],
-                },
-                new LineSeries
-                {
-                    Title = "x = 2.4",
-                    Values =  new ChartValues<double>(listV[24]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[24],
-                },
-                new LineSeries
-                {
-                    Title = "x = 2.5",
-                    Values =  new ChartValues<double>(listV[25]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[25],
-                },
-                new LineSeries
-                {
-                    Title = "x = 2.6",
-                    Values =  new ChartValues<double>(listV[26]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[26],
-                },
-                new LineSeries
-                {
-                    Title = "x = 2.7",
-                    Values =  new ChartValues<double>(listV[27]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[27],
-                },
-                new LineSeries
-                {
-                    Title = "x = 2.8",
-                    Values =  new ChartValues<double>(listV[28]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[28],
-                },
-                new LineSeries
-                {
-                    Title = "x = 2.9",
-                    Values =  new ChartValues<double>(listV[29]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[29],
-                },
-                new LineSeries
-                {
-                    Title = "x = 3",
-                    Values =  new ChartValues<double>(listV[30]),
-                    PointGeometry = null,
-                    Fill=Brushes.Transparent,
-                    Stroke = ListBrush[30],
-                },
-            };
-            double sep;
-            //if (steps = )
-            //    sep = 1;
-            //else
-            //    sep = Math.Round(steps / 2.0 ,0);
-            if (steps == 0)
-                sep = 1;
-            else
-                sep = steps;
+            
 
 
-            xAxis.Labels = times;
-            xAxis.Separator.Step = sep;
-
+            
+            if (times.Count() >1)
+            {
+                xAxis.Separator.Step = times.Count()-1;
+            }
+            
+            
             DataContext = this;
         }
 
         public void fillSelectedList()
         {
+            posChart = new List<int>();
             int i = 0;
-            while (i < nozzlesim.getN())
+            while (i < nozzlesim.GetDivisions())
             {
                 posChart.Add(0);
                 i++;
@@ -1609,29 +1432,34 @@ namespace SimuladorNozzle
 
         private void NextStepButton_Click(object sender, RoutedEventArgs e)
         {
-            if (initiated == true)
-            {
-                steps = steps + 1;
-                textStep.Content = steps.ToString();
-                textTime.Content = nozzlesim.getTimeList()[steps].ToString()+" sec";
-                CreateNozzle(nozzlesim, steps);
-                SetChart();
-            }
-            else
-                MessageBox.Show("The simulate has to be initiated first," + "\n" + "create the nozzle to start!!");
+            
+            steps = steps + 1;
+            textStep.Content = steps.ToString();
+            textTime.Content = nozzlesim.getTimeList()[steps].ToString()+" sec";
+            CreateNozzle(nozzlesim, steps);
+            plotChanged = true;
+            SetChart();
+            
         }
 
 
         private void clock_time_Tick(object sender, EventArgs e)
         {
-            steps = steps + 1;
-            clockTime = clockTime+clock.Interval;
-            textStep.Content = steps.ToString();
-            textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
-            CreateNozzle(nozzlesim, steps);
-            SetChart();
+            if (auto == true)
+            {
+                steps = steps + 1;
+                clockTime = clockTime + clock.Interval;
+                textStep.Content = steps.ToString();
+                textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
+                CreateNozzle(nozzlesim, steps);
+                plotChanged = true;
+                SetChart();
+            }
+            lastChartUpdate += clock.Interval;
+            
         }
 
+        
         private void AutoButton_Click(object sender, RoutedEventArgs e)
 		{
             Auto();
@@ -1643,7 +1471,6 @@ namespace SimuladorNozzle
             {
                 if (auto == false)
                 {
-                    clock.Start();
                     NextStepButton.IsEnabled = false;
                     auto = true;
                     Color colorset = Color.FromRgb(153, 144, 144);
@@ -1653,7 +1480,6 @@ namespace SimuladorNozzle
                 }
                 else
                 {
-                    clock.Stop();
                     NextStepButton.IsEnabled = true;
                     auto = false;
                     Color colorset = Color.FromRgb(232, 232, 232);
@@ -1667,7 +1493,6 @@ namespace SimuladorNozzle
         }
         private void PauseButton_Click(object sender, RoutedEventArgs e)
 		{
-            clock.Stop();
             NextStepButton.IsEnabled = true;
         }
 
@@ -1690,7 +1515,10 @@ namespace SimuladorNozzle
         {
             Color colorset = Color.FromRgb(232, 232, 232);
             Brush colorBrush = new SolidColorBrush(colorset);
-            clock.Interval = new TimeSpan(1000000);
+            clock.Interval = new TimeSpan(2000000);
+            clockTime = new TimeSpan(0);
+            clock.Stop();
+
             if (auto == false)
             {
 
@@ -1703,7 +1531,6 @@ namespace SimuladorNozzle
                 AutoButton.Background = colorBrush;
                 AutoButton.Content = "AUTO";
             }
-            clockTime = new TimeSpan(0);
             nozzlesim = new Nozzle();
             calculateMinMax();
             fillSelectedList();
@@ -1720,43 +1547,12 @@ namespace SimuladorNozzle
                 ListBrush.Add(Brushes.Transparent);
             }
 
-            createRecColors(ListBrush);
+            gridRecChart.Children.Clear();
 
-            buttChart0.Background = colorBrush;
-            buttChart1.Background = colorBrush;
-            buttChart2.Background = colorBrush;
-            buttChart3.Background = colorBrush;
-            buttChart4.Background = colorBrush;
-            buttChart5.Background = colorBrush;
-            buttChart6.Background = colorBrush;
-            buttChart7.Background = colorBrush;
-            buttChart8.Background = colorBrush;
-            buttChart9.Background = colorBrush;
-
-            buttChart10.Background = colorBrush;
-            buttChart11.Background = colorBrush;
-            buttChart12.Background = colorBrush;
-            buttChart13.Background = colorBrush;
-            buttChart14.Background = colorBrush;
-            buttChart15.Background = colorBrush;
-            buttChart16.Background = colorBrush;
-            buttChart17.Background = colorBrush;
-            buttChart18.Background = colorBrush;
-            buttChart19.Background = colorBrush;
-
-            buttChart20.Background = colorBrush;
-            buttChart21.Background = colorBrush;
-            buttChart22.Background = colorBrush;
-            buttChart23.Background = colorBrush;
-            buttChart24.Background = colorBrush;
-            buttChart25.Background = colorBrush;
-            buttChart26.Background = colorBrush;
-            buttChart27.Background = colorBrush;
-            buttChart28.Background = colorBrush;
-            buttChart29.Background = colorBrush;
-            buttChart30.Background = colorBrush;
             initiated = false;
             CreateButton.Content = "CREATE";
+            DivisionsTextBox.IsEnabled = true;
+            CourantTextBox.IsEnabled = true;
             DivisionsTextBox.Text = "";
             CourantTextBox.Text = "";
             SetChart();
@@ -1792,48 +1588,77 @@ namespace SimuladorNozzle
             Indicator.Visibility = Visibility.Hidden;
 
             NozzleCanvas.Children.Clear();
+            gridRecChart.Children.Clear();
+            gridRecChart.RowDefinitions.Clear();
+            gridButtChart.Children.Clear();
+            gridButtChart.RowDefinitions.Clear();
+
             PropertiesBoxSelection.SelectedIndex = -1;
             nozzlesim = new Nozzle(3, 800, 0.5, 0.5, 31);
             nozzlesim.ComputeUntilPos(1401);
             calculateMinMax();
 
         }
-        private void CreateListaButtons()
+
+        private void DivisionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            listaboton.Add(buttChart0);
-            listaboton.Add(buttChart1);
-            listaboton.Add(buttChart2);
-            listaboton.Add(buttChart3);
-            listaboton.Add(buttChart4);
-            listaboton.Add(buttChart5);
-            listaboton.Add(buttChart6);
-            listaboton.Add(buttChart7);
-            listaboton.Add(buttChart8);
-            listaboton.Add(buttChart9);
-            listaboton.Add(buttChart10);
-            listaboton.Add(buttChart11);
-            listaboton.Add(buttChart12);
-            listaboton.Add(buttChart13);
-            listaboton.Add(buttChart14);
-            listaboton.Add(buttChart15);
-            listaboton.Add(buttChart16);
-            listaboton.Add(buttChart17);
-            listaboton.Add(buttChart18);
-            listaboton.Add(buttChart19);
-            listaboton.Add(buttChart20);
-            listaboton.Add(buttChart21);
-            listaboton.Add(buttChart22);
-            listaboton.Add(buttChart23);
-            listaboton.Add(buttChart24);
-            listaboton.Add(buttChart25);
-            listaboton.Add(buttChart26);
-            listaboton.Add(buttChart27);
-            listaboton.Add(buttChart28);
-            listaboton.Add(buttChart29);
-            listaboton.Add(buttChart30);
+            try
+            {
+                int div = Convert.ToInt32(DivisionsTextBox.Text.ToString());
+                
+                if ((div == 11 || div == 21 || div == 31 || div == 41) )
+                {
+                    alertDivisionsLabel.Visibility = Visibility.Hidden;
+                    try
+                    {
+                        decimal cou = Convert.ToDecimal(CourantTextBox.Text);
+                        if (CourantTextBox.Text != "")
+                            CreateButton.IsEnabled = true;
+                    }
+                    catch (FormatException)
+                    {
+                        CreateButton.IsEnabled = false;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        CreateButton.IsEnabled = false;
+                    }
 
+                    }
+                else
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Visible;
+                }
+                    
+            }
+            catch (FormatException)
+            {
+                if (DivisionsTextBox.Text != "")
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Hidden;
+                }
+            }
+            catch (NullReferenceException)
+            {
+                if (DivisionsTextBox.Text != "")
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Hidden;
+                }
+            }
         }
-
     }
 }
 
