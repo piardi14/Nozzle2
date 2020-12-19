@@ -40,7 +40,7 @@ namespace SimuladorNozzle
 
         TimeSpan lastChartUpdate = new TimeSpan();
         bool plotChanged = false;
-
+        TimeSpan lastLabeTick;
 
         bool initiated = false;
 
@@ -89,8 +89,11 @@ namespace SimuladorNozzle
             rectanglePanel.Visibility = Visibility.Visible;
             rayahorizontal.Visibility = Visibility.Hidden;
 
-            //cramos charts
-            //SetChart();
+            xAxisD.MaxValue = 0.1;
+            xAxisT.MaxValue = 0.1; 
+            xAxisV.MaxValue = 0.1;
+            xAxisP.MaxValue = 0.1;
+
 
             //Set the timer
             clock.Tick += new EventHandler(clock_time_Tick);
@@ -116,10 +119,10 @@ namespace SimuladorNozzle
             {
                 if (DivisionsTextBox.Text != "" && CourantTextBox.Text != "")
                 {
-                    
-
                     CreateButton.Content = "SIMULATING...";
                     CreateButton.IsEnabled = false;
+                    DefaultValuesButton.IsEnabled = false;
+
                     DivisionsTextBox.IsEnabled = false;
                     CourantTextBox.IsEnabled = false;
 
@@ -152,10 +155,13 @@ namespace SimuladorNozzle
                     // create the brushes List
                     createBrushesList();
 
+                    lastLabeTick= new TimeSpan(0);
+
 
 
                     PropertiesBoxSelection.SelectedIndex = 0;
                     CreateNozzle(nozzlesim, 0);
+                    plotChanged = true;
                     SetChart();
                     clock.Start();
                 }
@@ -186,59 +192,56 @@ namespace SimuladorNozzle
         
         private void DimensionlessButton_Click(object sender, RoutedEventArgs e)
         {
-            if (initiated == true)
+            
+            double[] MaxMinD = ampliate(maxD, minD);
+            double[] MaxMinV = ampliate(maxV, minV);
+            double[] MaxMinT = ampliate(maxT, minT);
+            double[] MaxMinP = ampliate(maxP, minP);
+            if (DimensionlessButton.IsChecked == true)
             {
-                double[] MaxMinD = ampliate(maxD, minD);
-                double[] MaxMinV = ampliate(maxV, minV);
-                double[] MaxMinT = ampliate(maxT, minT);
-                double[] MaxMinP = ampliate(maxP, minP);
-                if (DimensionlessButton.IsChecked == true)
-                {
 
-                    yAxisD.MaxValue = MaxMinD[0];
-                    yAxisD.MinValue = MaxMinD[1];
-                    yAxisD.Title = "Density [ ]";
-                    chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    yAxisV.MaxValue = MaxMinV[0];
-                    yAxisV.MinValue = MaxMinV[1];
-                    yAxisV.Title = "Velocity [ ]";
-                    chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    yAxisT.MaxValue = MaxMinT[0];
-                    yAxisT.MinValue = MaxMinT[1];
-                    yAxisT.Title = "Temperature [ ]";
-                    chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    yAxisP.MaxValue = MaxMinP[0];
-                    yAxisP.MinValue = MaxMinP[1];
-                    yAxisP.Title = "Pressure [ ]";
-                    chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
-                }
-                else
-                {
-                    double[] dimArray = nozzlesim.getDimensionalValues();
-                    List<double> dimensinlesValues = new List<double> { dimArray[2], dimArray[3], dimArray[1], dimArray[4] };
-                    yAxisD.MaxValue = MaxMinD[0] * dimensinlesValues[3];
-                    yAxisD.MinValue = MaxMinD[1] * dimensinlesValues[3];
-                    chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    yAxisD.Title = "Density [ kg / m^3 ]";
-                    yAxisV.MaxValue = MaxMinV[0] * dimensinlesValues[0];
-                    yAxisV.MinValue = MaxMinV[1] * dimensinlesValues[0];
-                    chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    yAxisV.Title = "Velocity [ m / s ]";
-                    yAxisT.MaxValue = MaxMinT[0] * dimensinlesValues[2];
-                    yAxisT.MinValue = MaxMinT[1] * dimensinlesValues[2];
-                    chartT.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    yAxisT.Title = "Temperature [ ºC ]";
-                    yAxisP.MaxValue = MaxMinP[0] * dimensinlesValues[1] / 100;
-                    yAxisP.MinValue = MaxMinP[1] * dimensinlesValues[1] / 100;
-                    chartP.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    yAxisP.Title = "Pressure [ hPa ]";
-                }
-                SetChart();
+                yAxisD.MaxValue = MaxMinD[0];
+                yAxisD.MinValue = MaxMinD[1];
+                yAxisD.Title = "Density [ ]";
+                chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisV.MaxValue = MaxMinV[0];
+                yAxisV.MinValue = MaxMinV[1];
+                yAxisV.Title = "Velocity [ ]";
+                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisT.MaxValue = MaxMinT[0];
+                yAxisT.MinValue = MaxMinT[1];
+                yAxisT.Title = "Temperature [ ]";
+                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisP.MaxValue = MaxMinP[0];
+                yAxisP.MinValue = MaxMinP[1];
+                yAxisP.Title = "Pressure [ ]";
+                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
             }
             else
             {
-
+                double[] dimArray = nozzlesim.getDimensionalValues();
+                Position dimenssional = nozzlesim.getDimensionalPosition();
+                yAxisD.MaxValue = MaxMinD[0] * dimenssional.GetDensity();
+                yAxisD.MinValue = MaxMinD[1] * dimenssional.GetDensity();
+                chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisD.Title = "Density [ kg / m^3 ]";
+                yAxisV.MaxValue = MaxMinV[0] * dimenssional.GetVelocity();
+                yAxisV.MinValue = MaxMinV[1] * dimenssional.GetVelocity();
+                chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisV.Title = "Velocity [ m / s ]";
+                yAxisT.MaxValue = MaxMinT[0] * dimenssional.GetTemperature();
+                yAxisT.MinValue = MaxMinT[1] * dimenssional.GetTemperature();
+                chartT.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisT.Title = "Temperature [ ºC ]";
+                yAxisP.MaxValue = MaxMinP[0] * dimenssional.GetPressure() * dimenssional.R/100 ;
+                yAxisP.MinValue = MaxMinP[1] * dimenssional.GetPressure() * dimenssional.R/100;
+                chartP.HorizontalAlignment = HorizontalAlignment.Stretch;
+                yAxisP.Title = "Pressure [ hPa ]";
+                
             }
+            plotChanged = true;
+            SetChart();
+            
         }
         public void setDimensionlessCharts()
         {
@@ -313,156 +316,6 @@ namespace SimuladorNozzle
             ClickButtonChart(button);
         }
         
-        //private void buttChart1_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart1;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart2_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart2;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart3_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart3;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart4_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart4;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart5_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart5;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart6_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart6;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart7_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart7;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart8_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart8;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart9_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart9;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart10_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart10;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart11_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart11;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart12_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart12;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart13_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart13;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart14_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart14;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart15_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart15;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart16_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart16;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart17_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart17;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart18_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart18;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart19_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart19;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart20_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart20;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart21_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart21;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart22_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart22;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart23_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart23;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart24_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart24;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart25_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart25;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart26_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart26;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart27_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart27;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart28_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart28;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart29_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart29;
-        //    ClickButtonChart(button);
-        //}
-        //private void buttChart30_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = buttChart30;
-        //    ClickButtonChart(button);
-        //}
         private void MaxDensity_Click(object sender, RoutedEventArgs e)
         {
             row0.Height = new GridLength(320);
@@ -1269,9 +1122,6 @@ namespace SimuladorNozzle
         
         public void SetChart()
         {
-
-            
-
             if (nozzlesim.Getmalla() != null)
             {
                 List<List<double>> listV = new List<List<double>>();
@@ -1298,25 +1148,24 @@ namespace SimuladorNozzle
                 int finStep = steps;
                 List<Brush> ListBrush = new List<Brush>();
                 int posBrushes = 0;
-                List<double> dimensinlesValues;
+                Position dimens;
                 if (DimensionlessButton.IsChecked == false)
                 {
                     // T V P D
-                    double[] dimArray = nozzlesim.getDimensionalValues();
-                    dimensinlesValues = new List<double> { dimArray[2], dimArray[3] / 100, dimArray[1], dimArray[4] };
+                    dimens = nozzlesim.getDimensionalPosition();
                 }
                 else
                 {
-                    dimensinlesValues = new List<double> { 1, 1, 1, 1 };
+                    dimens = new Position(0, 1, 1, 1, 0);
                 }
                 foreach (int pos in posChart)
                 {
                     if (pos == 1)
                     {
-                        listV.Add(nozzlesim.GetColumnPar(i, "V", stepsChart, dimensinlesValues, finStep));
-                        listP.Add(nozzlesim.GetColumnPar(i, "P", stepsChart, dimensinlesValues, finStep));
-                        listT.Add(nozzlesim.GetColumnPar(i, "T", stepsChart, dimensinlesValues, finStep));
-                        listD.Add(nozzlesim.GetColumnPar(i, "D", stepsChart, dimensinlesValues, finStep));
+                        listV.Add(nozzlesim.GetColumnPar(i, "V",  stepsChart, dimens, finStep));
+                        listP.Add(nozzlesim.GetColumnPar(i, "P", stepsChart, dimens, finStep));
+                        listT.Add(nozzlesim.GetColumnPar(i, "T", stepsChart, dimens, finStep));
+                        listD.Add(nozzlesim.GetColumnPar(i, "D", stepsChart, dimens, finStep));
                         ListBrush.Add(brushesList[posBrushes]);
                         posBrushes++;
                     }
@@ -1391,19 +1240,21 @@ namespace SimuladorNozzle
                 chart.Series.Add(linSerie);
                 i++;
             }
-            int u = 0;
-            
-
-            
 
 
             
             if (times.Count() >1)
             {
-                xAxis.Separator.Step = times.Count()-1;
+                
+                double dec=Convert.ToDouble(Convert.ToDecimal(times[times.Count() - 1]));
+                //xAxisDSeparator.Step = 0.1;
+                xAxis.MaxValue = times.Count()-1;
+                xAxis.Separator.Step = times.Count() - 1;
+                xAxis.Labels = times;
+                int o = 0;
             }
-            
-            
+
+
             DataContext = this;
         }
 
@@ -1453,12 +1304,75 @@ namespace SimuladorNozzle
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
                 CreateNozzle(nozzlesim, steps);
                 plotChanged = true;
-                SetChart();
             }
             lastChartUpdate += clock.Interval;
-            
+            ParpadeoLabels();
+            SetChart();
         }
-
+        public void ParpadeoLabels()
+        {
+            lastLabeTick += clock.Interval;
+            // Parpadeo de labels de no hay steps
+            if (steps == 0)
+            {
+                if (lastLabeTick > new TimeSpan(10000000))
+                {
+                    lastLabeTick = new TimeSpan(0);
+                    if (NoPointsLabelD.Visibility == Visibility.Visible)
+                    {
+                        NoPointsLabelD.Visibility = Visibility.Hidden;
+                        NoPointsLabelV.Visibility = Visibility.Hidden;
+                        NoPointsLabelT.Visibility = Visibility.Hidden;
+                        NoPointsLabelP.Visibility = Visibility.Hidden;
+                    }
+                    else
+                    {
+                        NoPointsLabelD.Visibility = Visibility.Visible;
+                        NoPointsLabelV.Visibility = Visibility.Visible;
+                        NoPointsLabelT.Visibility = Visibility.Visible;
+                        NoPointsLabelP.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+            else if (steps != 0 && NoPointsLabelD.Visibility == Visibility.Visible)
+            {
+                lastLabeTick = new TimeSpan(0);
+                NoPointsLabelD.Visibility = Visibility.Hidden;
+                NoPointsLabelV.Visibility = Visibility.Hidden;
+                NoPointsLabelT.Visibility = Visibility.Hidden;
+                NoPointsLabelP.Visibility = Visibility.Hidden;
+            }
+            else if(lastLabeTick > new TimeSpan(10000000))
+            {
+                lastLabeTick = new TimeSpan(0);
+                bool zeroSelected = true;
+                foreach (int pos in posChart)
+                {
+                    if (pos == 1)
+                    {
+                        zeroSelected = false;
+                        break;
+                    }
+                }
+                if (zeroSelected == true)
+                {
+                    if (NoSeriesD.Visibility == Visibility.Visible)
+                    {
+                        NoSeriesD.Visibility = Visibility.Hidden;
+                        NoSeriesV.Visibility = Visibility.Hidden;
+                        NoSeriesT.Visibility = Visibility.Hidden;
+                        NoSeriesP.Visibility = Visibility.Hidden;
+                    }
+                    else
+                    {
+                        NoSeriesD.Visibility = Visibility.Visible;
+                        NoSeriesV.Visibility = Visibility.Visible;
+                        NoSeriesT.Visibility = Visibility.Visible;
+                        NoSeriesP.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
         
         private void AutoButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -1551,6 +1465,7 @@ namespace SimuladorNozzle
 
             initiated = false;
             CreateButton.Content = "CREATE";
+            DefaultValuesButton.IsEnabled = true;
             DivisionsTextBox.IsEnabled = true;
             CourantTextBox.IsEnabled = true;
             DivisionsTextBox.Text = "";
