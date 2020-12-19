@@ -12,7 +12,7 @@ namespace NozzleLib
         double A;       //area in the position of the cell
         int i;          //divisions of the nozzle
         double M;
-        double R = 286;
+        public double R = 286;
 
         public int I { get; set; }
         public double Position_x { get; set; }

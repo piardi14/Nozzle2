@@ -15,6 +15,7 @@ namespace NozzleLib
         Position[,] malla;              //Position matrix rows=time steps and columns=space divisions
         int N;                     //Number of space divisions, 31 by default (Anderson value)
         double[] dimensionalvalues;     //Initial values to obtain dimensional values to magnitudes [L, T0, a0, p0, ro0]
+        Position dimensionalPos; 
         double throatposition;          //where is the throat
 
         public List<Position> position_initial_conditions { get; set; }
@@ -93,6 +94,10 @@ namespace NozzleLib
         {
             return dimensionalvalues;
         }
+        public Position getDimensionalPosition()
+        {
+            return dimensionalPos;
+        }
 
         public List<double> createListArea(int t)
         {
@@ -162,6 +167,7 @@ namespace NozzleLib
             dimensionalvalues[2] = Math.Sqrt(gamma * R * T0);
             dimensionalvalues[3] = T0*ro0*R;
             dimensionalvalues[4] = ro0;
+            dimensionalPos = new Position(0, T0,ro0, Math.Sqrt(gamma * R * T0),0);
 
         }
         public List<Position> GetRow (int row)
@@ -214,7 +220,7 @@ namespace NozzleLib
             }
             return fila;
         }
-        public List<double> GetColumnPar(int col, string parameter, int steps, List<double> dimValues, int finStep )
+        public List<double> GetColumnPar(int col, string parameter, int steps, Position dimens, int finStep )
         {
             List<double> columna = new List<double>();
             int i = 0;
@@ -230,13 +236,18 @@ namespace NozzleLib
                         if (parameter == "x")
                             value = Math.Round(pos.GetX(), 4);
                         else if (parameter == "T")
-                            value = Math.Round(pos.GetTemperature()*dimValues[2], 4);
+                            value = Math.Round(pos.GetTemperature() * dimens.GetTemperature(), 4);
                         else if (parameter == "D")
-                            value = Math.Round(pos.GetDensity()* dimValues[3], 4);
+                            value = Math.Round(pos.GetDensity() * dimens.GetDensity(), 4);
                         else if (parameter == "V")
-                            value = Math.Round(pos.GetVelocity()*dimValues[0], 4);
+                            value = Math.Round(pos.GetVelocity() * dimens.GetVelocity(), 4);
                         else if (parameter == "P")
-                            value = Math.Round(pos.GetPressure()* dimValues[1], 4);
+                        {
+                            if (dimens.GetPressure() != 1)
+                                value = Math.Round(pos.GetPressure() * dimens.GetPressure(), 4) * dimens.R/100;
+                            else
+                                value = Math.Round(pos.GetPressure() * dimens.GetPressure(), 4);
+                        }
                         else if (parameter == "A")
                             value = Math.Round(pos.GetArea(), 4);
                         else if (parameter == "M")
