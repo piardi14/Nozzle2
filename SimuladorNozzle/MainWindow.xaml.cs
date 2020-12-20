@@ -56,7 +56,7 @@ namespace SimuladorNozzle
 
 
 
-        Nozzle nozzlesim /*= new Nozzle(3, 800, 0.5, 0.5, 31)*/;                   //Nozzle where we would simulate
+        Nozzle nozzlesim;                   //Nozzle where we would simulate
         public MainWindow()
         {
             InitializeComponent();
@@ -140,7 +140,7 @@ namespace SimuladorNozzle
                     initiated = true;
 
 
-                    nozzlesim = new Nozzle(3, 800, 0.5, C, divisions);
+                    nozzlesim = new Nozzle(3, 2800, 1.95, C, divisions);
                     
 
                     // computa todos los valores especificados
@@ -657,7 +657,7 @@ namespace SimuladorNozzle
         {
             
             NozzleCanvas.Children.RemoveRange(0, NozzleCanvas.Children.Count);
-            double width = 445 / (nozzle.GetDivisions());
+            double width = (double)435 / (nozzle.GetDivisions());
             int count = 0;
             while (count < nozzle.GetDivisions())
             {
@@ -697,9 +697,9 @@ namespace SimuladorNozzle
                 NozzleCanvas.Children.Add(rectbutton);
                 count++;
             }
-
+            
             // crea el valor maximo del chart del nozzle
-            xAxiscolores.MaxValue = Convert.ToDouble(nozzlesim.GetDivisions()) / 10;
+            xAxiscolores.MaxValue = Convert.ToDouble(nozzlesim.GetDivisions())*3 / (Convert.ToDouble(nozzlesim.GetDivisions())-1);
         }
 
         private void Rectbutton_Click(object sender, RoutedEventArgs e)
@@ -1606,7 +1606,7 @@ namespace SimuladorNozzle
             {
                 int div = Convert.ToInt32(DivisionsTextBox.Text.ToString());
                 
-                if ((div == 11 || div == 21 || div == 31 || div == 41) )
+                if ((div == 11 || div == 21 || div == 31 || div == 41||div==51||div==61))
                 {
                     alertDivisionsLabel.Visibility = Visibility.Hidden;
                     try
