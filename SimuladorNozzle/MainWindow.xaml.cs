@@ -146,6 +146,8 @@ namespace SimuladorNozzle
                     // computa todos los valores especificados
                     nozzlesim.ComputeUntilPos(1401);
                     calculateMinMax();
+                    //escribe los labels max y min en el indicador
+                    WriteIndicatorMaxMin(0);
                     //inizialitzem el step
                     steps = 0;
                     setDimensionlessCharts();
@@ -180,7 +182,11 @@ namespace SimuladorNozzle
         private void PropertiesBoxSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PropertiesBoxSelection.SelectedIndex != -1)
+            {
+                WriteIndicatorMaxMin(PropertiesBoxSelection.SelectedIndex);
                 CreateNozzle(nozzlesim, steps);             //**de moment 0 el temps, pero ja veurem quan tingui un timestep diferent
+            }
+
         }
 
         //CONTROLS CHARTS
@@ -1662,6 +1668,34 @@ namespace SimuladorNozzle
                     CreateButton.IsEnabled = false;
                     alertDivisionsLabel.Visibility = Visibility.Hidden;
                 }
+            }
+        }
+
+        private void WriteIndicatorMaxMin(int propind)
+        {
+            if(propind==0)
+            {
+                MaxLabel.Content = Convert.ToString(Math.Round(maxT,1));
+                MinLabel.Content = Convert.ToString(Math.Round(minT, 1));
+                MedLabel.Content = Convert.ToString(Math.Round((maxT + minT) / (double)2,1));
+            }
+            else if (propind == 1)
+            {
+                MaxLabel.Content = Convert.ToString(Math.Round(maxV, 1));
+                MinLabel.Content = Convert.ToString(Math.Round(minV, 1));
+                MedLabel.Content = Convert.ToString(Math.Round((maxV + minV) / (double)2, 1));
+            }
+            else if (propind == 2)
+            {
+                MaxLabel.Content = Convert.ToString(Math.Round(maxD, 1));
+                MinLabel.Content = Convert.ToString(Math.Round(minD, 1));
+                MedLabel.Content = Convert.ToString(Math.Round((maxD + minD) / (double)2, 1));
+            }
+            else if (propind == 3)
+            {
+                MaxLabel.Content = Convert.ToString(Math.Round(maxP, 1));
+                MinLabel.Content = Convert.ToString(Math.Round(minP, 1));
+                MedLabel.Content = Convert.ToString(Math.Round((maxP + minP) / (double)2, 1));
             }
         }
 
