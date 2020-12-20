@@ -1141,8 +1141,12 @@ namespace SimuladorNozzle
                     button.Name = "buttChart" + Convert.ToString(i*10+j);
                     double contenidox = Math.Round((i * (double)10 + j) / (double)10 / (filas - (double)1) * (double)3,2);
                     button.Content = "x = " + Convert.ToString(contenidox);
-                    if (filas>=5)
+                    if (filas == 5)
                         button.FontSize = 9;
+                    else if (filas == 6)
+                        button.FontSize = 6;
+                    else if (filas == 7)
+                        button.FontSize = 5;
                     else
                         button.FontSize = 10;
 
