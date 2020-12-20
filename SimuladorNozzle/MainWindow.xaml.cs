@@ -1699,7 +1699,11 @@ namespace SimuladorNozzle
             }
         }
 
-        
+        private void AutoSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            double periodo = 1000000/AutoSlider.Value;
+            clock.Interval = new TimeSpan((long)periodo);
+        }
     }
 }
 
