@@ -56,7 +56,7 @@ namespace SimuladorNozzle
 
 
 
-        Nozzle nozzlesim /*= new Nozzle(3, 800, 0.5, 0.5, 31)*/;                   //Nozzle where we would simulate
+        Nozzle nozzlesim;                   //Nozzle where we would simulate
         public MainWindow()
         {
             InitializeComponent();
@@ -140,12 +140,14 @@ namespace SimuladorNozzle
                     initiated = true;
 
 
-                    nozzlesim = new Nozzle(3, 800, 0.5, C, divisions);
+                    nozzlesim = new Nozzle(3, 2800, 1.95, C, divisions);
                     
 
                     // computa todos los valores especificados
                     nozzlesim.ComputeUntilPos(1401);
                     calculateMinMax();
+                    //escribe los labels max y min en el indicador
+                    WriteIndicatorMaxMin(0);
                     //inizialitzem el step
                     steps = 0;
                     setDimensionlessCharts();
@@ -180,7 +182,11 @@ namespace SimuladorNozzle
         private void PropertiesBoxSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PropertiesBoxSelection.SelectedIndex != -1)
+            {
+                WriteIndicatorMaxMin(PropertiesBoxSelection.SelectedIndex);
                 CreateNozzle(nozzlesim, steps);             //**de moment 0 el temps, pero ja veurem quan tingui un timestep diferent
+            }
+
         }
 
         //CONTROLS CHARTS
@@ -657,7 +663,7 @@ namespace SimuladorNozzle
         {
             
             NozzleCanvas.Children.RemoveRange(0, NozzleCanvas.Children.Count);
-            double width = 445 / (nozzle.GetDivisions());
+            double width = (double)435 / (nozzle.GetDivisions());
             int count = 0;
             while (count < nozzle.GetDivisions())
             {
@@ -697,9 +703,9 @@ namespace SimuladorNozzle
                 NozzleCanvas.Children.Add(rectbutton);
                 count++;
             }
-
+            
             // crea el valor maximo del chart del nozzle
-            xAxiscolores.MaxValue = Convert.ToDouble(nozzlesim.GetDivisions()) / 10;
+            xAxiscolores.MaxValue = Convert.ToDouble(nozzlesim.GetDivisions())*3 / (Convert.ToDouble(nozzlesim.GetDivisions())-1);
         }
 
         private void Rectbutton_Click(object sender, RoutedEventArgs e)
@@ -1139,9 +1145,14 @@ namespace SimuladorNozzle
                     Button button = new Button();
                     button.Background = new SolidColorBrush(color);
                     button.Name = "buttChart" + Convert.ToString(i*10+j);
-                    button.Content = "x = " + Convert.ToString(Convert.ToDouble(i * 10 + j)/10);
-                    if (filas>=5)
+                    double contenidox = Math.Round((i * (double)10 + j) / (double)10 / (filas - (double)1) * (double)3,2);
+                    button.Content = "x = " + Convert.ToString(contenidox);
+                    if (filas == 5)
                         button.FontSize = 9;
+                    else if (filas == 6)
+                        button.FontSize = 6;
+                    else if (filas == 7)
+                        button.FontSize = 5;
                     else
                         button.FontSize = 10;
 
@@ -1606,7 +1617,7 @@ namespace SimuladorNozzle
             {
                 int div = Convert.ToInt32(DivisionsTextBox.Text.ToString());
                 
-                if ((div == 11 || div == 21 || div == 31 || div == 41) )
+                if ((div == 11 || div == 21 || div == 31 || div == 41||div==51||div==61))
                 {
                     alertDivisionsLabel.Visibility = Visibility.Hidden;
                     try
@@ -1660,7 +1671,39 @@ namespace SimuladorNozzle
             }
         }
 
-        
+        private void WriteIndicatorMaxMin(int propind)
+        {
+            if(propind==0)
+            {
+                MaxLabel.Content = Convert.ToString(Math.Round(maxT,1));
+                MinLabel.Content = Convert.ToString(Math.Round(minT, 1));
+                MedLabel.Content = Convert.ToString(Math.Round((maxT + minT) / (double)2,1));
+            }
+            else if (propind == 1)
+            {
+                MaxLabel.Content = Convert.ToString(Math.Round(maxV, 1));
+                MinLabel.Content = Convert.ToString(Math.Round(minV, 1));
+                MedLabel.Content = Convert.ToString(Math.Round((maxV + minV) / (double)2, 1));
+            }
+            else if (propind == 2)
+            {
+                MaxLabel.Content = Convert.ToString(Math.Round(maxD, 1));
+                MinLabel.Content = Convert.ToString(Math.Round(minD, 1));
+                MedLabel.Content = Convert.ToString(Math.Round((maxD + minD) / (double)2, 1));
+            }
+            else if (propind == 3)
+            {
+                MaxLabel.Content = Convert.ToString(Math.Round(maxP, 1));
+                MinLabel.Content = Convert.ToString(Math.Round(minP, 1));
+                MedLabel.Content = Convert.ToString(Math.Round((maxP + minP) / (double)2, 1));
+            }
+        }
+
+        private void AutoSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            double periodo = 1000000/AutoSlider.Value;
+            clock.Interval = new TimeSpan((long)periodo);
+        }
     }
 }
 
