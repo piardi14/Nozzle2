@@ -44,6 +44,8 @@ namespace SimuladorNozzle
 
         bool initiated = false;
         bool unitsShowTable = false;
+        bool fixTable = false;
+        Button fixedButton;
 
         double maxT;
         double maxV;
@@ -700,6 +702,7 @@ namespace SimuladorNozzle
                 rectbutton.MouseEnter += Rectbutton_MouseEnter;
                 rectbutton.MouseLeave += Rectbutton_MouseLeave;
                 rectbutton.MouseRightButtonDown += Rectbutton_RightClick;
+                rectbutton.MouseDoubleClick += Rectbutton_MouseDoubleClick;
                 NozzleCanvas.Children.Add(rectbutton);
                 count++;
             }
@@ -722,11 +725,24 @@ namespace SimuladorNozzle
         }
         private void Rectbutton_MouseEnter(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
-            Position Dimenssion = nozzlesim.getDimensionalPosition();
-            int row = Convert.ToInt32(button.Name.ToString().Split('n')[1]);
-            Position position = nozzlesim.GetRow(steps)[row];
-            if (unitsShowTable==true)
+            Position position; Position Dimenssion;
+            if (fixTable == false)
+            {
+                Button button = (Button)sender;
+                Dimenssion = nozzlesim.getDimensionalPosition();
+                int row = Convert.ToInt32(button.Name.ToString().Split('n')[1]);
+                position = nozzlesim.GetRow(steps)[row];
+            }
+            else
+            {
+                Button button = fixedButton;
+                Dimenssion = nozzlesim.getDimensionalPosition();
+                int row = Convert.ToInt32(button.Name.ToString().Split('n')[1]);
+                position = nozzlesim.GetRow(steps)[row];
+            }
+
+
+            if (unitsShowTable == true)
             {
                 labelValueX.Content = Math.Round(position.GetX(), 1);
                 labelValueT.Content = Math.Round(position.GetTemperature() * Dimenssion.GetTemperature(), 2);
@@ -734,7 +750,7 @@ namespace SimuladorNozzle
                 labelValueV.Content = Math.Round(position.GetVelocity() * Dimenssion.GetVelocity(), 2);
                 labelValueP.Content = Math.Round(position.GetPressure() * Dimenssion.GetPressure() * Dimenssion.R, 2);
                 labelValueA.Content = Math.Round(position.GetArea(), 2);
-                dimensionTip.Text = "Right button click on the mouse to show non-dimension parameters";
+                dimensionTipR.Text = "Right button click on the mouse to show non-dimension parameters";
                 dimensionIndicator.Content = "dimensional";
             }
             else
@@ -745,11 +761,33 @@ namespace SimuladorNozzle
                 labelValueV.Content = Math.Round(position.GetVelocity(), 2);
                 labelValueP.Content = Math.Round(position.GetPressure(), 2);
                 labelValueA.Content = Math.Round(position.GetArea(), 2);
-                dimensionTip.Text = "Right button click on the mouse to show dimensional parameters";
+                dimensionTipR.Text = "Right button click on the mouse to show dimensional parameters";
                 dimensionIndicator.Content = "non-dimensional";
             }
             panelShow.Visibility = Visibility.Visible;
-            
+            leftClickTip.Visibility = Visibility.Visible;
+
+
+        }
+        private void Rectbutton_MouseDoubleClick(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            if (fixTable == false)
+            {
+                fixTable = true;
+                panelShow.Visibility = Visibility.Visible;
+                fixedIndicator.Visibility = Visibility.Visible;
+                fixedButton = button;
+                dimensionTipL.Text = " Double Right click on the mouse to cancel attachment";
+            }
+            else
+            {
+                fixTable = false;
+                panelShow.Visibility = Visibility.Hidden;
+                fixedIndicator.Visibility = Visibility.Hidden;
+                dimensionTipL.Text = " Double Right click on the mouse to fix the table of parameters";
+            }
+
         }
         private void Rectbutton_RightClick(object sender, RoutedEventArgs e)
         {
@@ -757,11 +795,23 @@ namespace SimuladorNozzle
                 unitsShowTable = false;
             else
                 unitsShowTable = true;
+            Position position; Position Dimenssion;
+            if (fixTable == false)
+            {
+                Button button = (Button)sender;
+                Dimenssion = nozzlesim.getDimensionalPosition();
+                int row = Convert.ToInt32(button.Name.ToString().Split('n')[1]);
+                position = nozzlesim.GetRow(steps)[row];
+            }
+            else
+            {
+                Button button = fixedButton;
+                Dimenssion = nozzlesim.getDimensionalPosition();
+                int row = Convert.ToInt32(button.Name.ToString().Split('n')[1]);
+                position = nozzlesim.GetRow(steps)[row];
+            }
 
-            Button button = (Button)sender;
-            Position Dimenssion = nozzlesim.getDimensionalPosition();
-            int row = Convert.ToInt32(button.Name.ToString().Split('n')[1]);
-            Position position = nozzlesim.GetRow(steps)[row];
+            
             if (unitsShowTable == true)
             {
                 labelValueX.Content = Math.Round(position.GetX(), 1);
@@ -770,7 +820,7 @@ namespace SimuladorNozzle
                 labelValueV.Content = Math.Round(position.GetVelocity() * Dimenssion.GetVelocity(), 2);
                 labelValueP.Content = Math.Round(position.GetPressure() * Dimenssion.GetPressure() * Dimenssion.R, 2);
                 labelValueA.Content = Math.Round(position.GetArea(), 2);
-                dimensionTip.Text = "Right button click on the mouse to show non-dimension parameters";
+                dimensionTipR.Text = "Right button click on the mouse to show non-dimension parameters";
                 dimensionIndicator.Content = "dimensional";
             }
             else
@@ -781,14 +831,17 @@ namespace SimuladorNozzle
                 labelValueV.Content = Math.Round(position.GetVelocity(), 2);
                 labelValueP.Content = Math.Round(position.GetPressure(), 2);
                 labelValueA.Content = Math.Round(position.GetArea(), 2);
-                dimensionTip.Text = "Right button click on the mouse to show dimensional parameters";
+                dimensionTipR.Text = "Right button click on the mouse to show dimensional parameters";
                 dimensionIndicator.Content = "non-dimensional";
             }
             panelShow.Visibility = Visibility.Visible;
         }
         private void Rectbutton_MouseLeave(object sender, RoutedEventArgs e)
         {
-            panelShow.Visibility = Visibility.Hidden;
+            if (fixTable==false)
+                panelShow.Visibility = Visibility.Hidden;
+
+            leftClickTip.Visibility = Visibility.Hidden;
         }
         private Color PrintColor(int propind, double i)
         {
@@ -1598,6 +1651,8 @@ namespace SimuladorNozzle
             rayahorizontal.Visibility = Visibility.Hidden;
             Indicator.Visibility = Visibility.Hidden;
             panelShow.Visibility = Visibility.Hidden;
+            fixedIndicator.Visibility = Visibility.Hidden;
+
             NozzleCanvas.Children.Clear();
             gridRecChart.Children.Clear();
             gridRecChart.RowDefinitions.Clear();
@@ -1704,6 +1759,8 @@ namespace SimuladorNozzle
             double periodo = 1000000/AutoSlider.Value;
             clock.Interval = new TimeSpan((long)periodo);
         }
+
+        
     }
 }
 
