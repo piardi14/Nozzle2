@@ -1139,7 +1139,8 @@ namespace SimuladorNozzle
                     Button button = new Button();
                     button.Background = new SolidColorBrush(color);
                     button.Name = "buttChart" + Convert.ToString(i*10+j);
-                    button.Content = "x = " + Convert.ToString(Convert.ToDouble(i * 10 + j)/10);
+                    double contenidox = Math.Round((i * (double)10 + j) / (double)10 / (filas - (double)1) * (double)3,2);
+                    button.Content = "x = " + Convert.ToString(contenidox);
                     if (filas>=5)
                         button.FontSize = 9;
                     else
