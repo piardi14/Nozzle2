@@ -29,12 +29,12 @@ namespace SimuladorNozzle
     public partial class MainWindow : Window
     {
         List<int> posChart;                               // Select positions to show on the chart
-        List<List<Rectangle>> recListChart= new List<List<Rectangle>>();
+        List<List<Rectangle>> recListChart = new List<List<Rectangle>>();
         List<Brush> brushesList;
         List<Button> listaboton;
         int steps;
 
-        DispatcherTimer clock= new DispatcherTimer();
+        DispatcherTimer clock = new DispatcherTimer();
         bool auto = false;
         TimeSpan clockTime;
 
@@ -92,8 +92,11 @@ namespace SimuladorNozzle
             rectanglePanel.Visibility = Visibility.Visible;
             rayahorizontal.Visibility = Visibility.Hidden;
             panelShow.Visibility = Visibility.Hidden;
+
+            panelAdvanced2.Visibility = Visibility.Hidden;
+
             xAxisD.MaxValue = 0.1;
-            xAxisT.MaxValue = 0.1; 
+            xAxisT.MaxValue = 0.1;
             xAxisV.MaxValue = 0.1;
             xAxisP.MaxValue = 0.1;
 
@@ -106,10 +109,10 @@ namespace SimuladorNozzle
 
         }
 
-		
 
-		//INITIAL SETTINGS
-		private void DefaultValuesButton_Click(object sender, RoutedEventArgs e)
+
+        //INITIAL SETTINGS
+        private void DefaultValuesButton_Click(object sender, RoutedEventArgs e)
         {
             DivisionsTextBox.Text = "31";
             CourantTextBox.Text = "0.5";
@@ -118,68 +121,65 @@ namespace SimuladorNozzle
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (initiated == false)
-            {
-                if (DivisionsTextBox.Text != "" && CourantTextBox.Text != "")
-                {
-                    CreateButton.Content = "SIMULATING...";
-                    CreateButton.IsEnabled = false;
-                    DefaultValuesButton.IsEnabled = false;
-
-                    DivisionsTextBox.IsEnabled = false;
-                    CourantTextBox.IsEnabled = false;
-
-                    decimal c = decimal.Parse(CourantTextBox.Text.Replace('.',','));
-                    double C = Convert.ToDouble(c);
-                    int divisions = Convert.ToInt32(DivisionsTextBox.Text);
-                    textStep.Content = "0"; labelStep.Visibility = Visibility.Visible;
-                    textTime.Content = "0"; labelTime.Visibility = Visibility.Visible;
-                    rectangleCharts.Visibility = Visibility.Hidden;
-                    rectanglePanel.Visibility = Visibility.Hidden;
-                    rayahorizontal.Visibility = Visibility.Visible;
-                    Indicator.Visibility = Visibility.Visible;
-                    panelShow.Visibility = Visibility.Hidden;
-                    initiated = true;
-
-
-                    nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions);
-                    
-
-                    // computa todos los valores especificados
-                    nozzlesim.ComputeUntilPos(1401);
-                    calculateMinMax();
-                    //escribe los labels max y min en el indicador
-                    WriteIndicatorMaxMin(0);
-                    //inizialitzem el step
-                    steps = 0;
-                    setDimensionlessCharts();
-
-                    //create the buttons of the charts
-                    createButtCharts();
-                    // fill posChart of zeros
-                    fillSelectedList();
-                    // create the brushes List
-                    createBrushesList();
-
-                    lastLabeTick= new TimeSpan(0);
-
-
-
-                    PropertiesBoxSelection.SelectedIndex = 0;
-                    CreateNozzle(nozzlesim, 0);
-                    plotChanged = true;
-                    SetChart();
-                    clock.Start();
-                }
-                else
-                    MessageBox.Show("Set some parameters first," + "\n" + "check if some of the boxes above are empty");
-            }
-            else
-            {
-                MessageBox.Show("The simulation already began");
-            }
+            Create();
         }
 
+        public void Create()
+        {
+            if (DivisionsTextBox.Text != "" && CourantTextBox.Text != "")
+            {
+                CreateButton.Content = "SIMULATING...";
+                CreateButton.IsEnabled = false;
+                DefaultValuesButton.IsEnabled = false;
+
+                DivisionsTextBox.IsEnabled = false;
+                CourantTextBox.IsEnabled = false;
+
+                decimal c = decimal.Parse(CourantTextBox.Text.Replace('.', ','));
+                double C = Convert.ToDouble(c);
+                int divisions = Convert.ToInt32(DivisionsTextBox.Text);
+                textStep.Content = "0"; labelStep.Visibility = Visibility.Visible;
+                textTime.Content = "0"; labelTime.Visibility = Visibility.Visible;
+                rectangleCharts.Visibility = Visibility.Hidden;
+                rectanglePanel.Visibility = Visibility.Hidden;
+                rayahorizontal.Visibility = Visibility.Visible;
+                Indicator.Visibility = Visibility.Visible;
+                panelShow.Visibility = Visibility.Hidden;
+                initiated = true;
+
+
+                nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions);
+
+
+                // computa todos los valores especificados
+                nozzlesim.ComputeUntilPos(1401);
+                calculateMinMax();
+                //escribe los labels max y min en el indicador
+                WriteIndicatorMaxMin(0);
+                //inizialitzem el step
+                steps = 0;
+                setDimensionlessCharts();
+
+                //create the buttons of the charts
+                createButtCharts();
+                // fill posChart of zeros
+                fillSelectedList();
+                // create the brushes List
+                createBrushesList();
+
+                lastLabeTick = new TimeSpan(0);
+
+
+
+                PropertiesBoxSelection.SelectedIndex = 0;
+                CreateNozzle(nozzlesim, 0);
+                plotChanged = true;
+                SetChart();
+                clock.Start();
+            }
+            else
+                MessageBox.Show("Set some parameters first," + "\n" + "check if some of the boxes above are empty");
+        }
         //CONTROLS SIMULATOR
         private void PropertiesBoxSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -199,10 +199,10 @@ namespace SimuladorNozzle
             double[] MaxMin = new double[2] { max + (max - min) / 20, min - (max - min) / 20 };
             return MaxMin;
         }
-        
+
         private void DimensionlessButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
             double[] MaxMinD = ampliate(maxD, minD);
             double[] MaxMinV = ampliate(maxV, minV);
             double[] MaxMinT = ampliate(maxT, minT);
@@ -241,15 +241,15 @@ namespace SimuladorNozzle
                 yAxisT.MinValue = MaxMinT[1] * dimenssional.GetTemperature();
                 chartT.HorizontalAlignment = HorizontalAlignment.Stretch;
                 yAxisT.Title = "Temperature [ ºC ]";
-                yAxisP.MaxValue = MaxMinP[0] * dimenssional.GetPressure() * dimenssional.R/100 ;
-                yAxisP.MinValue = MaxMinP[1] * dimenssional.GetPressure() * dimenssional.R/100;
+                yAxisP.MaxValue = MaxMinP[0] * dimenssional.GetPressure() * dimenssional.R / 100;
+                yAxisP.MinValue = MaxMinP[1] * dimenssional.GetPressure() * dimenssional.R / 100;
                 chartP.HorizontalAlignment = HorizontalAlignment.Stretch;
                 yAxisP.Title = "Pressure [ hPa ]";
-                
+
             }
             plotChanged = true;
             SetChart();
-            
+
         }
         public void setDimensionlessCharts()
         {
@@ -289,7 +289,7 @@ namespace SimuladorNozzle
             {
                 maximum = false;
             }
-            if (selectedPos==0)
+            if (selectedPos == 0)
             {
                 NoSeriesD.Visibility = Visibility.Hidden;
                 NoSeriesV.Visibility = Visibility.Hidden;
@@ -297,7 +297,7 @@ namespace SimuladorNozzle
                 NoSeriesP.Visibility = Visibility.Hidden;
             }
 
-            int pos = Convert.ToInt32(Convert.ToDecimal(button.Content.ToString().Split(' ')[2])*10);
+            int pos = Convert.ToInt32(Convert.ToDecimal(button.Content.ToString().Split(' ')[2]) * 10);
 
             int showed = posChart[pos];
             if (showed == 0)   // pint of gray
@@ -305,7 +305,7 @@ namespace SimuladorNozzle
                 if (maximum == true)
                 {
                     MessageBox.Show("The maximum number of plots enabled to show are 10," + "\n" + "if some position are important delete another first");
-                
+
                 }
                 else
                 {
@@ -330,7 +330,7 @@ namespace SimuladorNozzle
             Button button = (Button)sender;
             ClickButtonChart(button);
         }
-        
+
         private void MaxDensity_Click(object sender, RoutedEventArgs e)
         {
             row0.Height = new GridLength(320);
@@ -663,7 +663,7 @@ namespace SimuladorNozzle
 
         private void CreateNozzle(Nozzle nozzle, int t)
         {
-            
+
             NozzleCanvas.Children.RemoveRange(0, NozzleCanvas.Children.Count);
             double width = (double)435 / (nozzle.GetDivisions());
             int count = 0;
@@ -674,7 +674,7 @@ namespace SimuladorNozzle
                 if (propind == 0)
                 {
                     value = nozzle.GetPosition(t, count).GetTemperature();
-                   
+
                 }
                 else if (propind == 1)
                 {
@@ -692,10 +692,10 @@ namespace SimuladorNozzle
 
                 Button rectbutton = new Button();
                 rectbutton.Background = new SolidColorBrush(color);
-                rectbutton.Name = "button"+Convert.ToString(count);
+                rectbutton.Name = "button" + Convert.ToString(count);
                 rectbutton.Height = 100 + (nozzle.GetPosition(0, count).GetArea() - 1) * 200 / 4.95;
                 rectbutton.Width = width;
-                rectbutton.BorderBrush= new SolidColorBrush(color);
+                rectbutton.BorderBrush = new SolidColorBrush(color);
                 Canvas.SetLeft(rectbutton, 5 + width * count);
                 Canvas.SetTop(rectbutton, 150 - (rectbutton.Height - 100) * 100 / 200);
                 rectbutton.Click += Rectbutton_Click;
@@ -705,18 +705,18 @@ namespace SimuladorNozzle
                 NozzleCanvas.Children.Add(rectbutton);
                 count++;
             }
-            
+
             // crea el valor maximo del chart del nozzle
-            xAxiscolores.MaxValue = Convert.ToDouble(nozzlesim.GetDivisions())*3 / (Convert.ToDouble(nozzlesim.GetDivisions())-1);
+            xAxiscolores.MaxValue = Convert.ToDouble(nozzlesim.GetDivisions()) * 3 / (Convert.ToDouble(nozzlesim.GetDivisions()) - 1);
         }
 
         private void Rectbutton_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
             string nombre = button.Name.Split('n')[1];
-            foreach(Button boton in listaboton)
+            foreach (Button boton in listaboton)
             {
-                if(boton.Name.Split('t')[3]==nombre)
+                if (boton.Name.Split('t')[3] == nombre)
                 {
                     ClickButtonChart(boton);
                 }
@@ -755,7 +755,7 @@ namespace SimuladorNozzle
                     dimensionIndicator.Content = "non-dimensional";
                 }
                 panelShow.Visibility = Visibility.Visible;
-                
+
             }
             leftClickTip.Visibility = Visibility.Visible;
         }
@@ -783,7 +783,7 @@ namespace SimuladorNozzle
         }
         private void CheckedBox_Show(object sender, RoutedEventArgs e)
         {
-            
+
             Button button = fixedButton;
             Position Dimenssion = nozzlesim.getDimensionalPosition();
             int row = Convert.ToInt32(button.Name.ToString().Split('n')[1]);
@@ -791,11 +791,11 @@ namespace SimuladorNozzle
 
             if (DimensionlessButtonShow.IsChecked == false)
             {
-                labelValueX.Content = Math.Round(position.GetX(), 1).ToString()+" m";
+                labelValueX.Content = Math.Round(position.GetX(), 1).ToString() + " m";
                 labelValueT.Content = Math.Round(position.GetTemperature() * Dimenssion.GetTemperature(), 2).ToString() + " ºC";
                 labelValueD.Content = Math.Round(position.GetDensity() * Dimenssion.GetDensity(), 2).ToString() + " Kg/m^3";
                 labelValueV.Content = Math.Round(position.GetVelocity() * Dimenssion.GetVelocity(), 2).ToString() + " m/s";
-                labelValueP.Content = Math.Round(position.GetPressure() * Dimenssion.GetPressure() * Dimenssion.R/100, 2).ToString() + " hPa";
+                labelValueP.Content = Math.Round(position.GetPressure() * Dimenssion.GetPressure() * Dimenssion.R / 100, 2).ToString() + " hPa";
                 labelValueA.Content = Math.Round(position.GetArea(), 2).ToString() + " m^2";
                 dimensionIndicator.Content = "dimensional";
             }
@@ -810,18 +810,18 @@ namespace SimuladorNozzle
                 dimensionIndicator.Content = "non-dimensional";
             }
             panelShow.Visibility = Visibility.Visible;
-            
+
         }
         private void Rectbutton_MouseLeave(object sender, RoutedEventArgs e)
         {
-            if (fixTable==false)
+            if (fixTable == false)
                 panelShow.Visibility = Visibility.Hidden;
 
             leftClickTip.Visibility = Visibility.Hidden;
         }
         private Color PrintColor(int propind, double i)
         {
-            
+
             double max = 1;
             double min = 0;
             if (propind == 0)
@@ -1158,23 +1158,23 @@ namespace SimuladorNozzle
         public void createButtCharts()
         {
             //< !--< Button x: Name = "buttChart0" Grid.Row = "0" Grid.Column = "0" FontSize = "10" Content = "x = 0" Background = "#FFE8E8E8" Margin = "1,1,1,1" Click = "buttChart0_Click" Cursor = "Hand" ></ Button >
-            
+
             int filas = (nozzlesim.GetDivisions() - 1) / 10 + 1; // if div == 31;  4 filas
             int i = 0;
             listaboton = new List<Button>();
-            while (i<filas)
+            while (i < filas)
             {
 
                 gridButtChart.RowDefinitions.Add(new RowDefinition());
                 gridRecChart.RowDefinitions.Add(new RowDefinition());
                 int j = 0;
-                while (j<10)
+                while (j < 10)
                 {
                     Color color = Color.FromRgb(232, 232, 232);
                     Button button = new Button();
                     button.Background = new SolidColorBrush(color);
-                    button.Name = "buttChart" + Convert.ToString(i*10+j);
-                    double contenidox = Math.Round((i * (double)10 + j) / (double)10 / (filas - (double)1) * (double)3,2);
+                    button.Name = "buttChart" + Convert.ToString(i * 10 + j);
+                    double contenidox = Math.Round((i * (double)10 + j) / (double)10 / (filas - (double)1) * (double)3, 2);
                     button.Content = "x = " + Convert.ToString(contenidox);
                     if (filas == 5)
                         button.FontSize = 9;
@@ -1186,7 +1186,7 @@ namespace SimuladorNozzle
                         button.FontSize = 10;
 
                     button.VerticalContentAlignment = VerticalAlignment.Center;
-                    button.Margin =new Thickness(1,1,1,1);
+                    button.Margin = new Thickness(1, 1, 1, 1);
                     button.Cursor = Cursors.Hand;
                     button.Click += buttChart_Click;
                     Grid.SetRow(button, i);
@@ -1199,7 +1199,7 @@ namespace SimuladorNozzle
                 }
                 i++;
             }
-            
+
         }
 
 
@@ -1214,29 +1214,29 @@ namespace SimuladorNozzle
                 int j = 0;
                 while (j < gridRecChart.ColumnDefinitions.Count)
                 {
-                    if (i == gridRecChart.RowDefinitions.Count-1 && j == 1)
+                    if (i == gridRecChart.RowDefinitions.Count - 1 && j == 1)
                         break;
-                    
+
                     Rectangle rec = new Rectangle();
                     rec.Name = "rec" + (i * 10 + j).ToString();
                     rec.Height = 4;
                     //Color colorset = Color.FromArgb(0, 0, 255, 255);
                     //Brush colorBrush = new SolidColorBrush(colorset);
-                    rec.Margin =new Thickness(1, 4, 1, 2);
+                    rec.Margin = new Thickness(1, 4, 1, 2);
                     rec.VerticalAlignment = VerticalAlignment.Bottom;
                     rec.Fill = brushes[i * 10 + j];
                     Grid.SetRow(rec, i);
                     Grid.SetColumn(rec, j);
                     gridRecChart.Children.Add(rec);
-                   
+
                     j++;
-                    
+
                 }
                 recListChart.Add(recFila);
                 i++;
             }
         }
-        
+
         public void SetChart()
         {
             if (nozzlesim.Getmalla() != null)
@@ -1279,7 +1279,7 @@ namespace SimuladorNozzle
                 {
                     if (pos == 1)
                     {
-                        listV.Add(nozzlesim.GetColumnPar(i, "V",  stepsChart, dimens, finStep));
+                        listV.Add(nozzlesim.GetColumnPar(i, "V", stepsChart, dimens, finStep));
                         listP.Add(nozzlesim.GetColumnPar(i, "P", stepsChart, dimens, finStep));
                         listT.Add(nozzlesim.GetColumnPar(i, "T", stepsChart, dimens, finStep));
                         listD.Add(nozzlesim.GetColumnPar(i, "D", stepsChart, dimens, finStep));
@@ -1302,7 +1302,7 @@ namespace SimuladorNozzle
                 foreach (int pos in posChart)
                     if (pos == 1)
                         sel++;
-                int maxUpdate=1;
+                int maxUpdate = 1;
                 if (sel > 4)
                     maxUpdate = 2;
                 if (lastChartUpdate > new TimeSpan(maxUpdate * 10000000) && plotChanged == true)
@@ -1326,7 +1326,7 @@ namespace SimuladorNozzle
                     createChart(chartD, listD, ListBrush, xAxisD, times);
                 }
 
-                
+
             }
             else
             {
@@ -1343,12 +1343,12 @@ namespace SimuladorNozzle
 
             chart.Series = new SeriesCollection();
             int i = 0;
-            while (i<listV.Count)
+            while (i < listV.Count)
             {
-                LineSeries linSerie =new LineSeries
+                LineSeries linSerie = new LineSeries
                 {
-                    Title = "x = "+(i/10.0).ToString(),
-                    Name="lineChart_"+i.ToString(),
+                    Title = "x = " + (i / 10.0).ToString(),
+                    Name = "lineChart_" + i.ToString(),
                     Values = new ChartValues<double>(listV[i]),
                     PointGeometry = null,
                     Fill = Brushes.Transparent,
@@ -1359,16 +1359,15 @@ namespace SimuladorNozzle
             }
 
 
-            
-            if (times.Count() >1)
+
+            if (times.Count() > 1)
             {
-                
-                double dec=Convert.ToDouble(Convert.ToDecimal(times[times.Count() - 1]));
+
+                double dec = Convert.ToDouble(Convert.ToDecimal(times[times.Count() - 1]));
                 //xAxisDSeparator.Step = 0.1;
-                xAxis.MaxValue = times.Count()-1;
+                xAxis.MaxValue = times.Count() - 1;
                 xAxis.Separator.Step = times.Count() - 1;
                 xAxis.Labels = times;
-                int o = 0;
             }
 
 
@@ -1400,14 +1399,14 @@ namespace SimuladorNozzle
 
         private void NextStepButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
             steps = steps + 1;
             textStep.Content = steps.ToString();
-            textTime.Content = nozzlesim.getTimeList()[steps].ToString()+" sec";
+            textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
             CreateNozzle(nozzlesim, steps);
             plotChanged = true;
             SetChart();
-            
+
         }
 
 
@@ -1459,7 +1458,7 @@ namespace SimuladorNozzle
                 NoPointsLabelT.Visibility = Visibility.Hidden;
                 NoPointsLabelP.Visibility = Visibility.Hidden;
             }
-            else if(lastLabeTick > new TimeSpan(10000000))
+            else if (lastLabeTick > new TimeSpan(10000000))
             {
                 lastLabeTick = new TimeSpan(0);
                 bool zeroSelected = true;
@@ -1496,11 +1495,11 @@ namespace SimuladorNozzle
                     NoSeriesP.Visibility = Visibility.Hidden;
                 }
             }
-            
+
         }
-        
+
         private void AutoButton_Click(object sender, RoutedEventArgs e)
-		{
+        {
             Auto();
         }
 
@@ -1531,14 +1530,14 @@ namespace SimuladorNozzle
                 MessageBox.Show("The simulate has to be initiated first," + "\n" + "create the nozzle to start!!");
         }
         private void PauseButton_Click(object sender, RoutedEventArgs e)
-		{
+        {
             NextStepButton.IsEnabled = true;
         }
 
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult respuesta = MessageBox.Show(
-                "Se va a reiniciar el simulador, se perderán los cambios","Warning",MessageBoxButton.OKCancel);
+                "Se va a reiniciar el simulador, se perderán los cambios", "Warning", MessageBoxButton.OKCancel);
 
             switch (respuesta)
             {
@@ -1548,7 +1547,7 @@ namespace SimuladorNozzle
                 case MessageBoxResult.Cancel:
                     break;
             }
-            
+
         }
         public void Restart()
         {
@@ -1587,7 +1586,7 @@ namespace SimuladorNozzle
             }
 
             gridRecChart.Children.Clear();
-
+            listaboton.Clear();
             initiated = false;
             CreateButton.Content = "CREATE";
             DefaultValuesButton.IsEnabled = true;
@@ -1629,6 +1628,9 @@ namespace SimuladorNozzle
             panelShow.Visibility = Visibility.Hidden;
             fixedIndicator.Visibility = Visibility.Hidden;
 
+            fixTable = false;
+
+
             NozzleCanvas.Children.Clear();
             gridRecChart.Children.Clear();
             gridRecChart.RowDefinitions.Clear();
@@ -1639,7 +1641,7 @@ namespace SimuladorNozzle
             //nozzlesim = new Nozzle(3, 800, 0.5, 0.5, 31);
             //nozzlesim.ComputeUntilPos(1401);
             //calculateMinMax();
-
+            int p = 0;
         }
 
         private void DivisionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -1647,8 +1649,8 @@ namespace SimuladorNozzle
             try
             {
                 int div = Convert.ToInt32(DivisionsTextBox.Text.ToString());
-                
-                if ((div == 11 || div == 21 || div == 31 || div == 41||div==51||div==61))
+
+                if ((div == 11 || div == 21 || div == 31 || div == 41 || div == 51 || div == 61))
                 {
                     alertDivisionsLabel.Visibility = Visibility.Hidden;
                     try
@@ -1666,13 +1668,13 @@ namespace SimuladorNozzle
                         CreateButton.IsEnabled = false;
                     }
 
-                    }
+                }
                 else
                 {
                     CreateButton.IsEnabled = false;
                     alertDivisionsLabel.Visibility = Visibility.Visible;
                 }
-                    
+
             }
             catch (FormatException)
             {
@@ -1704,11 +1706,11 @@ namespace SimuladorNozzle
 
         private void WriteIndicatorMaxMin(int propind)
         {
-            if(propind==0)
+            if (propind == 0)
             {
-                MaxLabel.Content = Convert.ToString(Math.Round(maxT,1));
+                MaxLabel.Content = Convert.ToString(Math.Round(maxT, 1));
                 MinLabel.Content = Convert.ToString(Math.Round(minT, 1));
-                MedLabel.Content = Convert.ToString(Math.Round((maxT + minT) / (double)2,1));
+                MedLabel.Content = Convert.ToString(Math.Round((maxT + minT) / (double)2, 1));
             }
             else if (propind == 1)
             {
@@ -1732,12 +1734,177 @@ namespace SimuladorNozzle
 
         private void AutoSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            double periodo = 1000000/AutoSlider.Value;
+            double periodo = 1000000 / AutoSlider.Value;
             clock.Interval = new TimeSpan((long)periodo);
         }
 
-        
-    }
+        private void buttonAdvanced_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult respuesta = MessageBox.Show(
+                "The advanced study is getting started, the simulator will be reset" + "\n" + "to create a new nozzle, so the info will be lost. Do you want to coninue?", "Advanced study", MessageBoxButton.OKCancel);
+
+            switch (respuesta)
+            {
+                case MessageBoxResult.OK:
+                {
+                    //Restart();
+                    panelAdvanced2.Visibility = Visibility.Visible;
+                    buttCheckNewA.Background = new SolidColorBrush(Color.FromArgb(204, 255, 9, 0));
+                    buttCheckNewA.Visibility = Visibility.Hidden;
+                    alertRateA.Visibility = Visibility.Hidden;
+                    recOld.Visibility = Visibility.Hidden;
+                    recNew.Visibility = Visibility.Hidden;
+                    break;
+                }
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+        }
+
+        private void textNewA_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SolidColorBrush red= new SolidColorBrush(Color.FromArgb(204,255,9,0));
+            buttCheckNewA.Background = red;
+            buttCheckNewA.Visibility = Visibility.Visible;
+            buttCheckNewA.Content = "check value";
+            buttCheckNewA.IsEnabled = true;
+            alertRateA.Visibility = Visibility.Hidden;
+            chartA.Visibility = Visibility.Hidden;
+            recNew.Visibility = Visibility.Hidden;
+            recOld.Visibility = Visibility.Hidden;
+        }
+
+        private void buttCheckNewA_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (textNewA.Text != "")
+                {
+                    decimal decRes = decimal.Parse(textNewA.Text.Split(':')[0].Replace('.', ','));
+                    decimal decThr = decimal.Parse(textNewA.Text.Split(':')[1].Replace('.', ','));
+
+                    
+                    double Res = Convert.ToDouble(decRes);
+                    double Thr = Convert.ToDouble(decThr);
+
+                    if (Thr !=0)
+                    {
+                        if (Res > Thr && Res / Thr != 5.95)
+                        {
+                            Res = Math.Round(Res / Thr,2);
+                            
+                            textNewA.Text = ((Convert.ToDecimal(Res)).ToString() + " : 1").ToString().Replace(',', '.');
+                            buttCheckNewA.Background = Brushes.GreenYellow;
+                            buttCheckNewA.Content = "checked";
+                            buttCheckNewA.IsEnabled = false;
+                            alertRateA.Visibility = Visibility.Hidden;
+
+                            chartA.Visibility = Visibility.Visible;
+
+                            chartA.Series = new SeriesCollection();
+                            int N = 31;
+                            List<double> listA = new List<double>();
+                            List<double> listAold = new List<double>();
+                            List<double> listAM = new List<double>();
+                            List<double> listAoldM = new List<double>();
+                            int i = 0;
+                            double Res0 = 2.2 * Math.Pow(0.0 - (N - 1)*0.1 / 2, 2);
+                            double Correction = (Res-1) / Res0;
+                            string[] x = new string[N];
+                            while (i < N)
+                            {
+                                double xi = i * 0.1;
+                                double A = (1 + 2.2 * Correction * Math.Pow(xi - (N - 1)*0.1 / 2, 2));
+                                listA.Add(A);
+                                double Aminus = -1*(1 + 2.2 * Correction * Math.Pow(xi - (N - 1) * 0.1 / 2, 2));
+                                listAM.Add(Aminus);
+                                double Aold = 1+2.2 * Math.Pow(xi - (N - 1)*0.1 / 2, 2);
+                                listAold.Add(Aold);
+                                double Aoldminus = -1*(1 + 2.2 * Math.Pow(xi - (N - 1) * 0.1 / 2, 2));
+                                listAoldM.Add(Aoldminus);
+                                x[i] = (i * 0.1).ToString();
+                                i++;
+                            }
+                            LineSeries linSerie = new LineSeries
+                            {
+                                Title = textNewA.Text.ToString(),
+                                Name = "lineChartNewA",
+                                Values = new ChartValues<double>(listA),
+                                PointGeometry = null,
+                                Fill = Brushes.Transparent,
+                                Stroke = Brushes.Green,
+                            };
+                            chartA.Series.Add(linSerie);
+                            LineSeries linSerieM = new LineSeries
+                            {
+                                Title = textNewA.Text.ToString(),
+                                Name = "lineChartNewAM",
+                                Values = new ChartValues<double>(listAM),
+                                PointGeometry = null,
+                                Fill = Brushes.Transparent,
+                                Stroke = Brushes.Green,
+                            };
+                            chartA.Series.Add(linSerieM);
+                            LineSeries linSerie1 = new LineSeries
+                            {
+                                Title = "5.95 : 1",
+                                Name = "lineChartOldA",
+                                Values = new ChartValues<double>(listAold),
+                                PointGeometry = null,
+                                Fill = Brushes.Transparent,
+                                Stroke = Brushes.Black,
+                            };
+                            chartA.Series.Add(linSerie1);
+                            LineSeries linSerie1M = new LineSeries
+                            {
+                                Title = "5.95 : 1",
+                                Name = "lineChartOldAM",
+                                Values = new ChartValues<double>(listAoldM),
+                                PointGeometry = null,
+                                Fill = Brushes.Transparent,
+                                Stroke = Brushes.Black,
+                            };
+                            chartA.Series.Add(linSerie1M) ;
+                            xAxisA.Labels = x;
+                            xAxisA.MaxValue = x.Count() - 1;
+                            SepA.Step= (x.Count() - 1)/2;
+                            if (listA[0]>listAold[0])
+                            {
+                                yAxisA.MaxValue = listA[0] * 1.1;
+                                yAxisA.MinValue = listA[0] * (-1.1);
+                            }
+                            else
+                            {
+                                yAxisA.MaxValue = listAold[0] * (1.1);
+                                yAxisA.MinValue = listAold[0] * (-1.1);
+                            }
+                            DataContext = this;
+                            chartA.Visibility = Visibility.Visible;
+                            recNew.Visibility = Visibility.Visible;
+                            recOld.Visibility = Visibility.Visible;
+                        }
+                        else if (Res < Thr)
+                        {
+                            alertRateA.Visibility = Visibility.Visible;
+                            textAlertA.Text = "Only convergent-divergent nozzle is possibe";
+                        }
+                        else
+                        {
+                            alertRateA.Visibility = Visibility.Visible;
+                            textAlertA.Text = "Cannot create the same nozzle as initialy";
+                        }
+                    }
+                }
+                else
+                {
+
+                }
+            }
+            catch (FormatException)
+            { }
+           
+        }
+    } 
 }
 
 
