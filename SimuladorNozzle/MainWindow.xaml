@@ -7,11 +7,11 @@
         xmlns:chart="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="680" Width="1280">
+        Title="MainWindow" Height="730" Width="1280">
     <Grid Background="DarkSalmon" Margin="0,0,0,0">
         <TabControl Name="Pestañas" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top">
             <TabItem Name="SimulatorTab" Header="Simulator" Height="22" VerticalAlignment="Top">
-                <Grid Height="600" Width="1250" Margin="0,0,0,0">
+                <Grid Height="650" Width="1250" Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"></ColumnDefinition>
                         <ColumnDefinition Width="550"></ColumnDefinition>
@@ -166,7 +166,7 @@
 
                             </Grid>
                         </StackPanel>
-                        <StackPanel x:Name="PanelControls" Margin="0,20,0,5" Height="120" Background="#FFE5E5E5">
+                        <StackPanel x:Name="PanelControls" Margin="0,20,-0.2,5"  Background="#FFE5E5E5" >
                             <Grid Height="120" Margin="0,0,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition></ColumnDefinition>
@@ -185,7 +185,7 @@
 
                                 </Button>
                                 <Button x:Name="AutoButton" Margin="10,5,10,5" Height="60" Width="60" Content="Auto" Grid.Column="1" Grid.Row="1" Background="#FFE8E8E8" Click="AutoButton_Click" Cursor="Hand">
-                                    
+
                                 </Button>
                                 <!--<Button x:Name="PauseButton" Margin="10,5,10,5" Height="60" Width="60" Content="Pause"  Background="#FFE8E8E8" Grid.Column="2" Click="PauseButton_Click"/>-->
                                 <Button x:Name="RestartButton" Margin="10,5,10,5" Height="60" Width="60" Content="Restart"  Background="#FFE8E8E8" Grid.Column="2" Grid.Row="1" Cursor="Hand" Click="RestartButton_Click" />
@@ -202,7 +202,7 @@
 
 
 
-                    <StackPanel x:Name="PanelCol3" Margin="5,5,5,5" Grid.Column="2" Background="#FFE5E5E5">
+                    <StackPanel x:Name="PanelCol3" Margin="5.6,10,4.6,-0.4" Grid.Column="2" Background="#FFE5E5E5" >
                         <Grid x:Name="gridButtChart" Margin="5,2,2,0" Height="80" Width="400" HorizontalAlignment="Right" >
                             <Grid.RowDefinitions>
                                 <!--<RowDefinition ></RowDefinition>
@@ -222,44 +222,6 @@
                                 <ColumnDefinition ></ColumnDefinition>
                                 <ColumnDefinition ></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <!--<Button x:Name="buttChart0" Grid.Row="0" Grid.Column="0" FontSize="10" Content="x = 0" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart0_Click" Cursor="Hand"></Button>
-                            -->
-                            <!--possible color of activated #FF999090-->
-                            <!--
-                            <Button x:Name="buttChart1" Grid.Row="0" Grid.Column="1" FontSize="10" Content="x = 0.1" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart1_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart2" Grid.Row="0" Grid.Column="2" FontSize="10" Content="x = 0.2" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart2_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart3" Grid.Row="0" Grid.Column="3" FontSize="10" Content="x = 0.3" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart3_Click" Cursor="Hand"></Button>
-
-                            <Button x:Name="buttChart4" Grid.Row="0" Grid.Column="4" FontSize="10" Content="x = 0.4" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart4_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart5" Grid.Row="0" Grid.Column="5" FontSize="10" Content="x = 0.5" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart5_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart6" Grid.Row="0" Grid.Column="6" FontSize="10" Content="x = 0.6" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart6_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart7" Grid.Row="0" Grid.Column="7" FontSize="10" Content="x = 0.7" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart7_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart8" Grid.Row="0" Grid.Column="8" FontSize="10" Content="x = 0.8" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart8_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart9" Grid.Row="0" Grid.Column="9" FontSize="10" Content="x = 0.9" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart9_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart10" Grid.Row="1" Grid.Column="0" FontSize="10" Content="x = 1 " Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart10_Click" Cursor="Hand"></Button>
-
-                            <Button x:Name="buttChart11" Grid.Row="1" Grid.Column="1" FontSize="10" Content="x = 1.1" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart11_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart12" Grid.Row="1" Grid.Column="2" FontSize="10" Content="x = 1.2" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart12_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart13" Grid.Row="1" Grid.Column="3" FontSize="10" Content="x = 1.3" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart13_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart14" Grid.Row="1" Grid.Column="4" FontSize="10" Content="x = 1.4" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart14_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart15" Grid.Row="1" Grid.Column="5" FontSize="10" Content="x = 1.5" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart15_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart16" Grid.Row="1" Grid.Column="6" FontSize="10" Content="x = 1.6" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart16_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart17" Grid.Row="1" Grid.Column="7" FontSize="10" Content="x = 1.7" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart17_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart18" Grid.Row="1" Grid.Column="8" FontSize="10" Content="x = 1.8" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart18_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart19" Grid.Row="1" Grid.Column="9" FontSize="10" Content="x = 1.9" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart19_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart20" Grid.Row="2" Grid.Column="0" FontSize="10" Content="x = 2  " Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart20_Click" Cursor="Hand"></Button>
-
-
-                            <Button x:Name="buttChart21" Grid.Row="2" Grid.Column="1" FontSize="10" Content="x = 2.1" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart21_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart22" Grid.Row="2" Grid.Column="2" FontSize="10" Content="x = 2.2" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart22_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart23" Grid.Row="2" Grid.Column="3" FontSize="10" Content="x = 2.3" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart23_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart24" Grid.Row="2" Grid.Column="4" FontSize="10" Content="x = 2.4" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart24_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart25" Grid.Row="2" Grid.Column="5" FontSize="10" Content="x = 2.5" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart25_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart26" Grid.Row="2" Grid.Column="6" FontSize="10" Content="x = 2.6" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart26_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart27" Grid.Row="2" Grid.Column="7" FontSize="10" Content="x = 2.7" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart27_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart28" Grid.Row="2" Grid.Column="8" FontSize="10" Content="x = 2.8" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart28_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart29" Grid.Row="2" Grid.Column="9" FontSize="10" Content="x = 2.9" Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart29_Click" Cursor="Hand"></Button>
-                            <Button x:Name="buttChart30" Grid.Row="3" Grid.Column="0" FontSize="10" Content="x = 3  " Background="#FFE8E8E8" Margin="1,1,1,1" Click="buttChart30_Click" Cursor="Hand"></Button>-->
 
                         </Grid>
                         <Grid x:Name="gridRecChart" Margin="5,-78,2,0" Height="80" Width="400" VerticalAlignment="Top" HorizontalAlignment="Right" >
@@ -461,7 +423,65 @@
                                 </lvc:CartesianChart>
                             </StackPanel>
                         </Grid>
-                        <Rectangle x:Name="rectangleCharts" Fill="Transparent" HorizontalAlignment="Stretch" Height="590" VerticalAlignment="Top" Margin="0,-441" Visibility="Hidden"/>
+
+                        <StackPanel x:Name="panelAdvanced1" Margin="5,5,5,5" Height="200">
+                            <Label Content="ADVANCED STUDY" HorizontalAlignment="Left" Height="25" Width="120" FontWeight="Bold"/>
+                            <Button x:Name="buttonAdvanced" Content="Start Advanced Study" Width="110" Height="18" HorizontalAlignment="Left" FontSize="10" Margin="60,0,0,5" Click="buttonAdvanced_Click" Cursor="Hand" Background="DarkSalmon">
+                                <Button.Effect>
+                                    <DropShadowEffect/>
+                                </Button.Effect>
+                            </Button>
+                            <StackPanel x:Name="panelAdvanced2" Height="150" >
+                                <Label Content="Reservoir-Throat Rate Area" HorizontalAlignment="Left" Height="25" Width="170" FontSize="10" Margin="5,5,0,0"/>
+
+                                <Grid Width="180" Height="60" Margin="5,0,5,5" HorizontalAlignment="Left">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="74"></ColumnDefinition>
+                                        <ColumnDefinition  Width="50"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+
+                                    </Grid.RowDefinitions>
+                                    <Label Content="Dafault rate:" Margin="0,0,0,0" Opacity="1.0" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right"/>
+                                    <Label x:Name="labelDefaultA" Margin="0,0,0,0" Height="25" Content="5.95 : 1" Width="50" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Background="White" BorderBrush="#FFABADB3" BorderThickness="1" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top"  FontSize="11" VerticalContentAlignment="Center"/>
+                                    <Rectangle x:Name="recNew" VerticalAlignment="Bottom" Height="5" Fill="Green" Grid.Row="1" Grid.Column="1" />
+                                    <Rectangle x:Name="recOld" VerticalAlignment="Bottom" Height="6" Fill="Black" Grid.Row="0" Grid.Column="1" />
+                                    <Label Content="New Rate:" Margin="0,0,0,0" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right"/>
+
+                                    <TextBox x:Name="textNewA" Margin="0,0,0,0" Height="25" HorizontalAlignment="Left" Width="50" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" TextAlignment="Center" FontSize="11" VerticalContentAlignment="Center" TextChanged="textNewA_TextChanged"/>
+                                    <Button x:Name="buttCheckNewA" Content="check value" FontSize="9" Grid.Column="2" Grid.Row="1" Background="#CCFF0900" Width="50" Height="15" HorizontalAlignment="Left" Margin="2,3,0,0" Cursor="Hand" Click="buttCheckNewA_Click" />
+                                </Grid>
+                                <Label x:Name="alertRateA" Margin="80,-5,0,1" Height="30" Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Background="#CCFF0900" FontSize="8" Visibility="Visible">
+                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="-3,-3,-3,-3" VerticalAlignment="Stretch" HorizontalAlignment="Center" FontSize="9" Height="30"><Run x:Name="textAlertA" Text=" "/><LineBreak/></TextBlock>
+                                </Label>
+                                <lvc:CartesianChart x:Name="chartA" Height="170" HorizontalAlignment="Right" Width="270" Margin="0,-150,10,0" >
+
+                                    <lvc:CartesianChart.AxisY>
+                                        <lvc:Axis x:Name="yAxisA" Title="Area ( )" MaxValue="1.4" MinValue="0" ></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis x:Name="xAxisA" Title="X/L">
+                                            <lvc:Axis.Separator >
+                                                <lvc:Separator x:Name="SepA" StrokeThickness="1.5" Step="1" StrokeDashArray="4">
+                                                    <lvc:Separator.Stroke>
+                                                        <SolidColorBrush Color="#404F56" />
+                                                    </lvc:Separator.Stroke>
+                                                </lvc:Separator>
+                                            </lvc:Axis.Separator>
+                                        </lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                </lvc:CartesianChart>
+                                
+                                
+                            </StackPanel>
+
+                        </StackPanel>
+                        <Rectangle x:Name="rectangleCharts" Fill="Transparent" HorizontalAlignment="Stretch" Height="430" VerticalAlignment="Top" Margin="0,-641" Visibility="Hidden"/>
+
                     </StackPanel>
                 </Grid>
             </TabItem>
