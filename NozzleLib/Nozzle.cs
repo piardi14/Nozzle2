@@ -22,9 +22,9 @@ namespace NozzleLib
         //public List<Position> position_first_time_step { get; set; }
         //public List<Position> position_after_1400_time_steps { get; set; }
 
-        public Nozzle(double L, double T0, double ro0, double C, int N)
+        public Nozzle(double L, double T0, double ro0, double A0, double C, int N) //A0 is the area of the throat
         {
-            SetDimensionalValues(L, T0, ro0);
+            SetDimensionalValues(L, T0, ro0, A0);
             this.throatposition = L / 2;
             this.deltax = L / (N-1);
             this.N = N;
@@ -159,7 +159,7 @@ namespace NozzleLib
             }
             return Temperature;
         }
-        public void SetDimensionalValues(double L, double T0, double ro0)
+        public void SetDimensionalValues(double L, double T0, double ro0, double A0)
         {
             dimensionalvalues = new double[5];
             dimensionalvalues[0] = L;
@@ -167,7 +167,7 @@ namespace NozzleLib
             dimensionalvalues[2] = Math.Sqrt(gamma * R * T0);
             dimensionalvalues[3] = T0*ro0*R;
             dimensionalvalues[4] = ro0;
-            dimensionalPos = new Position(0, T0,ro0, Math.Sqrt(gamma * R * T0),0);
+            dimensionalPos = new Position(0, T0,ro0, Math.Sqrt(gamma * R * T0),A0);
 
         }
         public List<Position> GetRow (int row)

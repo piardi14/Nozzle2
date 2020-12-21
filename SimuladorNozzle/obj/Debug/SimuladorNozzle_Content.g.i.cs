@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("minimizecharts.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("play.png")]
 
 

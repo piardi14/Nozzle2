@@ -121,5 +121,8 @@
   <ItemGroup>
     <Resource Include="minimizeCharts.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="play.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
