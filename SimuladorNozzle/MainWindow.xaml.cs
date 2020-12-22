@@ -121,10 +121,10 @@ namespace SimuladorNozzle
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            Create();
+            Create(false, 0);
         }
 
-        public void Create()
+        public void Create(bool Advanced, double newRateArea)
         {
             if (DivisionsTextBox.Text != "" && CourantTextBox.Text != "")
             {
@@ -149,7 +149,10 @@ namespace SimuladorNozzle
 
 
                 nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions);
-
+                if(Advanced==true)
+                {
+                    nozzlesim.SetNewArea(newRateArea);      //si estamos en el estudio avanzado, cambiará el area acorde a lo que se ha especificado
+                }
 
                 // computa todos los valores especificados
                 nozzlesim.ComputeUntilPos(1401);
@@ -1549,7 +1552,7 @@ namespace SimuladorNozzle
             }
 
         }
-        public void Restart()
+        private void Restart()
         {
             Color colorset = Color.FromRgb(232, 232, 232);
             Brush colorBrush = new SolidColorBrush(colorset);
@@ -1746,8 +1749,6 @@ namespace SimuladorNozzle
             switch (respuesta)
             {
                 case MessageBoxResult.OK:
-                {
-                    //Restart();
                     buttonAdvanced.Visibility = Visibility.Hidden;
                     panelAdvanced2.Visibility = Visibility.Visible;
                     buttCheckNewA.Background = new SolidColorBrush(Color.FromArgb(204, 255, 9, 0));
@@ -1755,8 +1756,9 @@ namespace SimuladorNozzle
                     alertRateA.Visibility = Visibility.Hidden;
                     recOld.Visibility = Visibility.Hidden;
                     recNew.Visibility = Visibility.Hidden;
+
+                    Restart();
                     break;
-                }
                 case MessageBoxResult.Cancel:
                     break;
             }
@@ -1904,6 +1906,13 @@ namespace SimuladorNozzle
             catch (FormatException)
             { }
            
+        }
+
+        private void CreateButtonAdvStudy_Click(object sender, RoutedEventArgs e)
+        {
+            double new_Ratio = Convert.ToDouble(textNewA.Text.Split(':')[0]);
+            Create(true, new_Ratio);
+
         }
     } 
 }
