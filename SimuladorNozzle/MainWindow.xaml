@@ -426,12 +426,12 @@
 
                         <StackPanel x:Name="panelAdvanced1" Margin="5,5,5,5" Height="200">
                             <Label Content="ADVANCED STUDY" HorizontalAlignment="Left" Height="25" Width="120" FontWeight="Bold"/>
-                            <Button x:Name="buttonAdvanced" Content="Start Advanced Study" Width="110" Height="18" HorizontalAlignment="Left" FontSize="10" Margin="60,0,0,5" Click="buttonAdvanced_Click" Cursor="Hand" Background="DarkSalmon">
+                            <Button x:Name="buttonAdvanced" Content="Start Advanced Study" Width="165" Height="75" HorizontalAlignment="Left" FontSize="15" Margin="185,40,0,5" Click="buttonAdvanced_Click" Cursor="Hand" Background="DarkSalmon" FontWeight="Bold">
                                 <Button.Effect>
                                     <DropShadowEffect/>
                                 </Button.Effect>
                             </Button>
-                            <StackPanel x:Name="panelAdvanced2" Height="150" >
+                            <StackPanel x:Name="panelAdvanced2" Height="150" Margin="0,-110,0,0" >
                                 <Label Content="Reservoir-Throat Rate Area" HorizontalAlignment="Left" Height="25" Width="170" FontSize="10" Margin="5,5,0,0"/>
 
                                 <Grid Width="180" Height="60" Margin="5,0,5,5" HorizontalAlignment="Left">
@@ -446,7 +446,7 @@
                                         <RowDefinition></RowDefinition>
 
                                     </Grid.RowDefinitions>
-                                    <Label Content="Dafault rate:" Margin="0,0,0,0" Opacity="1.0" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right"/>
+                                    <Label Content="Default rate:" Margin="0,0,0,0" Opacity="1.0" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right"/>
                                     <Label x:Name="labelDefaultA" Margin="0,0,0,0" Height="25" Content="5.95 : 1" Width="50" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Background="White" BorderBrush="#FFABADB3" BorderThickness="1" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top"  FontSize="11" VerticalContentAlignment="Center"/>
                                     <Rectangle x:Name="recNew" VerticalAlignment="Bottom" Height="5" Fill="Green" Grid.Row="1" Grid.Column="1" />
                                     <Rectangle x:Name="recOld" VerticalAlignment="Bottom" Height="6" Fill="Black" Grid.Row="0" Grid.Column="1" />
@@ -455,7 +455,7 @@
                                     <TextBox x:Name="textNewA" Margin="0,0,0,0" Height="25" HorizontalAlignment="Left" Width="50" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" TextAlignment="Center" FontSize="11" VerticalContentAlignment="Center" TextChanged="textNewA_TextChanged"/>
                                     <Button x:Name="buttCheckNewA" Content="check value" FontSize="9" Grid.Column="2" Grid.Row="1" Background="#CCFF0900" Width="50" Height="15" HorizontalAlignment="Left" Margin="2,3,0,0" Cursor="Hand" Click="buttCheckNewA_Click" />
                                 </Grid>
-                                <Label x:Name="alertRateA" Margin="80,-5,0,1" Height="30" Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Background="#CCFF0900" FontSize="8" Visibility="Visible">
+                                <Label x:Name="alertRateA" Margin="130,-5,0,1" Height="30" Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Background="#CCFF0900" FontSize="8" Visibility="Visible">
                                     <TextBlock TextWrapping="WrapWithOverflow" Margin="-3,-3,-3,-3" VerticalAlignment="Stretch" HorizontalAlignment="Center" FontSize="9" Height="30"><Run x:Name="textAlertA" Text=" "/><LineBreak/></TextBlock>
                                 </Label>
                                 <lvc:CartesianChart x:Name="chartA" Height="170" HorizontalAlignment="Right" Width="270" Margin="0,-150,10,0" >
@@ -475,6 +475,7 @@
                                         </lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
                                 </lvc:CartesianChart>
+                                <Button x:Name="CreateButtonAdvStudy" Content="SIMULATE" HorizontalAlignment="Center" Width="120" Height="40" Margin="-340,-40,0,0" Background="DarkSalmon" FontWeight="Bold" Click="CreateButtonAdvStudy_Click"></Button>
                                 
                                 
                             </StackPanel>
