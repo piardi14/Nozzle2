@@ -27,10 +27,10 @@ namespace SimuladorNozzle
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
-        List<int> posChart;                               // Select positions to show on the chart
+    {                              
         List<List<Rectangle>> recListChart = new List<List<Rectangle>>();
-        List<Brush> brushesList;
+        List<Brush> brushesList; // Select positions to show on the chart
+        List<int> brushesPos;
         List<Button> listaboton;
         int steps;
 
@@ -46,6 +46,8 @@ namespace SimuladorNozzle
         bool unitsShowTable = false;
         bool fixTable = false;
         Button fixedButton;
+
+        bool advanced = false;
 
         double maxT;
         double maxV;
@@ -116,7 +118,8 @@ namespace SimuladorNozzle
         {
             DivisionsTextBox.Text = "31";
             CourantTextBox.Text = "0.5";
-            CreateButton.IsEnabled = true;
+            if (advanced==false)
+                CreateButton.IsEnabled = true;
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
@@ -148,10 +151,14 @@ namespace SimuladorNozzle
                 initiated = true;
 
 
-                nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions);
+                
                 if(Advanced==true)
                 {
-                    nozzlesim.SetNewArea(newRateArea);      //si estamos en el estudio avanzado, cambiará el area acorde a lo que se ha especificado
+                    nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions, newRateArea);    //si estamos en el estudio avanzado, cambiará el area acorde a lo que se ha especificado
+                }
+                else
+                {
+                    nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions);
                 }
 
                 // computa todos los valores especificados
@@ -282,10 +289,33 @@ namespace SimuladorNozzle
         public void ClickButtonChart(Button button)
         {
             int selectedPos = 0;
-            foreach (int position in posChart)
+            foreach (int position in brushesPos)
             {
-                if (position == 1)
+                if (position != -1)
                     selectedPos++;
+            }
+            int firstEmpty = brushesList.Count()-1;
+            
+            int i = 0;
+            while (i < brushesPos.Count())
+            {
+                int j = 0;
+                bool foundFirst = false;
+                while (j< brushesPos.Count())
+                {
+                    if (brushesPos[j] == i)
+                    {
+                        foundFirst = true;
+                        break;
+                    }
+                    j++;
+                }
+                if (foundFirst == false)
+                {
+                    firstEmpty = i;
+                    break;
+                }
+                i++;
             }
             bool maximum = true;
             if (selectedPos < 10)
@@ -302,8 +332,8 @@ namespace SimuladorNozzle
 
             int pos = Convert.ToInt32(Convert.ToDecimal(button.Content.ToString().Split(' ')[2]) * 10);
 
-            int showed = posChart[pos];
-            if (showed == 0)   // pint of gray
+            int showed = brushesPos[pos];
+            if (showed == -1)   // pint of gray
             {
                 if (maximum == true)
                 {
@@ -312,7 +342,7 @@ namespace SimuladorNozzle
                 }
                 else
                 {
-                    posChart[pos] = 1;
+                    brushesPos[pos] = firstEmpty;
                     Color colorset = Color.FromRgb(153, 144, 144);
                     Brush colorBrush = new SolidColorBrush(colorset);
                     button.Background = colorBrush;
@@ -320,7 +350,7 @@ namespace SimuladorNozzle
             }
             else
             {
-                posChart[pos] = 0;
+                brushesPos[pos] = - 1;
                 Color colorset = Color.FromRgb(232, 232, 232);
                 Brush colorBrush = new SolidColorBrush(colorset);
                 button.Background = colorBrush;
@@ -1278,15 +1308,15 @@ namespace SimuladorNozzle
                 {
                     dimens = new Position(0, 1, 1, 1, 0);
                 }
-                foreach (int pos in posChart)
+                foreach (int pos in brushesPos)
                 {
-                    if (pos == 1)
+                    if (pos != -1)
                     {
                         listV.Add(nozzlesim.GetColumnPar(i, "V", stepsChart, dimens, finStep));
                         listP.Add(nozzlesim.GetColumnPar(i, "P", stepsChart, dimens, finStep));
                         listT.Add(nozzlesim.GetColumnPar(i, "T", stepsChart, dimens, finStep));
                         listD.Add(nozzlesim.GetColumnPar(i, "D", stepsChart, dimens, finStep));
-                        ListBrush.Add(brushesList[posBrushes]);
+                        ListBrush.Add(brushesList[brushesPos[i]]);
                         posBrushes++;
                     }
                     else
@@ -1302,8 +1332,8 @@ namespace SimuladorNozzle
 
                 createRecColors(ListBrush);
                 int sel = 0;
-                foreach (int pos in posChart)
-                    if (pos == 1)
+                foreach (int pos in brushesPos)
+                    if (pos != -1)
                         sel++;
                 int maxUpdate = 1;
                 if (sel > 4)
@@ -1379,11 +1409,11 @@ namespace SimuladorNozzle
 
         public void fillSelectedList()
         {
-            posChart = new List<int>();
+            brushesPos = new List<int>();
             int i = 0;
             while (i < nozzlesim.GetDivisions())
             {
-                posChart.Add(0);
+                brushesPos.Add(-1);
                 i++;
             }
         }
@@ -1465,9 +1495,9 @@ namespace SimuladorNozzle
             {
                 lastLabeTick = new TimeSpan(0);
                 bool zeroSelected = true;
-                foreach (int pos in posChart)
+                foreach (int pos in brushesPos)
                 {
-                    if (pos == 1)
+                    if (pos != -1)
                     {
                         zeroSelected = false;
                         break;
@@ -1583,13 +1613,14 @@ namespace SimuladorNozzle
             rectangleCharts.Visibility = Visibility.Visible;
             rectanglePanel.Visibility = Visibility.Visible;
             List<Brush> ListBrush = new List<Brush>();
-            foreach (int pos in posChart)
+            foreach (int pos in brushesPos)
             {
                 ListBrush.Add(Brushes.Transparent);
             }
 
             gridRecChart.Children.Clear();
-            listaboton.Clear();
+            if (listaboton != null)
+                listaboton.Clear();
             initiated = false;
             CreateButton.Content = "CREATE";
             DefaultValuesButton.IsEnabled = true;
@@ -1644,7 +1675,6 @@ namespace SimuladorNozzle
             //nozzlesim = new Nozzle(3, 800, 0.5, 0.5, 31);
             //nozzlesim.ComputeUntilPos(1401);
             //calculateMinMax();
-            int p = 0;
         }
 
         private void DivisionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -1659,7 +1689,7 @@ namespace SimuladorNozzle
                     try
                     {
                         decimal cou = Convert.ToDecimal(CourantTextBox.Text);
-                        if (CourantTextBox.Text != "")
+                        if (CourantTextBox.Text != "" && advanced == false)
                             CreateButton.IsEnabled = true;
                     }
                     catch (FormatException)
@@ -1741,6 +1771,9 @@ namespace SimuladorNozzle
             clock.Interval = new TimeSpan((long)periodo);
         }
 
+
+        // ADVANCED STUDY
+
         private void buttonAdvanced_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult respuesta = MessageBox.Show(
@@ -1756,7 +1789,7 @@ namespace SimuladorNozzle
                     alertRateA.Visibility = Visibility.Hidden;
                     recOld.Visibility = Visibility.Hidden;
                     recNew.Visibility = Visibility.Hidden;
-
+                    advanced = true;
                     Restart();
                     break;
                 case MessageBoxResult.Cancel:
@@ -1803,7 +1836,7 @@ namespace SimuladorNozzle
                             alertRateA.Visibility = Visibility.Hidden;
 
                             chartA.Visibility = Visibility.Visible;
-
+                            CreateButtonAdvStudy.IsEnabled = true;
                             chartA.Series = new SeriesCollection();
                             int N = 31;
                             List<double> listA = new List<double>();
@@ -1818,13 +1851,13 @@ namespace SimuladorNozzle
                             {
                                 double xi = i * 0.1;
                                 double A = (1 + 2.2 * Correction * Math.Pow(xi - (N - 1)*0.1 / 2, 2));
-                                listA.Add(A);
+                                listA.Add(A/2);
                                 double Aminus = -1*(1 + 2.2 * Correction * Math.Pow(xi - (N - 1) * 0.1 / 2, 2));
-                                listAM.Add(Aminus);
+                                listAM.Add(Aminus/2);
                                 double Aold = 1+2.2 * Math.Pow(xi - (N - 1)*0.1 / 2, 2);
-                                listAold.Add(Aold);
+                                listAold.Add(Aold/2);
                                 double Aoldminus = -1*(1 + 2.2 * Math.Pow(xi - (N - 1) * 0.1 / 2, 2));
-                                listAoldM.Add(Aoldminus);
+                                listAoldM.Add(Aoldminus/2);
                                 x[i] = (i * 0.1).ToString();
                                 i++;
                             }
@@ -1889,22 +1922,36 @@ namespace SimuladorNozzle
                         else if (Res < Thr)
                         {
                             alertRateA.Visibility = Visibility.Visible;
-                            textAlertA.Text = "Only convergent-divergent nozzle is possibe";
+                            CreateButtonAdvStudy.IsEnabled = false;
+                            textAlertA.Text = "Only convergent-divergent nozzle is possibe ";
+                        }
+                        else if (Res == Thr)
+                        {
+                            CreateButtonAdvStudy.IsEnabled = false;
+                            alertRateA.Visibility = Visibility.Visible;
+                            textAlertA.Text = "Cannot create the same nozzle as initialy";
                         }
                         else
                         {
+                            CreateButtonAdvStudy.IsEnabled = false;
                             alertRateA.Visibility = Visibility.Visible;
-                            textAlertA.Text = "Cannot create the same nozzle as initialy";
+                            textAlertA.Text = "Error in text format, check it!";
                         }
                     }
                 }
                 else
                 {
-
+                    CreateButtonAdvStudy.IsEnabled = false;
+                    alertRateA.Visibility = Visibility.Visible;
+                    textAlertA.Text = "Error in text format, there is a null value";
                 }
             }
             catch (FormatException)
-            { }
+            {
+                CreateButtonAdvStudy.IsEnabled = false;
+                alertRateA.Visibility = Visibility.Visible;
+                textAlertA.Text = "Error in text format, check it!";
+            }
            
         }
 
