@@ -1923,7 +1923,7 @@ namespace SimuladorNozzle
                         {
                             alertRateA.Visibility = Visibility.Visible;
                             CreateButtonAdvStudy.IsEnabled = false;
-                            textAlertA.Text = "Only convergent-divergent nozzle is possibe";
+                            textAlertA.Text = "Only convergent-divergent nozzle is possibe ";
                         }
                         else if (Res == Thr)
                         {
