@@ -480,5 +480,14 @@ namespace NozzleLib
             }
         }
 
+        public void SetNewArea(double new_Rate)
+        {
+            double y = (new_Rate - 1) / 2.25;
+            foreach(Position pos in malla)
+            {
+                pos.SetA(1 + y * Math.Pow(pos.GetX() - 1.5, 2));
+            }
+        }
+
     }
 }
