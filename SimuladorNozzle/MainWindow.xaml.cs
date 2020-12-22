@@ -1748,6 +1748,7 @@ namespace SimuladorNozzle
                 case MessageBoxResult.OK:
                 {
                     //Restart();
+                    buttonAdvanced.Visibility = Visibility.Hidden;
                     panelAdvanced2.Visibility = Visibility.Visible;
                     buttCheckNewA.Background = new SolidColorBrush(Color.FromArgb(204, 255, 9, 0));
                     buttCheckNewA.Visibility = Visibility.Hidden;
