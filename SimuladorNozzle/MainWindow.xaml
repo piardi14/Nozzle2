@@ -48,7 +48,7 @@
                                 <Label Content="COURANT:" Margin="0,0,5,0" FontWeight="Bold" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right"/>
                                 <TextBox x:Name="CourantTextBox" Margin="0,2,5,0" Height="25" Width="75" HorizontalAlignment="Right"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" TextChanged="DivisionsTextBox_TextChanged" VerticalContentAlignment="Center"/>
                             </Grid>
-                            <Button x:Name="DefaultValuesButton" Margin="0,-5,5,0" Height="30" Width="120" HorizontalAlignment="Right" Content="Default Values" Background="#FFB4B4B4" Click="DefaultValuesButton_Click" FontWeight="Bold" />
+                            <Button x:Name="DefaultValuesButton" Margin="0,-5,5,0" Height="30" Width="120" HorizontalAlignment="Right" Content="Default Values" Background="#FFB4B4B4" Click="DefaultValuesButton_Click" FontWeight="Bold" Cursor="Hand" />
                             <Button x:Name="CreateButton" Margin="0,15,0,0" Height="40" Width="150" Content="CREATE!" FontSize="20" FontWeight="Bold" BorderThickness="0" Background="DarkSalmon" Click="CreateButton_Click" Cursor="Hand">
                                 <Button.Effect>
                                     <DropShadowEffect/>
@@ -475,7 +475,7 @@
                                         </lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
                                 </lvc:CartesianChart>
-                                <Button x:Name="CreateButtonAdvStudy" Content="SIMULATE" HorizontalAlignment="Center" Width="120" Height="40" Margin="-340,-40,0,0" Background="DarkSalmon" FontWeight="Bold" Click="CreateButtonAdvStudy_Click"></Button>
+                                <Button x:Name="CreateButtonAdvStudy" Content="SIMULATE" HorizontalAlignment="Center" Width="120" Height="40" Margin="-340,-40,0,0" Background="DarkSalmon" FontWeight="Bold" Cursor="Hand" IsEnabled="False" Click="CreateButtonAdvStudy_Click"></Button>
                                 
                                 
                             </StackPanel>
