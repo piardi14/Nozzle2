@@ -43,6 +43,30 @@ namespace NozzleLib
                 i++;
             }
         }
+        public Nozzle(double L, double T0, double ro0, double A0, double C, int N, double Res) //A0 is the area of the throat
+        {
+            SetDimensionalValues(L, T0, ro0, A0);
+            this.throatposition = L / 2;
+            this.deltax = L / (N - 1);
+            this.N = N;
+            this.C = C;
+            this.malla = new Position[1401, N];
+            this.position_initial_conditions = new List<Position>();
+            int i = 0;
+            while (i < N)
+            {
+                double xi = 0 + i * deltax;
+                double temp = 1 - 0.2314 * xi;
+                double Res0 = 2.2 * Math.Pow(0.0 - (N - 1) * 0.1 / 2, 2);
+                double Correction = (Res - 1) / Res0;
+                Position pos = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Correction * Math.Pow(xi - throatposition, 2));
+                
+                Position initial_conditions = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Correction* Math.Pow(xi - throatposition, 2), i + 1);
+                position_initial_conditions.Add(initial_conditions);
+                SetPosition(0, i, pos);
+                i++;
+            }
+        }
         public Nozzle()
         {
 
@@ -483,9 +507,10 @@ namespace NozzleLib
         public void SetNewArea(double new_Rate)
         {
             double y = (new_Rate - 1) / 2.25;
-            foreach(Position pos in malla)
+            int i = 0;
+            while (i<N)
             {
-                pos.SetA(1 + y * Math.Pow(pos.GetX() - 1.5, 2));
+                malla[0,i].SetA(1 + y * Math.Pow(i*0.1 - 1.5, 2));
             }
         }
 

@@ -148,10 +148,14 @@ namespace SimuladorNozzle
                 initiated = true;
 
 
-                nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions);
+                
                 if(Advanced==true)
                 {
-                    nozzlesim.SetNewArea(newRateArea);      //si estamos en el estudio avanzado, cambiará el area acorde a lo que se ha especificado
+                    nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions, newRateArea);    //si estamos en el estudio avanzado, cambiará el area acorde a lo que se ha especificado
+                }
+                else
+                {
+                    nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions);
                 }
 
                 // computa todos los valores especificados
@@ -1589,7 +1593,8 @@ namespace SimuladorNozzle
             }
 
             gridRecChart.Children.Clear();
-            listaboton.Clear();
+            if (listaboton != null)
+                listaboton.Clear();
             initiated = false;
             CreateButton.Content = "CREATE";
             DefaultValuesButton.IsEnabled = true;
@@ -1741,6 +1746,9 @@ namespace SimuladorNozzle
             clock.Interval = new TimeSpan((long)periodo);
         }
 
+
+        // ADVANCED STUDY
+
         private void buttonAdvanced_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult respuesta = MessageBox.Show(
@@ -1818,13 +1826,13 @@ namespace SimuladorNozzle
                             {
                                 double xi = i * 0.1;
                                 double A = (1 + 2.2 * Correction * Math.Pow(xi - (N - 1)*0.1 / 2, 2));
-                                listA.Add(A);
+                                listA.Add(A/2);
                                 double Aminus = -1*(1 + 2.2 * Correction * Math.Pow(xi - (N - 1) * 0.1 / 2, 2));
-                                listAM.Add(Aminus);
+                                listAM.Add(Aminus/2);
                                 double Aold = 1+2.2 * Math.Pow(xi - (N - 1)*0.1 / 2, 2);
-                                listAold.Add(Aold);
+                                listAold.Add(Aold/2);
                                 double Aoldminus = -1*(1 + 2.2 * Math.Pow(xi - (N - 1) * 0.1 / 2, 2));
-                                listAoldM.Add(Aoldminus);
+                                listAoldM.Add(Aoldminus/2);
                                 x[i] = (i * 0.1).ToString();
                                 i++;
                             }
