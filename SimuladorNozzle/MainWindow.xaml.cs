@@ -90,12 +90,12 @@ namespace SimuladorNozzle
             labelStep.Visibility = Visibility.Hidden;
             labelTime.Visibility = Visibility.Hidden;
             // Hacemos Visibles los rectangulos transpoarentes que no nos dejan clicar a ningun sitio
-            rectangleCharts.Visibility = Visibility.Visible;
-            rectanglePanel.Visibility = Visibility.Visible;
             rayahorizontal.Visibility = Visibility.Hidden;
             panelShow.Visibility = Visibility.Hidden;
 
             panelAdvanced2.Visibility = Visibility.Hidden;
+            buttonAdvanced.Visibility = Visibility.Visible;
+            buttonNewAdvanced.Visibility = Visibility.Hidden;
 
             xAxisD.MaxValue = 0.1;
             xAxisT.MaxValue = 0.1;
@@ -116,10 +116,20 @@ namespace SimuladorNozzle
         //INITIAL SETTINGS
         private void DefaultValuesButton_Click(object sender, RoutedEventArgs e)
         {
+            DefaultValues();
+        }
+        public void DefaultValues()
+        {
             DivisionsTextBox.Text = "31";
             CourantTextBox.Text = "0.5";
-            if (advanced==false)
+            if (advanced == false)
                 CreateButton.IsEnabled = true;
+        }
+        public void DefaultValuesClear()
+        {
+            DivisionsTextBox.Text = "";
+            CourantTextBox.Text = "";
+            CreateButton.IsEnabled = false;
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
@@ -143,8 +153,10 @@ namespace SimuladorNozzle
                 int divisions = Convert.ToInt32(DivisionsTextBox.Text);
                 textStep.Content = "0"; labelStep.Visibility = Visibility.Visible;
                 textTime.Content = "0"; labelTime.Visibility = Visibility.Visible;
-                rectangleCharts.Visibility = Visibility.Hidden;
-                rectanglePanel.Visibility = Visibility.Hidden;
+                rectangleAutoStep.Visibility = Visibility.Visible;
+
+                RectanglesInitial(Visibility.Hidden);
+                
                 rayahorizontal.Visibility = Visibility.Visible;
                 Indicator.Visibility = Visibility.Visible;
                 panelShow.Visibility = Visibility.Hidden;
@@ -374,7 +386,6 @@ namespace SimuladorNozzle
 
             MaxDensity.Visibility = Visibility.Hidden;
             MinDensity.Visibility = Visibility.Visible;
-            rectangleCharts.Visibility = Visibility.Hidden;
         }
         private void MaxVelocity_Click(object sender, RoutedEventArgs e)
         {
@@ -1576,6 +1587,7 @@ namespace SimuladorNozzle
             {
                 case MessageBoxResult.OK:
                     Restart();
+                    RestartAdvanced();
                     break;
                 case MessageBoxResult.Cancel:
                     break;
@@ -1610,8 +1622,7 @@ namespace SimuladorNozzle
             labelStep.Visibility = Visibility.Hidden; textStep.Content = "";
             labelTime.Visibility = Visibility.Hidden; textTime.Content = "";
             // Hacemos Visibles los rectangulos transpoarentes que no nos dejan clicar a ningun sitio
-            rectangleCharts.Visibility = Visibility.Visible;
-            rectanglePanel.Visibility = Visibility.Visible;
+            RectanglesInitial(Visibility.Visible);
             List<Brush> ListBrush = new List<Brush>();
             foreach (int pos in brushesPos)
             {
@@ -1675,6 +1686,14 @@ namespace SimuladorNozzle
             //nozzlesim = new Nozzle(3, 800, 0.5, 0.5, 31);
             //nozzlesim.ComputeUntilPos(1401);
             //calculateMinMax();
+        }
+
+        public void RectanglesInitial(Visibility vis)
+        {
+            rectangleCharts.Visibility = vis;
+            rectangleNozzle.Visibility = vis;
+            rectangleAutoStep.Visibility = vis;
+            rectangleAdvanced.Visibility = vis;
         }
 
         private void DivisionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -1782,19 +1801,40 @@ namespace SimuladorNozzle
             switch (respuesta)
             {
                 case MessageBoxResult.OK:
+
+                    RestartAdvanced();
+                    
+                    Restart();
                     buttonAdvanced.Visibility = Visibility.Hidden;
                     panelAdvanced2.Visibility = Visibility.Visible;
-                    buttCheckNewA.Background = new SolidColorBrush(Color.FromArgb(204, 255, 9, 0));
-                    buttCheckNewA.Visibility = Visibility.Hidden;
-                    alertRateA.Visibility = Visibility.Hidden;
-                    recOld.Visibility = Visibility.Hidden;
-                    recNew.Visibility = Visibility.Hidden;
                     advanced = true;
-                    Restart();
+                    rectangleAdvanced.Visibility = Visibility.Hidden;
+
                     break;
                 case MessageBoxResult.Cancel:
                     break;
             }
+        }
+        public void RestartAdvanced()
+        {
+
+            buttonAdvanced.Visibility = Visibility.Hidden;
+            panelAdvanced2.Visibility = Visibility.Visible;
+            buttCheckNewA.Background = new SolidColorBrush(Color.FromArgb(204, 255, 9, 0));
+            buttCheckNewA.Visibility = Visibility.Hidden;
+            alertRateA.Visibility = Visibility.Hidden;
+            recOld.Visibility = Visibility.Hidden;
+            recNew.Visibility = Visibility.Hidden;
+            rectangleAdvanced.Visibility = Visibility.Hidden;
+            textNewA.Text = "";
+            panelAdvanced2.Visibility = Visibility.Hidden;
+            buttonAdvanced.Visibility = Visibility.Visible;
+            buttonNewAdvanced.Visibility = Visibility.Hidden;
+            chartA.Visibility = Visibility.Hidden;
+            chartA.Series.Clear();
+            xAxisA.Labels=new string[0];
+
+            advanced = false;
         }
 
         private void textNewA_TextChanged(object sender, TextChangedEventArgs e)
@@ -1808,6 +1848,7 @@ namespace SimuladorNozzle
             chartA.Visibility = Visibility.Hidden;
             recNew.Visibility = Visibility.Hidden;
             recOld.Visibility = Visibility.Hidden;
+            DefaultValuesClear();
         }
 
         private void buttCheckNewA_Click(object sender, RoutedEventArgs e)
@@ -1825,7 +1866,7 @@ namespace SimuladorNozzle
 
                     if (Thr !=0)
                     {
-                        if (Res > Thr && Res / Thr != 5.95)
+                        if (Res > Thr && Res / Thr != 5.95 && Res / Thr <= 8)
                         {
                             Res = Math.Round(Res / Thr,2);
                             
@@ -1918,6 +1959,14 @@ namespace SimuladorNozzle
                             chartA.Visibility = Visibility.Visible;
                             recNew.Visibility = Visibility.Visible;
                             recOld.Visibility = Visibility.Visible;
+                            if (DivisionsTextBox.Text =="" && CourantTextBox.Text=="")
+                                DefaultValues();
+                        }
+                        else if (Res / Thr > 8)
+                        {
+                            alertRateA.Visibility = Visibility.Visible;
+                            CreateButtonAdvStudy.IsEnabled = false;
+                            textAlertA.Text = "The maximum allowed rate is 8 : 1 ";
                         }
                         else if (Res < Thr)
                         {
@@ -1959,6 +2008,9 @@ namespace SimuladorNozzle
         {
             double new_Ratio = Convert.ToDouble(textNewA.Text.Split(':')[0]);
             Create(true, new_Ratio);
+            CreateButtonAdvStudy.IsEnabled = false;
+            buttCheckNewA.Visibility = Visibility.Hidden;
+            buttonNewAdvanced.Visibility = Visibility.Visible;
 
         }
     } 
