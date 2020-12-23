@@ -195,7 +195,8 @@
                                 <Label x:Name="VelocityLabel" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Center"  Content="Simulation Velocity" Margin="0,10,0,0"></Label>
                             </Grid>
                         </StackPanel>
-                        <Rectangle x:Name="rectanglePanel" Fill="Transparent" HorizontalAlignment="Stretch" Height="590" VerticalAlignment="Top" Margin="0,-594" Visibility="Hidden"/>
+                        <Rectangle x:Name="rectangleNozzle" Fill="Transparent" HorizontalAlignment="Stretch" Height="510" VerticalAlignment="Top" Margin="0,-594" Visibility="Visible"/>
+                        <Rectangle x:Name="rectangleAutoStep" Fill="Transparent" HorizontalAlignment="Left" Width="200" Height="70" VerticalAlignment="Top" Margin="0,-80" Visibility="Hidden"/>
 
                     </StackPanel>
 
@@ -426,7 +427,12 @@
 
                         <StackPanel x:Name="panelAdvanced1" Margin="5,5,5,5" Height="200">
                             <Label Content="ADVANCED STUDY" HorizontalAlignment="Left" Height="25" Width="120" FontWeight="Bold"/>
-                            <Button x:Name="buttonAdvanced" Content="Start Advanced Study" Width="165" Height="75" HorizontalAlignment="Left" FontSize="15" Margin="185,40,0,5" Click="buttonAdvanced_Click" Cursor="Hand" Background="DarkSalmon" FontWeight="Bold">
+                            <Button x:Name="buttonNewAdvanced" Content="New Advanced Study" Width="120" Height="18" HorizontalAlignment="Left" FontSize="10" Margin="130,-10,0,5" Cursor="Hand" Background="DarkSalmon" FontWeight="Bold">
+                                <Button.Effect>
+                                    <DropShadowEffect/>
+                                </Button.Effect>
+                            </Button>
+                            <Button x:Name="buttonAdvanced" Content="Start Advanced Study" Width="165" Height="75" HorizontalAlignment="Left" FontSize="15" Margin="185,40,0,5" Visibility="Hidden" Click="buttonAdvanced_Click" Cursor="Hand" Background="DarkSalmon" FontWeight="Bold">
                                 <Button.Effect>
                                     <DropShadowEffect/>
                                 </Button.Effect>
@@ -458,7 +464,7 @@
                                 <Label x:Name="alertRateA" Margin="130,-5,0,1" Height="30" Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Bottom" Background="#CCFF0900" FontSize="8" Visibility="Visible">
                                     <TextBlock TextWrapping="WrapWithOverflow" Margin="-3,-3,-3,-3" VerticalAlignment="Stretch" HorizontalAlignment="Center" FontSize="9" Height="30"><Run x:Name="textAlertA" Text=" "/><LineBreak/></TextBlock>
                                 </Label>
-                                <lvc:CartesianChart x:Name="chartA" Height="170" HorizontalAlignment="Right" Width="270" Margin="0,-150,10,0" >
+                                <lvc:CartesianChart x:Name="chartA" Height="170" HorizontalAlignment="Right" Width="270" Margin="0,-130,10,0" >
 
                                     <lvc:CartesianChart.AxisY>
                                         <lvc:Axis x:Name="yAxisA" Title="Area ( )" MaxValue="1.4" MinValue="0" ></lvc:Axis>
@@ -475,13 +481,14 @@
                                         </lvc:Axis>
                                     </lvc:CartesianChart.AxisX>
                                 </lvc:CartesianChart>
-                                <Button x:Name="CreateButtonAdvStudy" Content="SIMULATE" HorizontalAlignment="Center" Width="120" Height="40" Margin="-340,-40,0,0" Background="DarkSalmon" FontWeight="Bold" Cursor="Hand" IsEnabled="False" Click="CreateButtonAdvStudy_Click"></Button>
+                                <Button x:Name="CreateButtonAdvStudy" Content="SIMULATE" HorizontalAlignment="Center" Width="120" Height="40" Margin="-340,-80,0,0" Background="DarkSalmon" FontWeight="Bold" Cursor="Hand" IsEnabled="False" Click="CreateButtonAdvStudy_Click"></Button>
                                 
                                 
                             </StackPanel>
 
                         </StackPanel>
                         <Rectangle x:Name="rectangleCharts" Fill="Transparent" HorizontalAlignment="Stretch" Height="430" VerticalAlignment="Top" Margin="0,-641" Visibility="Hidden"/>
+                        <Rectangle x:Name="rectangleAdvanced" Fill="Transparent" HorizontalAlignment="Stretch" Height="160" VerticalAlignment="Top" Margin="0,-170" Visibility="Hidden"/>
 
                     </StackPanel>
                 </Grid>
