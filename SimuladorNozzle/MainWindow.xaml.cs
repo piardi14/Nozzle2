@@ -137,8 +137,12 @@ namespace SimuladorNozzle
             try
             {
                 int div = Convert.ToInt32(DivisionsTextBox.Text.ToString());
+                decimal precourant = decimal.Parse(CourantTextBox.Text.Replace('.',','));
+                double courant = Convert.ToDouble(precourant);
 
-                if ((div == 11 || div == 21 || div == 31 || div == 41 || div == 51 || div == 61))
+               
+
+                if ((div == 11 || div == 21 || div == 31 || div == 41 || div == 51 || div == 61)&&courant<1&&courant>0)
                 {
                     alertDivisionsLabel.Visibility = Visibility.Hidden;
                     try
@@ -193,6 +197,7 @@ namespace SimuladorNozzle
         }
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
+            
             Create(false, 0);
         }
 
