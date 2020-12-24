@@ -427,7 +427,7 @@
 
                         <StackPanel x:Name="panelAdvanced1" Margin="5,5,5,5" Height="200">
                             <Label Content="ADVANCED STUDY" HorizontalAlignment="Left" Height="25" Width="120" FontWeight="Bold"/>
-                            <Button x:Name="buttonNewAdvanced" Content="New Advanced Study" Width="120" Height="18" HorizontalAlignment="Left" FontSize="10" Margin="130,-10,0,5" Cursor="Hand" Background="DarkSalmon" FontWeight="Bold">
+                            <Button x:Name="buttonNewAdvanced" Content="New Advanced Study" Width="120" Height="18" HorizontalAlignment="Left" FontSize="10" Margin="130,-10,0,5" Cursor="Hand" Background="DarkSalmon" FontWeight="Bold" Click="buttonNewAdvanced_Click">
                                 <Button.Effect>
                                     <DropShadowEffect/>
                                 </Button.Effect>

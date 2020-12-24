@@ -1788,7 +1788,6 @@ namespace SimuladorNozzle
             rectangleCharts.Visibility = vis;
             rectangleNozzle.Visibility = vis;
             rectangleAutoStep.Visibility = vis;
-            rectangleAdvanced.Visibility = vis;
         }
 
         
@@ -1833,7 +1832,8 @@ namespace SimuladorNozzle
         private void buttonAdvanced_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult respuesta = MessageBox.Show(
-                "The advanced study is getting started, the simulator will be reset" + "\n" + "to create a new nozzle, so the info will be lost. Do you want to coninue?", "Advanced study", MessageBoxButton.OKCancel);
+                "The advanced study is getting started, the simulator will be reset" + "\n" + 
+                "to create a new nozzle, so the info will be lost. Do you want to coninue?", "Advanced study", MessageBoxButton.OKCancel);
 
             switch (respuesta)
             {
@@ -1846,7 +1846,7 @@ namespace SimuladorNozzle
                     panelAdvanced2.Visibility = Visibility.Visible;
                     advanced = true;
                     rectangleAdvanced.Visibility = Visibility.Hidden;
-
+                    
                     break;
                 case MessageBoxResult.Cancel:
                     break;
@@ -1854,7 +1854,7 @@ namespace SimuladorNozzle
         }
         public void RestartAdvanced()
         {
-
+            textNewA.Text = "";
             buttonAdvanced.Visibility = Visibility.Hidden;
             panelAdvanced2.Visibility = Visibility.Visible;
             buttCheckNewA.Background = new SolidColorBrush(Color.FromArgb(204, 255, 9, 0));
@@ -1863,7 +1863,7 @@ namespace SimuladorNozzle
             recOld.Visibility = Visibility.Hidden;
             recNew.Visibility = Visibility.Hidden;
             rectangleAdvanced.Visibility = Visibility.Hidden;
-            textNewA.Text = "";
+            
             panelAdvanced2.Visibility = Visibility.Hidden;
             buttonAdvanced.Visibility = Visibility.Visible;
             buttonNewAdvanced.Visibility = Visibility.Hidden;
@@ -2043,12 +2043,42 @@ namespace SimuladorNozzle
 
         private void CreateButtonAdvStudy_Click(object sender, RoutedEventArgs e)
         {
-            double new_Ratio = Convert.ToDouble(textNewA.Text.Split(':')[0]);
+            decimal Ratio = decimal.Parse(textNewA.Text.Split(':')[0].Replace('.', ','));
+
+
+            double new_Ratio = Convert.ToDouble(Ratio);
             Create(true, new_Ratio);
             CreateButtonAdvStudy.IsEnabled = false;
             buttCheckNewA.Visibility = Visibility.Hidden;
             buttonNewAdvanced.Visibility = Visibility.Visible;
+            rectangleAdvanced.Visibility = Visibility.Visible;
 
+        }
+
+        private void buttonNewAdvanced_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult respuesta = MessageBox.Show(
+                "A new advanced study is getting started, the simulator will be reset" + "\n" +
+                "to create a new nozzle, so the info will be lost. Do you want to coninue?", "Advanced study", MessageBoxButton.OKCancel);
+
+            switch (respuesta)
+            {
+                case MessageBoxResult.OK:
+                    RestartAdvanced();
+
+                    Restart();
+                    buttonAdvanced.Visibility = Visibility.Hidden;
+                    panelAdvanced2.Visibility = Visibility.Visible;
+                    advanced = true;
+                    rectangleAdvanced.Visibility = Visibility.Hidden;
+                    buttonNewAdvanced.Visibility = Visibility.Hidden;
+
+
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+            
         }
     } 
 }
