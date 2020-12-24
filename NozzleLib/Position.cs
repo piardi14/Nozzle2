@@ -46,6 +46,8 @@ namespace NozzleLib
             this.Pressure = T * ro;
             this.Mach = V / Math.Sqrt(T);
         }
+        public Position()
+        { }
 
         //FUNCTIONS
         //Variable Extraction

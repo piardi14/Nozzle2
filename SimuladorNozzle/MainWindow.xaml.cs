@@ -132,13 +132,71 @@ namespace SimuladorNozzle
             CourantTextBox.Text = "";
             CreateButton.IsEnabled = false;
         }
+        private void DivisionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                int div = Convert.ToInt32(DivisionsTextBox.Text.ToString());
 
+                if ((div == 11 || div == 21 || div == 31 || div == 41 || div == 51 || div == 61))
+                {
+                    alertDivisionsLabel.Visibility = Visibility.Hidden;
+                    try
+                    {
+                        decimal cou = Convert.ToDecimal(CourantTextBox.Text);
+                        if (CourantTextBox.Text != "" && advanced == false)
+                            CreateButton.IsEnabled = true;
+                    }
+                    catch (FormatException)
+                    {
+                        CreateButton.IsEnabled = false;
+                    }
+                    catch (NullReferenceException)
+                    {
+                        CreateButton.IsEnabled = false;
+                    }
+
+                }
+                else
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Visible;
+                }
+
+            }
+            catch (FormatException)
+            {
+                if (DivisionsTextBox.Text != "")
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Hidden;
+                }
+            }
+            catch (NullReferenceException)
+            {
+                if (DivisionsTextBox.Text != "")
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Hidden;
+                }
+            }
+        }
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             Create(false, 0);
         }
 
-        public void Create(bool Advanced, double newRateArea)
+        public void Create(bool Advanced, double newRateArea)  // Create ow can be used on the advanced study also, Advanced == true needs a newRateArea to create, if rate= 5 : 1, newRateArea=5
         {
             if (DivisionsTextBox.Text != "" && CourantTextBox.Text != "")
             {
@@ -773,8 +831,8 @@ namespace SimuladorNozzle
         }
         public void WriteTable(object sender)
         {
-            Position position; Position Dimenssion;
-            if (fixTable == false)
+            Position position; Position Dimenssion; bool procede = true;
+            if (fixTable == false && sender.GetType().Name == "Button")
             {
                 Button button = (Button)sender;
                 Dimenssion = nozzlesim.getDimensionalPosition();
@@ -782,39 +840,44 @@ namespace SimuladorNozzle
                 position = nozzlesim.GetRow(steps)[row];
 
             }
-            else
+            else if (fixTable == true )
             {
                 Button button = fixedButton;
                 Dimenssion = nozzlesim.getDimensionalPosition();
                 int row = Convert.ToInt32(button.Name.ToString().Split('n')[1]);
                 position = nozzlesim.GetRow(steps)[row];
             }
-
-            if (unitsShowTable == true)
+            else 
             {
-                labelValueX.Content = Math.Round(position.GetX(), 1);
-                labelValueT.Content = Math.Round(position.GetTemperature() * Dimenssion.GetTemperature(), 2);
-                labelValueD.Content = Math.Round(position.GetDensity() * Dimenssion.GetDensity(), 2);
-                labelValueV.Content = Math.Round(position.GetVelocity() * Dimenssion.GetVelocity(), 2);
-                labelValueP.Content = Math.Round(position.GetPressure() * Dimenssion.GetPressure() * Dimenssion.R, 2);
-                labelValueA.Content = Math.Round(position.GetArea(), 2);
-                dimensionIndicator.Content = "dimensional";
+                procede = false;
+                position = new Position(); 
+                Dimenssion= new Position();
             }
-            else
+            if (procede == true)
             {
-                labelValueX.Content = Math.Round(position.GetX(), 1);
-                labelValueT.Content = Math.Round(position.GetTemperature(), 2);
-                labelValueD.Content = Math.Round(position.GetDensity(), 2);
-                labelValueV.Content = Math.Round(position.GetVelocity(), 2);
-                labelValueP.Content = Math.Round(position.GetPressure(), 2);
-                labelValueA.Content = Math.Round(position.GetArea(), 2);
-                dimensionIndicator.Content = "non-dimensional";
+                if (unitsShowTable == true)
+                {
+                    labelValueX.Content = Math.Round(position.GetX(), 1);
+                    labelValueT.Content = Math.Round(position.GetTemperature() * Dimenssion.GetTemperature(), 2);
+                    labelValueD.Content = Math.Round(position.GetDensity() * Dimenssion.GetDensity(), 2);
+                    labelValueV.Content = Math.Round(position.GetVelocity() * Dimenssion.GetVelocity(), 2);
+                    labelValueP.Content = Math.Round(position.GetPressure() * Dimenssion.GetPressure() * Dimenssion.R, 2);
+                    labelValueA.Content = Math.Round(position.GetArea(), 2);
+                    dimensionIndicator.Content = "dimensional";
+                }
+                else
+                {
+                    labelValueX.Content = Math.Round(position.GetX(), 1);
+                    labelValueT.Content = Math.Round(position.GetTemperature(), 2);
+                    labelValueD.Content = Math.Round(position.GetDensity(), 2);
+                    labelValueV.Content = Math.Round(position.GetVelocity(), 2);
+                    labelValueP.Content = Math.Round(position.GetPressure(), 2);
+                    labelValueA.Content = Math.Round(position.GetArea(), 2);
+                    dimensionIndicator.Content = "non-dimensional";
+                }
+                panelShow.Visibility = Visibility.Visible;
+                leftClickTip.Visibility = Visibility.Visible;
             }
-            panelShow.Visibility = Visibility.Visible;
-
-            
-            
-            leftClickTip.Visibility = Visibility.Visible;
         }
         private void Rectbutton_RightClick(object sender, RoutedEventArgs e)
         {
@@ -1451,25 +1514,31 @@ namespace SimuladorNozzle
 
 
 
-        // Controls of the STEP AUTO PAUSE CLOCK...
-
+        /// Controls of the STEP AUTO PAUSE CLOCK...
+        
 
         private void NextStepButton_Click(object sender, RoutedEventArgs e)
         {
-
-            steps = steps + 1;
-            textStep.Content = steps.ToString();
-            textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
-            CreateNozzle(nozzlesim, steps);
-            plotChanged = true;
-            SetChart();
-
+            if (steps < 1401)
+            {
+                steps = steps + 1;
+                textStep.Content = steps.ToString();
+                textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
+                CreateNozzle(nozzlesim, steps);
+                plotChanged = true;
+                SetChart();
+                
+            }
+            else
+            {
+                MessageBox.Show("The simulation is ended, the maximum time is reached ");
+            }
         }
 
 
         private void clock_time_Tick(object sender, EventArgs e)
         {
-            if (auto == true)
+            if (auto == true && steps<1401)
             {
                 steps = steps + 1;
                 clockTime = clockTime + clock.Interval;
@@ -1479,6 +1548,18 @@ namespace SimuladorNozzle
                 plotChanged = true;
                 WriteTable(sender);
             }
+            else if (auto == true && steps >= 1401)
+            {
+                clock.Stop();
+                textStep.Content = steps.ToString();
+                textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
+                CreateNozzle(nozzlesim, steps);
+                plotChanged = true;
+                SetChart();
+                Auto();
+                MessageBox.Show("The simulation is ended, the maximum time is reached ");
+            }
+            
             lastChartUpdate += clock.Interval;
             ParpadeoLabels();
             SetChart();
@@ -1710,65 +1791,7 @@ namespace SimuladorNozzle
             rectangleAdvanced.Visibility = vis;
         }
 
-        private void DivisionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            try
-            {
-                int div = Convert.ToInt32(DivisionsTextBox.Text.ToString());
-
-                if ((div == 11 || div == 21 || div == 31 || div == 41 || div == 51 || div == 61))
-                {
-                    alertDivisionsLabel.Visibility = Visibility.Hidden;
-                    try
-                    {
-                        decimal cou = Convert.ToDecimal(CourantTextBox.Text);
-                        if (CourantTextBox.Text != "" && advanced == false)
-                            CreateButton.IsEnabled = true;
-                    }
-                    catch (FormatException)
-                    {
-                        CreateButton.IsEnabled = false;
-                    }
-                    catch (NullReferenceException)
-                    {
-                        CreateButton.IsEnabled = false;
-                    }
-
-                }
-                else
-                {
-                    CreateButton.IsEnabled = false;
-                    alertDivisionsLabel.Visibility = Visibility.Visible;
-                }
-
-            }
-            catch (FormatException)
-            {
-                if (DivisionsTextBox.Text != "")
-                {
-                    CreateButton.IsEnabled = false;
-                    alertDivisionsLabel.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    CreateButton.IsEnabled = false;
-                    alertDivisionsLabel.Visibility = Visibility.Hidden;
-                }
-            }
-            catch (NullReferenceException)
-            {
-                if (DivisionsTextBox.Text != "")
-                {
-                    CreateButton.IsEnabled = false;
-                    alertDivisionsLabel.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    CreateButton.IsEnabled = false;
-                    alertDivisionsLabel.Visibility = Visibility.Hidden;
-                }
-            }
-        }
+        
 
         private void WriteIndicatorMaxMin(int propind)
         {
