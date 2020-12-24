@@ -93,6 +93,7 @@ namespace SimuladorNozzle
             rayahorizontal.Visibility = Visibility.Hidden;
             panelShow.Visibility = Visibility.Hidden;
 
+            RectanglesInitial(Visibility.Visible);
             panelAdvanced2.Visibility = Visibility.Hidden;
             buttonAdvanced.Visibility = Visibility.Visible;
             buttonNewAdvanced.Visibility = Visibility.Hidden;
@@ -768,6 +769,10 @@ namespace SimuladorNozzle
         }
         private void Rectbutton_MouseEnter(object sender, RoutedEventArgs e)
         {
+            WriteTable(sender);
+        }
+        public void WriteTable(object sender)
+        {
             Position position; Position Dimenssion;
             if (fixTable == false)
             {
@@ -776,31 +781,39 @@ namespace SimuladorNozzle
                 int row = Convert.ToInt32(button.Name.ToString().Split('n')[1]);
                 position = nozzlesim.GetRow(steps)[row];
 
-
-
-                if (unitsShowTable == true)
-                {
-                    labelValueX.Content = Math.Round(position.GetX(), 1);
-                    labelValueT.Content = Math.Round(position.GetTemperature() * Dimenssion.GetTemperature(), 2);
-                    labelValueD.Content = Math.Round(position.GetDensity() * Dimenssion.GetDensity(), 2);
-                    labelValueV.Content = Math.Round(position.GetVelocity() * Dimenssion.GetVelocity(), 2);
-                    labelValueP.Content = Math.Round(position.GetPressure() * Dimenssion.GetPressure() * Dimenssion.R, 2);
-                    labelValueA.Content = Math.Round(position.GetArea(), 2);
-                    dimensionIndicator.Content = "dimensional";
-                }
-                else
-                {
-                    labelValueX.Content = Math.Round(position.GetX(), 1);
-                    labelValueT.Content = Math.Round(position.GetTemperature(), 2);
-                    labelValueD.Content = Math.Round(position.GetDensity(), 2);
-                    labelValueV.Content = Math.Round(position.GetVelocity(), 2);
-                    labelValueP.Content = Math.Round(position.GetPressure(), 2);
-                    labelValueA.Content = Math.Round(position.GetArea(), 2);
-                    dimensionIndicator.Content = "non-dimensional";
-                }
-                panelShow.Visibility = Visibility.Visible;
-
             }
+            else
+            {
+                Button button = fixedButton;
+                Dimenssion = nozzlesim.getDimensionalPosition();
+                int row = Convert.ToInt32(button.Name.ToString().Split('n')[1]);
+                position = nozzlesim.GetRow(steps)[row];
+            }
+
+            if (unitsShowTable == true)
+            {
+                labelValueX.Content = Math.Round(position.GetX(), 1);
+                labelValueT.Content = Math.Round(position.GetTemperature() * Dimenssion.GetTemperature(), 2);
+                labelValueD.Content = Math.Round(position.GetDensity() * Dimenssion.GetDensity(), 2);
+                labelValueV.Content = Math.Round(position.GetVelocity() * Dimenssion.GetVelocity(), 2);
+                labelValueP.Content = Math.Round(position.GetPressure() * Dimenssion.GetPressure() * Dimenssion.R, 2);
+                labelValueA.Content = Math.Round(position.GetArea(), 2);
+                dimensionIndicator.Content = "dimensional";
+            }
+            else
+            {
+                labelValueX.Content = Math.Round(position.GetX(), 1);
+                labelValueT.Content = Math.Round(position.GetTemperature(), 2);
+                labelValueD.Content = Math.Round(position.GetDensity(), 2);
+                labelValueV.Content = Math.Round(position.GetVelocity(), 2);
+                labelValueP.Content = Math.Round(position.GetPressure(), 2);
+                labelValueA.Content = Math.Round(position.GetArea(), 2);
+                dimensionIndicator.Content = "non-dimensional";
+            }
+            panelShow.Visibility = Visibility.Visible;
+
+            
+            
             leftClickTip.Visibility = Visibility.Visible;
         }
         private void Rectbutton_RightClick(object sender, RoutedEventArgs e)
@@ -1464,6 +1477,7 @@ namespace SimuladorNozzle
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
                 CreateNozzle(nozzlesim, steps);
                 plotChanged = true;
+                WriteTable(sender);
             }
             lastChartUpdate += clock.Interval;
             ParpadeoLabels();
