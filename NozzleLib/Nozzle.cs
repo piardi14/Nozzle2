@@ -43,7 +43,8 @@ namespace NozzleLib
                 i++;
             }
         }
-        public Nozzle(double L, double T0, double ro0, double A0, double C, int N, double Res) //A0 is the area of the throat
+        // New constructor used to set a new Area profile different to the initial one
+        public Nozzle(double L, double T0, double ro0, double A0, double C, int N, double Res) //A0 is the area of the throat, 
         {
             SetDimensionalValues(L, T0, ro0, A0);
             this.throatposition = L / 2;
