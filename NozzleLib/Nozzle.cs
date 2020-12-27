@@ -94,6 +94,7 @@ namespace NozzleLib
         {
             return TimeList;
         }
+        //Función para coger valores intercalados de los tiempos
         public List<double> getTimeList(int steps, int finalStep)
         {
             List<double> Times = new List<double>();
