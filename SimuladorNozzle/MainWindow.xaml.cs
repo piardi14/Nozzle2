@@ -1696,17 +1696,17 @@ namespace SimuladorNozzle
         }
         private void Restart()
         {
-            Color colorset = Color.FromRgb(232, 232, 232);
+            Color colorset = Color.FromRgb(232, 232, 232); //The gray color of some buttons
             Brush colorBrush = new SolidColorBrush(colorset);
-            clock.Interval = new TimeSpan(2000000);
-            clockTime = new TimeSpan(0);
+            clock.Interval = new TimeSpan(2000000);        // The interval could have other values
+            clockTime = new TimeSpan(0);                   // We set clockTime to 0
             clock.Stop();
 
-            if (auto == false)
+            if (auto == false)  // If we aro not in auto modde thee is as it should be initially
             {
 
             }
-            else
+            else                 // If not, we set  it
             {
                 clock.Stop();
                 NextStepButton.IsEnabled = true;
@@ -1714,75 +1714,76 @@ namespace SimuladorNozzle
                 AutoButton.Background = colorBrush;
                 AutoButton.Content = "AUTO";
             }
-            nozzlesim = new Nozzle();
+
+            nozzlesim = new Nozzle();  // We create an empty class nozzle, so min and max values will be 0, as initiall (unsued situation)
             calculateMinMax();
             fillSelectedList();
-            steps = 0;
+            steps = 0;                 // The time step counter is reseted to 0 as initially
 
-            labelStep.Visibility = Visibility.Hidden; textStep.Content = "";
+            labelStep.Visibility = Visibility.Hidden; textStep.Content = "";    // We clear and hidde the labels of step and time
             labelTime.Visibility = Visibility.Hidden; textTime.Content = "";
-            // Hacemos Visibles los rectangulos transpoarentes que no nos dejan clicar a ningun sitio
-            RectanglesInitial(Visibility.Visible);
-            List<Brush> ListBrush = new List<Brush>();
-            foreach (int pos in brushesPos)
-            {
-                ListBrush.Add(Brushes.Transparent);
-            }
+            
+            RectanglesInitial(Visibility.Visible);         // We make visible the rectangles ( transparent background ) that does not allow us to click anywhere
+            List<Brush> ListBrush = new List<Brush>();     // We clear the list of brushes for the plots, to be computed again
+            //foreach (int pos in brushesPos)
+            //{
+            //    ListBrush.Add(Brushes.Transparent);
+            //}
 
-            gridRecChart.Children.Clear();
-            if (listaboton != null)
+            gridRecChart.Children.Clear();                 // The grid that contains the rectangles of different colors on the button's grid of the charts panel are cleared
+            if (listaboton != null)                        // And also the buttons that were ona list on of ther charts panel
                 listaboton.Clear();
-            initiated = false;
-            CreateButton.Content = "CREATE";
+            initiated = false;                             // The boolean that shows that the simulation is initiated alos as initially
+
+            CreateButton.Content = "CREATE";               // The content and properties of the buttons and textBox of the initial setings are seted as initially
             DefaultValuesButton.IsEnabled = true;
             DivisionsTextBox.IsEnabled = true;
             CourantTextBox.IsEnabled = true;
             DivisionsTextBox.Text = "";
-            CourantTextBox.Text = "";
-            SetChart();
-            if (DimensionlessButton.IsChecked == true)
+            CourantTextBox.Text = "";                       // 
+
+            SetChart();                                     // SetChart deletes the plots of the charts
+
+            if (DimensionlessButton.IsChecked == true)      // We set the charts as dimensionless
             { }
             else
             {
                 DimensionlessButton.IsChecked = true;
                 setDimensionlessCharts();
-            }
+            }                                               //
 
-            row0.Height = new GridLength(175);
-            chartD.Height = 150;
+            row0.Height = new GridLength(175);                    // Maximize and minimize charts are candelled and seted as initialy seting the 
+            chartD.Height = 150;                                  // height and width of each grid again and  
             chartV.Height = 150;
             chartT.Height = 150;
             chartP.Height = 150;
             col0.Width = new GridLength(245.2);
             row1.Height = new GridLength(175);
-            col1.Width = new GridLength(245.2);
-            MaxDensity.Visibility = Visibility.Visible;
-            MinDensity.Visibility = Visibility.Hidden;
+            col1.Width = new GridLength(245.2);                   //
 
+            MaxDensity.Visibility = Visibility.Visible;           // we make Visible the icone realted to maximize action and hide the one of minimize avction
+            MinDensity.Visibility = Visibility.Hidden;
             MaxVelocity.Visibility = Visibility.Visible;
             MinVelocity.Visibility = Visibility.Hidden;
-
             MaxTemperature.Visibility = Visibility.Visible;
             MinTemperature.Visibility = Visibility.Hidden;
-
             MaxPressure.Visibility = Visibility.Visible;
-            MinPressure.Visibility = Visibility.Hidden;
+            MinPressure.Visibility = Visibility.Hidden;            //
 
-            rayahorizontal.Visibility = Visibility.Hidden;
+            rayahorizontal.Visibility = Visibility.Hidden;         // We hidde the orizonthal longitudinal x variable on the nozzle panel
             Indicator.Visibility = Visibility.Hidden;
             panelShow.Visibility = Visibility.Hidden;
-            fixedIndicator.Visibility = Visibility.Hidden;
+            fixedIndicator.Visibility = Visibility.Hidden;         //
 
-            fixTable = false;
+            fixTable = false;                                      // The bolean that informs that that the informtion table on the left buttom corner is setted to false
 
-
-            NozzleCanvas.Children.Clear();
-            gridRecChart.Children.Clear();
+            NozzleCanvas.Children.Clear();                         // The nozzle rectangles are cleared
+            gridRecChart.Children.Clear();               
             gridRecChart.RowDefinitions.Clear();
             gridButtChart.Children.Clear();
-            gridButtChart.RowDefinitions.Clear();
+            gridButtChart.RowDefinitions.Clear();                  //
 
-            PropertiesBoxSelection.SelectedIndex = -1;
+            PropertiesBoxSelection.SelectedIndex = -1;             // The propierties box selection is cleared
             //nozzlesim = new Nozzle(3, 800, 0.5, 0.5, 31);
             //nozzlesim.ComputeUntilPos(1401);
             //calculateMinMax();
