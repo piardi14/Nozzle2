@@ -12,7 +12,7 @@ namespace NozzleLib
         double A;       //area in the position of the cell
         int i;          //divisions of the nozzle
         double M;
-        double R = 286;
+        public double R = 286;
 
         public int I { get; set; }
         public double Position_x { get; set; }
@@ -30,7 +30,7 @@ namespace NozzleLib
             this.T = T;
             this.ro = ro;
             this.V = V;
-            this.p = T*ro*R;
+            this.p = T*ro;
             this.A = A;
             this.M = MachNumber();
         }
@@ -46,6 +46,8 @@ namespace NozzleLib
             this.Pressure = T * ro;
             this.Mach = V / Math.Sqrt(T);
         }
+        public Position()
+        { }
 
         //FUNCTIONS
         //Variable Extraction

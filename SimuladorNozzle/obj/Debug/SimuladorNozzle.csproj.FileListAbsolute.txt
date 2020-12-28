@@ -70,3 +70,63 @@ C:\Users\Luis\Source\Repos\piardi14\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorN
 C:\Users\Luis\Source\Repos\piardi14\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.csproj.CopyComplete
 C:\Users\Luis\Source\Repos\piardi14\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.exe
 C:\Users\Luis\Source\Repos\piardi14\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\SimuladorNozzle.exe.config
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\SimuladorNozzle.exe
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\SimuladorNozzle.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\NozzleLib.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\NozzleLib.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.xml
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.csprojAssemblyReference.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\MainWindow.g.cs
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\App.g.cs
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle_MarkupCompile.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle_MarkupCompile.lref
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\MainWindow.baml
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.g.resources
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.Properties.Resources.resources
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.csproj.GenerateResource.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.csproj.CoreCompileInputs.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.csproj.CopyComplete
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.exe
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\CredentialManagement.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\Nozzle2\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Users\sarar\Source\Repos\Nozzle22\SimuladorNozzle\bin\Debug\CredentialManagement.dll
+C:\Users\sarar\Source\Repos\Nozzle22\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Users\sarar\Source\Repos\Nozzle22\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Users\sarar\Source\Repos\Nozzle22\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\SimuladorNozzle.exe.config
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\SimuladorNozzle.exe
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\SimuladorNozzle.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\CredentialManagement.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\NozzleLib.dll
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\NozzleLib.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.xml
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.csprojAssemblyReference.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\MainWindow.g.cs
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\App.g.cs
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle_MarkupCompile.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle_MarkupCompile.lref
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\MainWindow.baml
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.g.resources
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.Properties.Resources.resources
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.csproj.GenerateResource.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.csproj.CoreCompileInputs.cache
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.csproj.CopyComplete
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.exe
+C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\SimuladorNozzle\obj\Debug\SimuladorNozzle.pdb

@@ -15,15 +15,16 @@ namespace NozzleLib
         Position[,] malla;              //Position matrix rows=time steps and columns=space divisions
         int N;                     //Number of space divisions, 31 by default (Anderson value)
         double[] dimensionalvalues;     //Initial values to obtain dimensional values to magnitudes [L, T0, a0, p0, ro0]
+        Position dimensionalPos; 
         double throatposition;          //where is the throat
 
         public List<Position> position_initial_conditions { get; set; }
         //public List<Position> position_first_time_step { get; set; }
         //public List<Position> position_after_1400_time_steps { get; set; }
 
-        public Nozzle(double L, double T0, double ro0, double C, int N)
+        public Nozzle(double L, double T0, double ro0, double A0, double C, int N) //A0 is the area of the throat
         {
-            SetDimensionalValues(L, T0, ro0);
+            SetDimensionalValues(L, T0, ro0, A0);
             this.throatposition = L / 2;
             this.deltax = L / (N-1);
             this.N = N;
@@ -42,7 +43,35 @@ namespace NozzleLib
                 i++;
             }
         }
+        // New constructor used to set a new Area profile different to the initial one
+        public Nozzle(double L, double T0, double ro0, double A0, double C, int N, double Res) //A0 is the area of the throat, 
+        {
+            SetDimensionalValues(L, T0, ro0, A0);
+            this.throatposition = L / 2;
+            this.deltax = L / (N - 1);
+            this.N = N;
+            this.C = C;
+            this.malla = new Position[1401, N];
+            this.position_initial_conditions = new List<Position>();
+            int i = 0;
+            while (i < N)
+            {
+                double xi = 0 + i * deltax;
+                double temp = 1 - 0.2314 * xi;
+                double Res0 = 2.2 * Math.Pow(0.0 - (N - 1) * 0.1 / 2, 2);
+                double Correction = (Res - 1) / Res0;
+                Position pos = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Correction * Math.Pow(xi - throatposition, 2));
+                
+                Position initial_conditions = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Correction* Math.Pow(xi - throatposition, 2), i + 1);
+                position_initial_conditions.Add(initial_conditions);
+                SetPosition(0, i, pos);
+                i++;
+            }
+        }
+        public Nozzle()
+        {
 
+        }
         //FUNCTIONS
         public Position GetPosition(int t, int i)
         {
@@ -65,12 +94,13 @@ namespace NozzleLib
         {
             return TimeList;
         }
-        public List<double> getTimeList(int steps)
+        //Función para coger valores intercalados de los tiempos
+        public List<double> getTimeList(int steps, int finalStep)
         {
             List<double> Times = new List<double>();
             int i = 0;
             int initStep = 0;
-            while (i < this.TimeList.Count)
+            while (i < this.TimeList.Count && i<=finalStep)
             {
                 if (initStep == 0)
                 {
@@ -89,6 +119,10 @@ namespace NozzleLib
         public double[] getDimensionalValues()
         {
             return dimensionalvalues;
+        }
+        public Position getDimensionalPosition()
+        {
+            return dimensionalPos;
         }
 
         public List<double> createListArea(int t)
@@ -151,7 +185,7 @@ namespace NozzleLib
             }
             return Temperature;
         }
-        public void SetDimensionalValues(double L, double T0, double ro0)
+        public void SetDimensionalValues(double L, double T0, double ro0, double A0)
         {
             dimensionalvalues = new double[5];
             dimensionalvalues[0] = L;
@@ -159,6 +193,7 @@ namespace NozzleLib
             dimensionalvalues[2] = Math.Sqrt(gamma * R * T0);
             dimensionalvalues[3] = T0*ro0*R;
             dimensionalvalues[4] = ro0;
+            dimensionalPos = new Position(0, T0,ro0, Math.Sqrt(gamma * R * T0),A0);
 
         }
         public List<Position> GetRow (int row)
@@ -211,12 +246,12 @@ namespace NozzleLib
             }
             return fila;
         }
-        public List<double> GetColumnPar(int col, string parameter, int steps, List<double> dimValues )
+        public List<double> GetColumnPar(int col, string parameter, int steps, Position dimens, int finStep )
         {
             List<double> columna = new List<double>();
             int i = 0;
             int initStep = 0;
-            while (i < malla.GetLength(0))
+            while (i < malla.GetLength(0) && i <= finStep)
             {
                 if (initStep == 0)
                 {
@@ -227,13 +262,18 @@ namespace NozzleLib
                         if (parameter == "x")
                             value = Math.Round(pos.GetX(), 4);
                         else if (parameter == "T")
-                            value = Math.Round(pos.GetTemperature()*dimValues[2], 4);
+                            value = Math.Round(pos.GetTemperature() * dimens.GetTemperature(), 4);
                         else if (parameter == "D")
-                            value = Math.Round(pos.GetDensity()* dimValues[3], 4);
+                            value = Math.Round(pos.GetDensity() * dimens.GetDensity(), 4);
                         else if (parameter == "V")
-                            value = Math.Round(pos.GetVelocity()*dimValues[0], 4);
+                            value = Math.Round(pos.GetVelocity() * dimens.GetVelocity(), 4);
                         else if (parameter == "P")
-                            value = Math.Round(pos.GetPressure()* dimValues[1], 4);
+                        {
+                            if (dimens.GetPressure() != 1)
+                                value = Math.Round(pos.GetPressure() * dimens.GetPressure(), 4) * dimens.R/100;
+                            else
+                                value = Math.Round(pos.GetPressure() * dimens.GetPressure(), 4);
+                        }
                         else if (parameter == "A")
                             value = Math.Round(pos.GetArea(), 4);
                         else if (parameter == "M")
@@ -261,22 +301,18 @@ namespace NozzleLib
         public List<Position> GetColumn(int col)
         {
             List<Position> columna = new List<Position>();
-            int i = 0;
-            while (i < malla.GetLength(0))
+            int j = 0;
+            while (j < 1401)
             {
-                if (i == col)
-                {
-                    int j = 0;
-                    while (j < malla.GetLength(1))
-                    {
-                        columna[j] = malla[j, i];
-                        j++;
-                    }
-                    return columna;
-                }
-                i++;
+                if (malla[j, col] != null)
+                    columna.Add(malla[j, col]);
+                else
+                    break;
+                j++;
             }
-            return null;
+            return columna;
+                
+            
         }
         public Position[,] Getmalla()
         {
@@ -467,6 +503,16 @@ namespace NozzleLib
             {
                 ComputeNextTime();
                 i++;
+            }
+        }
+
+        public void SetNewArea(double new_Rate)
+        {
+            double y = (new_Rate - 1) / 2.25;
+            int i = 0;
+            while (i<N)
+            {
+                malla[0,i].SetA(1 + y * Math.Pow(i*0.1 - 1.5, 2));
             }
         }
 
