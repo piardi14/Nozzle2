@@ -121,11 +121,20 @@ namespace SimuladorNozzle
         }
         public void DefaultValues()
         {
-            DivisionsTextBox.Text = "31";
-            CourantTextBox.Text = "0.5";
-            if (advanced == false)
+            if (advanced == true && DivisionsTextBox.Text == "" && CourantTextBox.Text == "")
+            {
+                DivisionsTextBox.Text = "31";
+                CourantTextBox.Text = "0.5";
+                CreateButton.IsEnabled = false;
+            }
+            else if (advanced == false)
+            {
+                DivisionsTextBox.Text = "31";
+                CourantTextBox.Text = "0.5";
                 CreateButton.IsEnabled = true;
+            }
         }
+
         public void DefaultValuesClear()
         {
             DivisionsTextBox.Text = "";
@@ -278,8 +287,6 @@ namespace SimuladorNozzle
         }
 
         //CONTROLS CHARTS
-
-
         public double[] ampliate(double max, double min)
         {
             double[] MaxMin = new double[2] { max + (max - min) / 20, min - (max - min) / 20 };
@@ -405,8 +412,8 @@ namespace SimuladorNozzle
                 NoSeriesT.Visibility = Visibility.Hidden;
                 NoSeriesP.Visibility = Visibility.Hidden;
             }
-
-            int pos = Convert.ToInt32(Convert.ToDecimal(button.Content.ToString().Split(' ')[2]) * 10);
+            string pos_str = button.Name.ToString().Split('r')[1].Split('t')[1];
+            int pos = Convert.ToInt32(pos_str);
 
             int showed = brushesPos[pos];
             if (showed == -1)   // pint of gray
@@ -1789,20 +1796,20 @@ namespace SimuladorNozzle
             //calculateMinMax();
         }
 
-        public void RectanglesInitial(Visibility vis)
-        {
-            rectangleCharts.Visibility = vis;
+        public void RectanglesInitial(Visibility vis)              // Those rectangles's Background are transparent and are Hidden or Visible,  
+        {                                                          // That lets us to cover some parts of the simulater to dissable the possibility to use them
+            rectangleCharts.Visibility = vis;                      // USefull sometimes
             rectangleNozzle.Visibility = vis;
             rectangleAutoStep.Visibility = vis;
         }
 
         
 
-        private void WriteIndicatorMaxMin(int propind)
-        {
-            if (propind == 0)
-            {
-                MaxLabel.Content = Convert.ToString(Math.Round(maxT, 1));
+        private void WriteIndicatorMaxMin(int propind)                                             // Some atributed defined at the beginning  sets the max and minimum values                             
+        {                                                                                          // of the different properties Temp, Velocity, Dens & Pressure,  
+            if (propind == 0)                                                                      // and defines the maximum and minimum value of all the spacial and temporal domain
+            {                                                                                      // propind == 0 means Temperature, propind == 1 means Velocity, 
+                MaxLabel.Content = Convert.ToString(Math.Round(maxT, 1));                          // propind == 2 means Density, propind == 3 mean Pressure
                 MinLabel.Content = Convert.ToString(Math.Round(minT, 1));
                 MedLabel.Content = Convert.ToString(Math.Round((maxT + minT) / (double)2, 1));
             }
@@ -1836,34 +1843,36 @@ namespace SimuladorNozzle
         // ADVANCED STUDY
 
         private void buttonAdvanced_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult respuesta = MessageBox.Show(
+        {                                                                                             // The messagebox informs that the information will be lost
+            MessageBoxResult respuesta = MessageBox.Show(                                             // and asks if the users wants to continue
                 "The advanced study is getting started, the simulator will be reset" + "\n" + 
-                "to create a new nozzle, so the info will be lost. Do you want to coninue?", "Advanced study", MessageBoxButton.OKCancel);
+                "to create a new nozzle, so the info will be lost. Do you want to coninue?", 
+                "Advanced study", MessageBoxButton.OKCancel);
 
             switch (respuesta)
             {
-                case MessageBoxResult.OK:
-
+                case MessageBoxResult.OK:                                                             // case OK, the advanced study starts, first Restart() and RestartAdvanced()
+                                                                                                      // are called to clean information, and also to block the rest of controls
                     RestartAdvanced();
                     
                     Restart();
-                    buttonAdvanced.Visibility = Visibility.Hidden;
+                    buttonAdvanced.Visibility = Visibility.Hidden;                                    // make visible the buttuns of the advanced study
                     panelAdvanced2.Visibility = Visibility.Visible;
                     advanced = true;
                     rectangleAdvanced.Visibility = Visibility.Hidden;
                     
                     break;
-                case MessageBoxResult.Cancel:
+                case MessageBoxResult.Cancel:                                                         // case Cancel no changes occurs
                     break;
             }
         }
-        public void RestartAdvanced()
+        public void RestartAdvanced()                                                                 // an specific Restart function for the advanced study
         {
-            textNewA.Text = "";
-            buttonAdvanced.Visibility = Visibility.Hidden;
-            panelAdvanced2.Visibility = Visibility.Visible;
-            buttCheckNewA.Background = new SolidColorBrush(Color.FromArgb(204, 255, 9, 0));
+            textNewA.Text = "";                                                                       // Set the parameters as initially
+            
+            buttCheckNewA.Background = new SolidColorBrush(Color.FromArgb(204, 255, 9, 0));           // Set the background color as red as should initially be
+            
+            buttonAdvanced.Visibility = Visibility.Hidden;                                            // We hidde all whith the exception of The button tha initiates the advanced study
             buttCheckNewA.Visibility = Visibility.Hidden;
             alertRateA.Visibility = Visibility.Hidden;
             recOld.Visibility = Visibility.Hidden;
@@ -1873,16 +1882,17 @@ namespace SimuladorNozzle
             panelAdvanced2.Visibility = Visibility.Hidden;
             buttonAdvanced.Visibility = Visibility.Visible;
             buttonNewAdvanced.Visibility = Visibility.Hidden;
-            chartA.Visibility = Visibility.Hidden;
-            chartA.Series.Clear();
+            chartA.Visibility = Visibility.Hidden;                                                   //
+
+            chartA.Series.Clear();                                                                    // Claeaar the chart of the previsualization
             xAxisA.Labels=new string[0];
 
-            advanced = false;
+            advanced = false;                                                                         // shows the info that informs that advanced study is not running
         }
 
-        private void textNewA_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            SolidColorBrush red= new SolidColorBrush(Color.FromArgb(204,255,9,0));
+        private void textNewA_TextChanged(object sender, TextChangedEventArgs e)                      // when we write on the textbox we change the parameter related to the area
+        {                                                                                             // so all information regarding that should change be cleared 
+            SolidColorBrush red= new SolidColorBrush(Color.FromArgb(204,255,9,0));                    // until we chack it again
             buttCheckNewA.Background = red;
             buttCheckNewA.Visibility = Visibility.Visible;
             buttCheckNewA.Content = "check value";
@@ -1890,26 +1900,25 @@ namespace SimuladorNozzle
             alertRateA.Visibility = Visibility.Hidden;
             chartA.Visibility = Visibility.Hidden;
             recNew.Visibility = Visibility.Hidden;
-            recOld.Visibility = Visibility.Hidden;
-            DefaultValuesClear();
+            recOld.Visibility = Visibility.Hidden;                                                    // 
         }
 
-        private void buttCheckNewA_Click(object sender, RoutedEventArgs e)
+        private void buttCheckNewA_Click(object sender, RoutedEventArgs e)                            // We check the information of Area Rate thatb we have decided 
         {
-            try
+            try                                                                                                                      // we define a try to aviod format exceptions
             {
-                if (textNewA.Text != "")
-                {
-                    decimal decRes = decimal.Parse(textNewA.Text.Split(':')[0].Replace('.', ','));
+                if (textNewA.Text != "")                                                                                             // in case we have written whaatever              
+                { 
+                    decimal decRes = decimal.Parse(textNewA.Text.Split(':')[0].Replace('.', ','));                                   // we get the value of reservoir and Throath
                     decimal decThr = decimal.Parse(textNewA.Text.Split(':')[1].Replace('.', ','));
 
                     
                     double Res = Convert.ToDouble(decRes);
-                    double Thr = Convert.ToDouble(decThr);
+                    double Thr = Convert.ToDouble(decThr);                                                                           //
 
-                    if (Thr !=0)
+                    if (Thr !=0)                                                                                                     // avoid zero value
                     {
-                        if (Res > Thr && Res / Thr != 5.95 && Res / Thr <= 8)
+                        if (Res > Thr && Res / Thr != 5.95 && Res / Thr <= 8)                                                        // define the limits of the parameters 
                         {
                             Res = Math.Round(Res / Thr,2);
                             
