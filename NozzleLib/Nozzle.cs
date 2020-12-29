@@ -37,7 +37,7 @@ namespace NozzleLib
                 double xi = 0 + i * deltax;
                 double temp = 1 - 0.2314 * xi;
                 Position pos = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Math.Pow(xi - throatposition, 2));
-                Position initial_conditions = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Math.Pow(xi - throatposition, 2),i+1);
+                Position initial_conditions = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Math.Pow(xi - throatposition, 2), i + 1);
                 position_initial_conditions.Add(initial_conditions);
                 SetPosition(0, i, pos);
                 i++;
@@ -89,6 +89,10 @@ namespace NozzleLib
         public int getN()
         {
             return this.N;
+        }
+        public double getCourant()
+        {
+            return this.C;
         }
         public List<double> getTimeList()
         {
