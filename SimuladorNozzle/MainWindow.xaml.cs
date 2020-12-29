@@ -1564,8 +1564,8 @@ namespace SimuladorNozzle
                         //ho fiquem tot dins d'un file
                         File.WriteAllText(saveFileDialog.FileName, text_save.Text);
 
-                        //parem el timer
-                        clock.Stop();
+                        ////parem el timer
+                        //clock.Stop();
 
                         MessageBox.Show("The file is saved correctly", "", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
@@ -1577,6 +1577,7 @@ namespace SimuladorNozzle
 
         private void UploadButton_Click(object sender, RoutedEventArgs e)
         {
+            Restart();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             openFileDialog.FilterIndex = 2;
