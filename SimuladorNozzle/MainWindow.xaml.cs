@@ -19,6 +19,8 @@ using Brushes = System.Windows.Media.Brushes;
 
 using NozzleLib;
 using System.Windows.Threading;
+using Microsoft.Win32;
+using System.IO;
 using CredentialManagement;
 
 namespace SimuladorNozzle
@@ -47,7 +49,7 @@ namespace SimuladorNozzle
         bool fixTable = false;
         Button fixedButton;
 
-        bool advanced = false;
+        bool advanced = false;   //aquest es per mirar si el advanced esta en aquell moment o no!!
 
         double maxT;
         double maxV;
@@ -111,8 +113,6 @@ namespace SimuladorNozzle
 
 
         }
-
-
 
         //INITIAL SETTINGS
         private void DefaultValuesButton_Click(object sender, RoutedEventArgs e)
@@ -206,7 +206,6 @@ namespace SimuladorNozzle
         }
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            
             Create(false, 0);
         }
 
@@ -245,6 +244,9 @@ namespace SimuladorNozzle
                 {
                     nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions);
                 }
+
+                List<Position> una_lista = nozzlesim.position_initial_conditions;   //per afegir les condicions inicials que hem posat
+                DataGrid1.ItemsSource = una_lista;                                  //ho fiquem al DataGrid1
 
                 // computa todos los valores especificados
                 nozzlesim.ComputeUntilPos(1401);
@@ -1517,17 +1519,8 @@ namespace SimuladorNozzle
             }
         }
 
-
-        public void DataGrid1_Loaded()
-        {
-            List<Position> una_lista = nozzlesim.position_initial_conditions;
-            DataGrid1.ItemsSource = una_lista;
-        }
-
-
-
         /// Controls of the STEP AUTO PAUSE CLOCK...
-        
+
 
         private void NextStepButton_Click(object sender, RoutedEventArgs e)
         {
@@ -1544,6 +1537,131 @@ namespace SimuladorNozzle
             else
             {
                 MessageBox.Show("The simulation is ended, the maximum time is reached ");
+            }
+        }
+
+        private void DownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (initiated == true)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.FileName = "";
+                saveFileDialog.Title = "Save Text Files";
+                saveFileDialog.DefaultExt = "txt";
+                saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                saveFileDialog.FilterIndex = 2;
+                saveFileDialog.RestoreDirectory = true;
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    if (advanced == false)
+                    {
+                        text_save.Text = Convert.ToString(nozzlesim.getCourant()) + ' ' + Convert.ToString(nozzlesim.getN()) + "\r\n";  //Courant value i divisions value
+                        text_save.Text += Convert.ToString(steps) + "\r\n";  //time_step
+                        text_save.Text += Convert.ToString(PropertiesBoxSelection.SelectedIndex);    //quina box esta seleccionada
+
+
+                        //ho fiquem tot dins d'un file
+                        File.WriteAllText(saveFileDialog.FileName, text_save.Text);
+
+                        //parem el timer
+                        clock.Stop();
+
+                        MessageBox.Show("The file is saved correctly", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+            else
+                MessageBox.Show("Initialized the simulation", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        private void UploadButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            openFileDialog.FilterIndex = 2;
+            openFileDialog.RestoreDirectory = true;
+
+            string line;
+            int boxselected = 0;
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                initiated = true;
+
+                var fileStream = openFileDialog.OpenFile();
+                StreamReader reader = new StreamReader(fileStream);
+                int contador = 0;
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] trozos = line.Split(' ');
+
+                    if (contador == 0)
+                    {
+                        nozzlesim = new Nozzle(3, 2800, 1.95, 2, Convert.ToDouble(trozos[0]), Convert.ToInt32(trozos[1]));
+                    }
+                    if (contador == 1)
+                    {
+                        steps = Convert.ToInt32(trozos[0]);
+                    }
+                    if (contador == 2)
+                    {
+                        boxselected = Convert.ToInt32(trozos[0]);
+                    }
+                    contador++;
+                }
+
+                // computa tots els valors que volem
+                nozzlesim.ComputeUntilPos(1401);
+
+                //fiquem valors
+                CourantTextBox.Text = nozzlesim.getCourant().ToString();
+                DivisionsTextBox.Text = nozzlesim.getN().ToString();
+                textStep.Content = steps.ToString();
+                textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
+
+                //visibilitat
+                labelStep.Visibility = Visibility.Visible;
+                labelTime.Visibility = Visibility.Visible;
+                rectangleAutoStep.Visibility = Visibility.Visible;
+                RectanglesInitial(Visibility.Hidden);
+                rayahorizontal.Visibility = Visibility.Visible;
+                Indicator.Visibility = Visibility.Visible;
+                panelShow.Visibility = Visibility.Hidden;
+
+                //inizialitzem la simulació
+                initiated = true;
+
+                //indicator
+                calculateMinMax();
+                WriteIndicatorMaxMin(0);
+                setDimensionlessCharts();
+
+                //box_selection
+                PropertiesBoxSelection.SelectedIndex = boxselected;
+
+                //botons de la chart
+                createButtCharts();
+
+                //pintar
+                fillSelectedList();
+                createBrushesList();
+
+                //creem el nozzle
+                CreateNozzle(nozzlesim, steps);
+                plotChanged = true;
+                SetChart();
+
+                //inizialitzem el clock
+                clock.Start();
+
+                //desactivem tot allo que no necessitem
+                CreateButton.Content = "SIMULATING...";
+                CreateButton.IsEnabled = false;
+                DefaultValuesButton.IsEnabled = false;
+                DivisionsTextBox.IsEnabled = false;
+                CourantTextBox.IsEnabled = false;
             }
         }
 
@@ -1709,7 +1827,7 @@ namespace SimuladorNozzle
             clockTime = new TimeSpan(0);                   // We set clockTime to 0
             clock.Stop();
 
-            if (auto == false)  // If we aro not in auto modde thee is as it should be initially
+            if (auto == false)  // If we are not in auto modde there is as it should be initially
             {
 
             }
