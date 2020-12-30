@@ -70,3 +70,12 @@ C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final projec
 C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csproj.CoreCompileInputs.cache
 C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.dll
 C:\Users\gerar\Desktop\Gerard\4º año\1er cuatri\sim\project final\final project\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle2\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.deps.json
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle2\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle2\NozzleLib\bin\Debug\netstandard2.0\NozzleLib.pdb
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csprojAssemblyReference.cache
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfoInputs.cache
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.AssemblyInfo.cs
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.csproj.CoreCompileInputs.cache
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.dll
+C:\Users\Diego Pisco Araujo\Source\Repos\piardi14\Nozzle2\NozzleLib\obj\Debug\netstandard2.0\NozzleLib.pdb
