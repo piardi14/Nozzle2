@@ -194,8 +194,8 @@
                         <Rectangle x:Name="rectangleNozzle" Fill="Transparent" HorizontalAlignment="Stretch" Height="510" VerticalAlignment="Top" Margin="0,-594" Visibility="Visible"/>
                         <Rectangle x:Name="rectangleAutoStep" Fill="Transparent" HorizontalAlignment="Left" Width="200" Height="70" VerticalAlignment="Top" Margin="0,-80" Visibility="Hidden"/>
 
-                        <StackPanel>
-                            <TextBox x:Name="text_save" HorizontalAlignment="Center" Height="40" Margin="10,10,-30,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Visibility="Visible"/>
+                        <StackPanel Visibility="Hidden">
+                            <TextBox x:Name="text_save" HorizontalAlignment="Center" Height="40" Margin="10,10,-30,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Visibility="Hidden"/>
                         </StackPanel>
 
                     </StackPanel>

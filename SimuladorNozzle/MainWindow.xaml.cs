@@ -1452,8 +1452,6 @@ namespace SimuladorNozzle
                         times[i] = (Math.Round(time, 3)).ToString();
                         i++;
                     }
-
-
                     createChart(chartV, listV, ListBrush, xAxisV, times);
                     createChart(chartP, listP, ListBrush, xAxisP, times);
                     createChart(chartT, listT, ListBrush, xAxisT, times);
@@ -1552,20 +1550,31 @@ namespace SimuladorNozzle
                 saveFileDialog.FilterIndex = 2;
                 saveFileDialog.RestoreDirectory = true;
 
+                int contador = 0;
+
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     if (advanced == false)
                     {
                         text_save.Text = Convert.ToString(nozzlesim.getCourant()) + ' ' + Convert.ToString(nozzlesim.getN()) + "\r\n";  //Courant value i divisions value
                         text_save.Text += Convert.ToString(steps) + "\r\n";  //time_step
-                        text_save.Text += Convert.ToString(PropertiesBoxSelection.SelectedIndex);    //quina box esta seleccionada
-
+                        text_save.Text += Convert.ToString(PropertiesBoxSelection.SelectedIndex) + "\r\n"; ;    //quina box esta seleccionada
+                        foreach (int valor in brushesPos)
+                        {
+                            if (valor != -1)
+                            {
+                                text_save.Text += Convert.ToString(contador) + ' ' + Convert.ToString(valor) + "\r\n";
+                                contador++;
+                            }
+                            else
+                                contador++;
+                        }
 
                         //ho fiquem tot dins d'un file
                         File.WriteAllText(saveFileDialog.FileName, text_save.Text);
 
-                        //parem el timer
-                        clock.Stop();
+                        ////parem el timer
+                        //clock.Stop();
 
                         MessageBox.Show("The file is saved correctly", "", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
@@ -1577,6 +1586,7 @@ namespace SimuladorNozzle
 
         private void UploadButton_Click(object sender, RoutedEventArgs e)
         {
+            List<int> provisional = new List<int>();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
             openFileDialog.FilterIndex = 2;
@@ -1587,6 +1597,8 @@ namespace SimuladorNozzle
 
             if (openFileDialog.ShowDialog() == true)
             {
+                Restart();
+
                 initiated = true;
 
                 var fileStream = openFileDialog.OpenFile();
@@ -1600,14 +1612,32 @@ namespace SimuladorNozzle
                     if (contador == 0)
                     {
                         nozzlesim = new Nozzle(3, 2800, 1.95, 2, Convert.ToDouble(trozos[0]), Convert.ToInt32(trozos[1]));
+                        provisional = new List<int>(nozzlesim.getN());
+                        for (int i = 0; i < nozzlesim.getN(); i++) provisional.Add(-1);  //aqui el que fem es crear una lista de longitud N amb valors -1
                     }
-                    if (contador == 1)
+                    else if (contador == 1)
                     {
                         steps = Convert.ToInt32(trozos[0]);
                     }
-                    if (contador == 2)
+                    else if (contador == 2)
                     {
                         boxselected = Convert.ToInt32(trozos[0]);
+                    }
+                    else
+                    {
+                        int jj = 0;
+                        int indice = Convert.ToInt32(trozos[0]);
+                        int valor = Convert.ToInt32(trozos[1]);
+                        while (jj <= provisional.Count())
+                        {
+                            if (jj == indice)
+                            {
+                                provisional[jj] = valor;
+                                jj = provisional.Count() + 1;
+                            }
+                            else
+                                jj++;
+                        }
                     }
                     contador++;
                 }
@@ -1650,11 +1680,14 @@ namespace SimuladorNozzle
 
                 //creem el nozzle
                 CreateNozzle(nozzlesim, steps);
-                plotChanged = true;
-                SetChart();
 
                 //inizialitzem el clock
                 clock.Start();
+
+                //grafics
+                brushesPos = provisional;
+                plotChanged = true;
+                SetChart();
 
                 //desactivem tot allo que no necessitem
                 CreateButton.Content = "SIMULATING...";
