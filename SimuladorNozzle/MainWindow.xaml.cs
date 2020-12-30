@@ -346,6 +346,31 @@ namespace SimuladorNozzle
             SetChart();
 
         }
+        public void setDimensionCharts()
+        {
+            double[] MaxMinD = ampliate(maxD, minD);
+            double[] MaxMinV = ampliate(maxV, minV);
+            double[] MaxMinT = ampliate(maxT, minT);
+            double[] MaxMinP = ampliate(maxP, minP);
+
+            Position dimenssional = nozzlesim.getDimensionalPosition();
+            yAxisD.MaxValue = MaxMinD[0] * dimenssional.GetDensity();
+            yAxisD.MinValue = MaxMinD[1] * dimenssional.GetDensity();
+            chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
+            yAxisD.Title = "Density [ kg / m^3 ]";
+            yAxisV.MaxValue = MaxMinV[0] * dimenssional.GetVelocity();
+            yAxisV.MinValue = MaxMinV[1] * dimenssional.GetVelocity();
+            chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+            yAxisV.Title = "Velocity [ m / s ]";
+            yAxisT.MaxValue = MaxMinT[0] * dimenssional.GetTemperature();
+            yAxisT.MinValue = MaxMinT[1] * dimenssional.GetTemperature();
+            chartT.HorizontalAlignment = HorizontalAlignment.Stretch;
+            yAxisT.Title = "Temperature [ ºC ]";
+            yAxisP.MaxValue = MaxMinP[0] * dimenssional.GetPressure() * dimenssional.R / 100;
+            yAxisP.MinValue = MaxMinP[1] * dimenssional.GetPressure() * dimenssional.R / 100;
+            chartP.HorizontalAlignment = HorizontalAlignment.Stretch;
+            yAxisP.Title = "Pressure [ hPa ]";
+        }
         public void setDimensionlessCharts()
         {
             double[] MaxMinD = ampliate(maxD, minD);
@@ -1558,7 +1583,15 @@ namespace SimuladorNozzle
                     {
                         text_save.Text = Convert.ToString(nozzlesim.getCourant()) + ' ' + Convert.ToString(nozzlesim.getN()) + "\r\n";  //Courant value i divisions value
                         text_save.Text += Convert.ToString(steps) + "\r\n";  //time_step
-                        text_save.Text += Convert.ToString(PropertiesBoxSelection.SelectedIndex) + "\r\n"; ;    //quina box esta seleccionada
+                        text_save.Text += Convert.ToString(PropertiesBoxSelection.SelectedIndex) + "\r\n";    //quina box esta seleccionada
+                        if (DimensionlessButton.IsChecked == false)
+                        {
+                            text_save.Text += "0" + "\r\n"; //mirem que el dimensionless no esta seleccionat
+                        }
+                        else if (DimensionlessButton.IsChecked == true)
+                        {
+                            text_save.Text += "1" + "\r\n"; //mirem que el dimensionless esta seleccionat
+                        }
                         foreach (int valor in brushesPos)
                         {
                             if (valor != -1)
@@ -1569,7 +1602,6 @@ namespace SimuladorNozzle
                             else
                                 contador++;
                         }
-
                         //ho fiquem tot dins d'un file
                         File.WriteAllText(saveFileDialog.FileName, text_save.Text);
 
@@ -1577,6 +1609,10 @@ namespace SimuladorNozzle
                         //clock.Stop();
 
                         MessageBox.Show("The file is saved correctly", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+
                     }
                 }
             }
@@ -1604,6 +1640,7 @@ namespace SimuladorNozzle
                 var fileStream = openFileDialog.OpenFile();
                 StreamReader reader = new StreamReader(fileStream);
                 int contador = 0;
+                int check = 0;
 
                 while ((line = reader.ReadLine()) != null)
                 {
@@ -1623,6 +1660,10 @@ namespace SimuladorNozzle
                     {
                         boxselected = Convert.ToInt32(trozos[0]);
                     }
+                    else if (contador == 3)
+                    {
+                        check = Convert.ToInt32(trozos[0]);
+                    }
                     else
                     {
                         int jj = 0;
@@ -1641,7 +1682,6 @@ namespace SimuladorNozzle
                     }
                     contador++;
                 }
-
                 // computa tots els valors que volem
                 nozzlesim.ComputeUntilPos(1401);
 
@@ -1670,9 +1710,7 @@ namespace SimuladorNozzle
 
                 //box_selection
                 PropertiesBoxSelection.SelectedIndex = boxselected;
-
-                //botons de la chart
-                createButtCharts();
+                WriteIndicatorMaxMin(PropertiesBoxSelection.SelectedIndex);
 
                 //pintar
                 fillSelectedList();
@@ -1687,8 +1725,31 @@ namespace SimuladorNozzle
                 //grafics
                 brushesPos = provisional;
                 plotChanged = true;
+                if (check == 0)
+                {
+                    DimensionlessButton.IsChecked = false;
+                    setDimensionCharts();
+                }
+                else
+                { 
+                    DimensionlessButton.IsChecked = true;
+                    setDimensionlessCharts();
+                }
                 SetChart();
 
+                //botons de la chart
+                createButtCharts();
+                int cont = 0;
+                foreach (Button unboton in listaboton)
+                {
+                    if (brushesPos[cont] != -1)
+                    {
+                        Color colorset = Color.FromRgb(153, 144, 144);  //pintem els valors seleccionats de gris
+                        Brush colorBrush = new SolidColorBrush(colorset);
+                        unboton.Background = colorBrush;
+                    }
+                    cont++;
+                }
                 //desactivem tot allo que no necessitem
                 CreateButton.Content = "SIMULATING...";
                 CreateButton.IsEnabled = false;
