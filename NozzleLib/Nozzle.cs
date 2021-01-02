@@ -98,6 +98,18 @@ namespace NozzleLib
         {
             return TimeList;
         }
+        public double[] getDimensionalValues()
+        {
+            return dimensionalvalues;
+        }
+        public Position getDimensionalPosition()
+        {
+            return dimensionalPos;
+        }
+        public Position[,] Getmalla()
+        {
+            return this.malla;
+        }
         //Función para coger valores intercalados de los tiempos
         public List<double> getTimeList(int steps, int finalStep)
         {
@@ -119,14 +131,6 @@ namespace NozzleLib
                 i++;
             }
             return Times;
-        }
-        public double[] getDimensionalValues()
-        {
-            return dimensionalvalues;
-        }
-        public Position getDimensionalPosition()
-        {
-            return dimensionalPos;
         }
 
         public List<double> createListArea(int t)
@@ -317,10 +321,6 @@ namespace NozzleLib
             return columna;
                 
             
-        }
-        public Position[,] Getmalla()
-        {
-            return this.malla;
         }
         public double ComputeDeltaTime(int t)
         {
