@@ -19,7 +19,7 @@ namespace NozzleLib
         double throatposition;          //where is the throat
 
         public List<Position> position_initial_conditions { get; set; }
-        //public List<Position> position_first_time_step { get; set; }
+        public List<Position> position_first_time_step { get; set; }
         //public List<Position> position_after_1400_time_steps { get; set; }
 
         public Nozzle(double L, double T0, double ro0, double A0, double C, int N) //A0 is the area of the throat
@@ -61,8 +61,8 @@ namespace NozzleLib
                 double Res0 = 2.2 * Math.Pow(0.0 - (N - 1) * 0.1 / 2, 2);
                 double Correction = (Res - 1) / Res0;
                 Position pos = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Correction * Math.Pow(xi - throatposition, 2));
-                
-                Position initial_conditions = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Correction* Math.Pow(xi - throatposition, 2), i + 1);
+
+                Position initial_conditions = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Correction * Math.Pow(xi - throatposition, 2), i + 1);
                 position_initial_conditions.Add(initial_conditions);
                 SetPosition(0, i, pos);
                 i++;
@@ -493,9 +493,12 @@ namespace NozzleLib
                 i++;
             }
             i = 0;
+            this.position_first_time_step = new List<Position>();
             while (i < D.Count)
             {
                 Position actualPos = new Position(i * deltax, E[i], D[i], V[i], A0[i]);
+                Position position_first = new Position(i * deltax, E[i], D[i], V[i], A0[i], i + 1);
+                position_first_time_step.Add(position_first);
                 SetPosition(t, i, actualPos);
                 i++;
             }
