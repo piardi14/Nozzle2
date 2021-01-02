@@ -505,7 +505,7 @@
                         <ColumnDefinition Width="23*"/>
                         <ColumnDefinition Width="660*"/>
                     </Grid.ColumnDefinitions>
-                    <DataGrid Name="DataGrid1" Margin="0,0,0,0" Width="710" Height="388" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Grid.ColumnSpan="3">
+                    <DataGrid Name="DataGrid1" Margin="0,0,0,0" Width="500" Height="388" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Grid.ColumnSpan="3">
                     </DataGrid>
                 </Grid>
                 <!--<Grid Background="#FFE5E5E5" Height="375" Width="775"  Margin="0,0,0,0"/>-->

@@ -247,7 +247,10 @@ namespace SimuladorNozzle
                 }
 
                 List<Position> una_lista = nozzlesim.position_initial_conditions;   //per afegir les condicions inicials que hem posat
+                una_lista.Capacity = nozzlesim.getN();
                 DataGrid1.ItemsSource = una_lista;                                  //ho fiquem al DataGrid1
+                DataGrid1.MinRowHeight = 20;
+                DataGrid1.Visibility = Visibility.Visible;
 
                 // computa todos los valores especificados
                 nozzlesim.ComputeUntilPos(1401);
@@ -1550,6 +1553,14 @@ namespace SimuladorNozzle
         {
             if (steps < 1401)
             {
+                if (steps == 1)
+                {
+                    List<Position> una_lista = nozzlesim.position_first_time_step;   //per afegir les condicions que hem posat
+                    una_lista.Capacity = nozzlesim.getN();
+                    DataGrid1.ItemsSource = una_lista;                                  //ho fiquem al DataGrid1
+                    DataGrid1.MinRowHeight = 20;
+                    DataGrid1.Visibility = Visibility.Visible;
+                }
                 steps = steps + 1;
                 textStep.Content = steps.ToString();
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
