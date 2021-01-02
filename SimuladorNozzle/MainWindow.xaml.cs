@@ -50,6 +50,7 @@ namespace SimuladorNozzle
         Button fixedButton;
 
         bool advanced = false;   //aquest es per mirar si el advanced esta en aquell moment o no!!
+        double new_Ratio;
 
         double maxT;
         double maxV;
@@ -345,6 +346,31 @@ namespace SimuladorNozzle
             plotChanged = true;
             SetChart();
 
+        }
+        public void setDimensionCharts()
+        {
+            double[] MaxMinD = ampliate(maxD, minD);
+            double[] MaxMinV = ampliate(maxV, minV);
+            double[] MaxMinT = ampliate(maxT, minT);
+            double[] MaxMinP = ampliate(maxP, minP);
+
+            Position dimenssional = nozzlesim.getDimensionalPosition();
+            yAxisD.MaxValue = MaxMinD[0] * dimenssional.GetDensity();
+            yAxisD.MinValue = MaxMinD[1] * dimenssional.GetDensity();
+            chartD.HorizontalAlignment = HorizontalAlignment.Stretch;
+            yAxisD.Title = "Density [ kg / m^3 ]";
+            yAxisV.MaxValue = MaxMinV[0] * dimenssional.GetVelocity();
+            yAxisV.MinValue = MaxMinV[1] * dimenssional.GetVelocity();
+            chartV.HorizontalAlignment = HorizontalAlignment.Stretch;
+            yAxisV.Title = "Velocity [ m / s ]";
+            yAxisT.MaxValue = MaxMinT[0] * dimenssional.GetTemperature();
+            yAxisT.MinValue = MaxMinT[1] * dimenssional.GetTemperature();
+            chartT.HorizontalAlignment = HorizontalAlignment.Stretch;
+            yAxisT.Title = "Temperature [ ºC ]";
+            yAxisP.MaxValue = MaxMinP[0] * dimenssional.GetPressure() * dimenssional.R / 100;
+            yAxisP.MinValue = MaxMinP[1] * dimenssional.GetPressure() * dimenssional.R / 100;
+            chartP.HorizontalAlignment = HorizontalAlignment.Stretch;
+            yAxisP.Title = "Pressure [ hPa ]";
         }
         public void setDimensionlessCharts()
         {
@@ -1556,28 +1582,41 @@ namespace SimuladorNozzle
                 {
                     if (advanced == false)
                     {
-                        text_save.Text = Convert.ToString(nozzlesim.getCourant()) + ' ' + Convert.ToString(nozzlesim.getN()) + "\r\n";  //Courant value i divisions value
-                        text_save.Text += Convert.ToString(steps) + "\r\n";  //time_step
-                        text_save.Text += Convert.ToString(PropertiesBoxSelection.SelectedIndex) + "\r\n"; ;    //quina box esta seleccionada
-                        foreach (int valor in brushesPos)
-                        {
-                            if (valor != -1)
-                            {
-                                text_save.Text += Convert.ToString(contador) + ' ' + Convert.ToString(valor) + "\r\n";
-                                contador++;
-                            }
-                            else
-                                contador++;
-                        }
-
-                        //ho fiquem tot dins d'un file
-                        File.WriteAllText(saveFileDialog.FileName, text_save.Text);
-
-                        ////parem el timer
-                        //clock.Stop();
-
-                        MessageBox.Show("The file is saved correctly", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        text_save.Text = "0" + "\r\n";   //posem 0 si el advanced el false
+                        text_save.Text += Convert.ToString(nozzlesim.getCourant()) + ' ' + Convert.ToString(nozzlesim.getN()) + "\r\n";  //Courant value i divisions value
                     }
+                    else
+                    {
+                        text_save.Text = "1" + "\r\n";   //posem 1 si el advanced es true
+                        text_save.Text += Convert.ToString(nozzlesim.getCourant()) + ' ' + Convert.ToString(nozzlesim.getN()) + ' ' + Convert.ToString(new_Ratio) + "\r\n"; //Courant, divisions i new ratio value
+                    }
+                    text_save.Text += Convert.ToString(steps) + "\r\n";  //time_step
+                    text_save.Text += Convert.ToString(PropertiesBoxSelection.SelectedIndex) + "\r\n";    //quina box esta seleccionada
+                    if (DimensionlessButton.IsChecked == false)
+                    {
+                        text_save.Text += "0" + "\r\n"; //mirem que el dimensionless no esta seleccionat
+                    }
+                    else if (DimensionlessButton.IsChecked == true)
+                    {
+                        text_save.Text += "1" + "\r\n"; //mirem que el dimensionless esta seleccionat
+                    }
+                    foreach (int valor in brushesPos)
+                    {
+                        if (valor != -1)
+                        {
+                            text_save.Text += Convert.ToString(contador) + ' ' + Convert.ToString(valor) + "\r\n";
+                            contador++;
+                        }
+                        else
+                            contador++;
+                    }
+                    //ho fiquem tot dins d'un file
+                    File.WriteAllText(saveFileDialog.FileName, text_save.Text);
+
+                    ////parem el timer
+                    //clock.Stop();
+
+                    MessageBox.Show("The file is saved correctly", "", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             else
@@ -1598,32 +1637,56 @@ namespace SimuladorNozzle
             if (openFileDialog.ShowDialog() == true)
             {
                 Restart();
-
+                RestartAdvanced();
                 initiated = true;
 
                 var fileStream = openFileDialog.OpenFile();
                 StreamReader reader = new StreamReader(fileStream);
                 int contador = 0;
+                int check = 0;
 
                 while ((line = reader.ReadLine()) != null)
                 {
                     string[] trozos = line.Split(' ');
-
                     if (contador == 0)
                     {
-                        nozzlesim = new Nozzle(3, 2800, 1.95, 2, Convert.ToDouble(trozos[0]), Convert.ToInt32(trozos[1]));
-                        provisional = new List<int>(nozzlesim.getN());
-                        for (int i = 0; i < nozzlesim.getN(); i++) provisional.Add(-1);  //aqui el que fem es crear una lista de longitud N amb valors -1
+                        int qualsevol = Convert.ToInt32(trozos[0]);
+                        if (qualsevol == 0)
+                        {
+                            advanced = false;
+                        }
+                        else
+                        {
+                            advanced = true;
+                        }
                     }
                     else if (contador == 1)
                     {
-                        steps = Convert.ToInt32(trozos[0]);
+                        if (advanced == false)
+                        {
+                            nozzlesim = new Nozzle(3, 2800, 1.95, 2, Convert.ToDouble(trozos[0]), Convert.ToInt32(trozos[1]));
+                        }
+                        else
+                        {
+                            nozzlesim = new Nozzle(3, 2800, 1.95, 2, Convert.ToDouble(trozos[0]), Convert.ToInt32(trozos[1]), Convert.ToDouble(trozos[2]));
+                            new_Ratio = Convert.ToDouble(trozos[2]); //mofiquem aqui el new Ratio
+                        }
+                        provisional = new List<int>(nozzlesim.getN());
+                        for (int i = 0; i < nozzlesim.getN(); i++) provisional.Add(-1);  //aqui el que fem es crear una lista de longitud N amb valors -1
                     }
                     else if (contador == 2)
                     {
+                        steps = Convert.ToInt32(trozos[0]);
+                    }
+                    else if (contador == 3)
+                    {
                         boxselected = Convert.ToInt32(trozos[0]);
                     }
-                    else
+                    else if (contador == 4)
+                    {
+                        check = Convert.ToInt32(trozos[0]);
+                    }
+                    else if (contador > 4)
                     {
                         int jj = 0;
                         int indice = Convert.ToInt32(trozos[0]);
@@ -1641,9 +1704,23 @@ namespace SimuladorNozzle
                     }
                     contador++;
                 }
-
                 // computa tots els valors que volem
                 nozzlesim.ComputeUntilPos(1401);
+
+                //si estem en advanced
+                if (advanced == true)
+                {
+                    textNewA.Text = Convert.ToString(new_Ratio) + " : 1";
+                    chartA.Visibility = Visibility.Visible;
+                    recNew.Visibility = Visibility.Visible;
+                    recOld.Visibility = Visibility.Visible;
+
+                    buttonAdvanced.Visibility = Visibility.Hidden;
+                    panelAdvanced2.Visibility = Visibility.Visible;
+                    rectangleAdvanced.Visibility = Visibility.Hidden;
+                    buttonNewAdvanced.Visibility = Visibility.Visible;
+                    set_advanced_study(new_Ratio, 1);
+                }
 
                 //fiquem valors
                 CourantTextBox.Text = nozzlesim.getCourant().ToString();
@@ -1670,9 +1747,7 @@ namespace SimuladorNozzle
 
                 //box_selection
                 PropertiesBoxSelection.SelectedIndex = boxselected;
-
-                //botons de la chart
-                createButtCharts();
+                WriteIndicatorMaxMin(PropertiesBoxSelection.SelectedIndex);
 
                 //pintar
                 fillSelectedList();
@@ -1687,7 +1762,31 @@ namespace SimuladorNozzle
                 //grafics
                 brushesPos = provisional;
                 plotChanged = true;
+                if (check == 0)
+                {
+                    DimensionlessButton.IsChecked = false;
+                    setDimensionCharts();
+                }
+                else
+                { 
+                    DimensionlessButton.IsChecked = true;
+                    setDimensionlessCharts();
+                }
                 SetChart();
+
+                //botons de la chart
+                createButtCharts();
+                int cont = 0;
+                foreach (Button unboton in listaboton)
+                {
+                    if (brushesPos[cont] != -1)
+                    {
+                        Color colorset = Color.FromRgb(153, 144, 144);  //pintem els valors seleccionats de gris
+                        Brush colorBrush = new SolidColorBrush(colorset);
+                        unboton.Background = colorBrush;
+                    }
+                    cont++;
+                }
 
                 //desactivem tot allo que no necessitem
                 CreateButton.Content = "SIMULATING...";
@@ -2054,6 +2153,132 @@ namespace SimuladorNozzle
             recOld.Visibility = Visibility.Hidden;                                                    // 
         }
 
+        private void set_advanced_study(double Res, double Thr)
+        {
+            if (Thr != 0)                                                                                                     // avoid zero value
+            {
+                if (Res > Thr && Res / Thr != 5.95 && Res / Thr <= 8)                                                        // define the limits of the parameters 
+                {
+                    Res = Math.Round(Res / Thr, 2);
+
+                    textNewA.Text = ((Convert.ToDecimal(Res)).ToString() + " : 1").ToString().Replace(',', '.');
+                    buttCheckNewA.Background = Brushes.GreenYellow;
+                    buttCheckNewA.Content = "checked";
+                    buttCheckNewA.IsEnabled = false;
+                    alertRateA.Visibility = Visibility.Hidden;
+
+                    chartA.Visibility = Visibility.Visible;
+                    CreateButtonAdvStudy.IsEnabled = true;
+                    chartA.Series = new SeriesCollection();
+                    int N = 31;
+                    List<double> listA = new List<double>();
+                    List<double> listAold = new List<double>();
+                    List<double> listAM = new List<double>();
+                    List<double> listAoldM = new List<double>();
+                    int i = 0;
+                    double Res0 = 2.2 * Math.Pow(0.0 - (N - 1) * 0.1 / 2, 2);
+                    double Correction = (Res - 1) / Res0;
+                    string[] x = new string[N];
+                    while (i < N)
+                    {
+                        double xi = i * 0.1;
+                        double A = (1 + 2.2 * Correction * Math.Pow(xi - (N - 1) * 0.1 / 2, 2));
+                        listA.Add(A / 2);
+                        double Aminus = -1 * (1 + 2.2 * Correction * Math.Pow(xi - (N - 1) * 0.1 / 2, 2));
+                        listAM.Add(Aminus / 2);
+                        double Aold = 1 + 2.2 * Math.Pow(xi - (N - 1) * 0.1 / 2, 2);
+                        listAold.Add(Aold / 2);
+                        double Aoldminus = -1 * (1 + 2.2 * Math.Pow(xi - (N - 1) * 0.1 / 2, 2));
+                        listAoldM.Add(Aoldminus / 2);
+                        x[i] = (i * 0.1).ToString();
+                        i++;
+                    }
+                    LineSeries linSerie = new LineSeries
+                    {
+                        Title = textNewA.Text.ToString(),
+                        Name = "lineChartNewA",
+                        Values = new ChartValues<double>(listA),
+                        PointGeometry = null,
+                        Fill = Brushes.Transparent,
+                        Stroke = Brushes.Green,
+                    };
+                    chartA.Series.Add(linSerie);
+                    LineSeries linSerieM = new LineSeries
+                    {
+                        Title = textNewA.Text.ToString(),
+                        Name = "lineChartNewAM",
+                        Values = new ChartValues<double>(listAM),
+                        PointGeometry = null,
+                        Fill = Brushes.Transparent,
+                        Stroke = Brushes.Green,
+                    };
+                    chartA.Series.Add(linSerieM);
+                    LineSeries linSerie1 = new LineSeries
+                    {
+                        Title = "5.95 : 1",
+                        Name = "lineChartOldA",
+                        Values = new ChartValues<double>(listAold),
+                        PointGeometry = null,
+                        Fill = Brushes.Transparent,
+                        Stroke = Brushes.Black,
+                    };
+                    chartA.Series.Add(linSerie1);
+                    LineSeries linSerie1M = new LineSeries
+                    {
+                        Title = "5.95 : 1",
+                        Name = "lineChartOldAM",
+                        Values = new ChartValues<double>(listAoldM),
+                        PointGeometry = null,
+                        Fill = Brushes.Transparent,
+                        Stroke = Brushes.Black,
+                    };
+                    chartA.Series.Add(linSerie1M);
+                    xAxisA.Labels = x;
+                    xAxisA.MaxValue = x.Count() - 1;
+                    SepA.Step = (x.Count() - 1) / 2;
+                    if (listA[0] > listAold[0])
+                    {
+                        yAxisA.MaxValue = listA[0] * 1.1;
+                        yAxisA.MinValue = listA[0] * (-1.1);
+                    }
+                    else
+                    {
+                        yAxisA.MaxValue = listAold[0] * (1.1);
+                        yAxisA.MinValue = listAold[0] * (-1.1);
+                    }
+                    DataContext = this;
+                    chartA.Visibility = Visibility.Visible;
+                    recNew.Visibility = Visibility.Visible;
+                    recOld.Visibility = Visibility.Visible;
+                    if (DivisionsTextBox.Text == "" && CourantTextBox.Text == "")
+                        DefaultValues();
+                }
+                else if (Res / Thr > 8)
+                {
+                    alertRateA.Visibility = Visibility.Visible;
+                    CreateButtonAdvStudy.IsEnabled = false;
+                    textAlertA.Text = "The maximum allowed rate is 8 : 1 ";
+                }
+                else if (Res < Thr)
+                {
+                    alertRateA.Visibility = Visibility.Visible;
+                    CreateButtonAdvStudy.IsEnabled = false;
+                    textAlertA.Text = "Only convergent-divergent nozzle is possibe ";
+                }
+                else if (Res == Thr)
+                {
+                    CreateButtonAdvStudy.IsEnabled = false;
+                    alertRateA.Visibility = Visibility.Visible;
+                    textAlertA.Text = "Cannot create the same nozzle as initialy";
+                }
+                else
+                {
+                    CreateButtonAdvStudy.IsEnabled = false;
+                    alertRateA.Visibility = Visibility.Visible;
+                    textAlertA.Text = "Error in text format, check it!";
+                }
+            }
+        }
         private void buttCheckNewA_Click(object sender, RoutedEventArgs e)                            // We check the information of Area Rate thatb we have decided 
         {
             try                                                                                                                      // we define a try to aviod format exceptions
@@ -2212,7 +2437,7 @@ namespace SimuladorNozzle
             decimal Ratio = decimal.Parse(textNewA.Text.Split(':')[0].Replace('.', ','));
 
 
-            double new_Ratio = Convert.ToDouble(Ratio);
+            new_Ratio = Convert.ToDouble(Ratio);
             Create(true, new_Ratio);
             CreateButtonAdvStudy.IsEnabled = false;
             buttCheckNewA.Visibility = Visibility.Hidden;
