@@ -1669,7 +1669,7 @@ namespace SimuladorNozzle
                         else
                         {
                             nozzlesim = new Nozzle(3, 2800, 1.95, 2, Convert.ToDouble(trozos[0]), Convert.ToInt32(trozos[1]), Convert.ToDouble(trozos[2]));
-                            new_Ratio = Convert.ToDouble(trozos[2]);
+                            new_Ratio = Convert.ToDouble(trozos[2]); //mofiquem aqui el new Ratio
                         }
                         provisional = new List<int>(nozzlesim.getN());
                         for (int i = 0; i < nozzlesim.getN(); i++) provisional.Add(-1);  //aqui el que fem es crear una lista de longitud N amb valors -1
