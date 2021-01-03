@@ -1401,17 +1401,17 @@ namespace SimuladorNozzle
                 i++;
             }
         }
-
-        public void SetChart()
+        // Function SetChart() is called when the users wants to upodate the charts, but some conditions have to be reached for that. Generrlay, this function will try to update charts
+        public void SetChart() 
         {
-            if (nozzlesim.Getmalla() != null)
+            if (nozzlesim.Getmalla() != null)   // if the matrix spacial-time is empty charts would be emprty
             {
-                List<List<double>> listV = new List<List<double>>();
-                List<List<double>> listP = new List<List<double>>();
-                List<List<double>> listT = new List<List<double>>();
+                List<List<double>> listV = new List<List<double>>();                                     // The four list of properties: imagine there are 31 divisions, for each object (listV,listP ...)
+                List<List<double>> listP = new List<List<double>>();                                     // there wil be a list of 31 List of doubles, one for each division. Each of this 31 list are collections of 
+                List<List<double>> listT = new List<List<double>>();                                     // values of some property along the time, form the initial time until the catual time
                 List<List<double>> listD = new List<List<double>>();
-                int stepsChart; // suitable, between 1% to 2%, (for 500 samples between 5 and 10)
-
+                int stepsChart;                 // For a large value of steps, there are many values of each property, ploting that amount will be non-efficient, so we dismiss some of them.
+                                                // For each value that we plot [stepCharet] values will be dismiss, in order to keep relativetly low the amount of values ploted.
                 if (this.steps > 1000)
                     stepsChart = 40;
                 else if (this.steps > 500)
@@ -1428,9 +1428,10 @@ namespace SimuladorNozzle
                     stepsChart = 0;
                 int i = 0;
                 int finStep = steps;
-                List<Brush> ListBrush = new List<Brush>();
+                List<Brush> ListBrush = new List<Brush>();       // This list has the same length as divisions of the nozzle, for the selected positiuons for plotting, there will be a Brush color
+                                                                 // different to Transparent that would be the case in which the position is not selected for plotting
                 int posBrushes = 0;
-                Position dimens;
+                Position dimens;                                 // THis values are referred to the dimensional values of the simulation
                 if (DimensionlessButton.IsChecked == false)
                 {
                     // T V P D
@@ -1440,10 +1441,11 @@ namespace SimuladorNozzle
                 {
                     dimens = new Position(0, 1, 1, 1, 0, 0);
                 }
-                foreach (int pos in brushesPos)
+                foreach (int pos in brushesPos)                   // brushesPos contains the information that indicates which positions are selected for plotting
                 {
-                    if (pos != -1)
-                    {
+                    if (pos != -1)                                // brushesPos are a list of intehers, this numer corresponds to the position of the Brush of BrushesList, so 
+                    {                                             // when the number is different to -1, a column of values will be added to the list od each one of the lists
+                                                                  // (listV, listP...) and The corresponding Brush will be added to ListBrush
                         listV.Add(nozzlesim.GetColumnPar(i, "V", stepsChart, dimens, finStep));
                         listP.Add(nozzlesim.GetColumnPar(i, "P", stepsChart, dimens, finStep));
                         listT.Add(nozzlesim.GetColumnPar(i, "T", stepsChart, dimens, finStep));
@@ -1451,7 +1453,7 @@ namespace SimuladorNozzle
                         ListBrush.Add(brushesList[brushesPos[i]]);
                         posBrushes++;
                     }
-                    else
+                    else                          // in case of == -1 means some position is not selected
                     {
                         listV.Add(new List<double>());
                         listP.Add(new List<double>());
@@ -1462,20 +1464,20 @@ namespace SimuladorNozzle
                     i++;
                 }
 
-                createRecColors(ListBrush);
-                int sel = 0;
+                createRecColors(ListBrush);  // this function paints the rectangles below the buttons of the positions of some color that let us to connect it with the chart
+                int sel = 0;                         // sel wil count the amount of selected positions
                 foreach (int pos in brushesPos)
                     if (pos != -1)
                         sel++;
-                int maxUpdate = 1;
-                if (sel > 4)
+                int maxUpdate = 1;                   // it reffers to the time that the function wil wait for updating the charts since the last update
+                if (sel > 2)
                     maxUpdate = 2;
-                if (lastChartUpdate > new TimeSpan(maxUpdate * 10000000) && plotChanged == true)
+                if (lastChartUpdate > new TimeSpan(maxUpdate * 10000000) && plotChanged == true)     // plotChanged is a bolean that is set to true everytime charts need to be updated because the values changed 
                 {
                     plotChanged = false;
                     lastChartUpdate = new TimeSpan(0);
                     // create the array of times
-                    List<double> timeList = nozzlesim.getTimeList(stepsChart, finStep);
+                    List<double> timeList = nozzlesim.getTimeList(stepsChart, finStep); // Those are the labels of the horizontal axis 
                     var times = new string[timeList.Count];
                     i = 0;
                     foreach (double time in timeList)
@@ -1483,10 +1485,10 @@ namespace SimuladorNozzle
                         times[i] = (Math.Round(time, 3)).ToString();
                         i++;
                     }
-                    createChart(chartV, listV, ListBrush, xAxisV, times);
+                    createChart(chartV, listV, ListBrush, xAxisV, times); // those fuctions create each of the charts using the information previously computed
                     createChart(chartP, listP, ListBrush, xAxisP, times);
                     createChart(chartT, listT, ListBrush, xAxisT, times);
-                    createChart(chartD, listD, ListBrush, xAxisD, times);
+                    createChart(chartD, listD, ListBrush, xAxisD, times); //
                 }
 
 
@@ -1499,15 +1501,14 @@ namespace SimuladorNozzle
                 chartD.Series = new SeriesCollection();
             }
         }
-
+        // This function creates an speciffic chart
         public void createChart(CartesianChart chart, List<List<double>> listV, List<Brush> ListBrush, Axis xAxis, string[] times)
         {
 
-
-            chart.Series = new SeriesCollection();
+            chart.Series = new SeriesCollection(); 
             int i = 0;
-            while (i < listV.Count)
-            {
+            while (i < listV.Count)                         // This while creates each of the series for each division, if some serie is not selected for plotting listV is empty  
+            {                                               // so no plot wil be seen regardingf this position
                 LineSeries linSerie = new LineSeries
                 {
                     Title = "x = " + (i / 10.0).ToString(),
@@ -1521,18 +1522,12 @@ namespace SimuladorNozzle
                 i++;
             }
 
-
-
-            if (times.Count() > 1)
+            if (times.Count() > 1)              // Those lines creates the labels of the horizontal axis
             {
-
-                double dec = Convert.ToDouble(Convert.ToDecimal(times[times.Count() - 1]));
-                //xAxisDSeparator.Step = 0.1;
                 xAxis.MaxValue = times.Count() - 1;
                 xAxis.Separator.Step = times.Count() - 1;
                 xAxis.Labels = times;
             }
-
 
             DataContext = this;
         }
