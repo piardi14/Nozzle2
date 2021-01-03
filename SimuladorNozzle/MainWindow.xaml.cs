@@ -326,6 +326,7 @@ namespace SimuladorNozzle
                     image_Anderson.Source = new BitmapImage(new Uri(path + "initial_conditions.PNG", UriKind.RelativeOrAbsolute));
                     DataGrid1.Width = 500;
                     image_Anderson.HorizontalAlignment = HorizontalAlignment.Center;
+                    labelAnderson.Content = "Table of values of our initial conditions";
                     AndersonTab.IsEnabled = true;
                 }
                 if (steps == 1)
@@ -334,6 +335,8 @@ namespace SimuladorNozzle
                     image_Anderson.Source = new BitmapImage(new Uri(path + "first_step.PNG", UriKind.RelativeOrAbsolute));
                     DataGrid1.Width = 718;
                     image_Anderson.HorizontalAlignment = HorizontalAlignment.Right;
+                    labelAnderson.Content = "Table of values of our first step";
+                    labelAnderson.Width = 718;
                     AndersonTab.IsEnabled = true;
 
                 }
@@ -343,6 +346,8 @@ namespace SimuladorNozzle
                     image_Anderson.Source = new BitmapImage(new Uri(path + "1400_step.PNG", UriKind.RelativeOrAbsolute));
                     DataGrid1.Width = 724;
                     image_Anderson.HorizontalAlignment = HorizontalAlignment.Right;
+                    labelAnderson.Content = "Table of values of our 1400 step";
+                    labelAnderson.Width = 724;
                     AndersonTab.IsEnabled = true;
                 }
                 if (auto ==true) 
