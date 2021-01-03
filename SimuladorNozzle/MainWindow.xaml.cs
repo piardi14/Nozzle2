@@ -345,6 +345,15 @@ namespace SimuladorNozzle
                     image_Anderson.HorizontalAlignment = HorizontalAlignment.Right;
                     AndersonTab.IsEnabled = true;
                 }
+                if (auto ==true) 
+                {
+                    NextStepButton.IsEnabled = true;
+                    auto = false;
+                    Color colorset = Color.FromRgb(232, 232, 232);
+                    Brush colorBrush = new SolidColorBrush(colorset);
+                    AutoButton.Background = colorBrush;
+                    AutoButton.Content = "AUTO";
+                }
                 DataGrid1.ItemsSource = lista_steps;
                 DataGrid1.MinRowHeight = 25;
                 DataGrid1.IsReadOnly = true;
