@@ -243,14 +243,15 @@ namespace NozzleLib
             }
             return fila;
         }
-        public List<double> GetColumnPar(int col, string parameter, int steps, Position dimens, int finStep )
+        // GetColumnPar creates a list of values of some property identified as an string  
+        public List<double> GetColumnPar(int col, string parameter, int steps, Position dimens, int finStep )  
         {
             List<double> columna = new List<double>();
             int i = 0;
             int initStep = 0;
-            while (i < malla.GetLength(0) && i <= finStep)
-            {
-                if (initStep == 0)
+            while (i < malla.GetLength(0) && i <= finStep)                       // steps are the number of dismissed position
+            {                                                                    // dimens is an object position that contains the dimensional values of each property
+                if (initStep == 0) // only initStep = 0 is added, others are dismiis, later some condition will make initStep return to 0
                 {
                     Position pos = GetPosition(i, col);
                     if (pos != null)
@@ -264,7 +265,7 @@ namespace NozzleLib
                             value = Math.Round(pos.GetDensity() * dimens.GetDensity(), 4);
                         else if (parameter == "V")
                             value = Math.Round(pos.GetVelocity() * dimens.GetVelocity(), 4);
-                        else if (parameter == "P")
+                        else if (parameter == "P")                                                             // dimensional P units are hPa
                         {
                             if (dimens.GetPressure() != 1)
                                 value = Math.Round(pos.GetPressure() * dimens.GetPressure(), 4) * dimens.R/100;
@@ -286,7 +287,7 @@ namespace NozzleLib
                         break;
                     }
                 }
-                if (initStep == steps)
+                if (initStep == steps)      // here we code the way we dismiss values, the next position of the while will has initStep = 0, that are the only cases added
                 {
                     initStep = -1;
                 }
