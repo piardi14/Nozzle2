@@ -153,7 +153,7 @@ namespace SimuladorNozzle
 
                
 
-                if ((div == 11 || div == 21 || div == 31 || div == 41 || div == 51 || div == 61)&&courant<1&&courant>0)
+                if ((div == 11 || div == 21 || div == 31 || div == 41 || div == 51 || div == 61) &&(courant<1 && courant>0))
                 {
                     alertDivisionsLabel.Visibility = Visibility.Hidden;
                     try
@@ -170,11 +170,26 @@ namespace SimuladorNozzle
                     {
                         CreateButton.IsEnabled = false;
                     }
+                    alertDivisionsLabel.Visibility = Visibility.Hidden;
+                    alertCourantLabel.Visibility = Visibility.Hidden;
 
+                }
+                else if ((div != 11 || div != 21 || div != 31 || div != 41 || div != 51 || div != 61) && courant < 1 && courant > 0)
+                {
+                    CreateButton.IsEnabled = false;
+                    alertDivisionsLabel.Visibility = Visibility.Visible;
+                    alertCourantLabel.Visibility = Visibility.Hidden;
+                }
+                else if ((div == 11 || div == 21 || div == 31 || div == 41 || div == 51 || div == 61) && (courant >= 1 || courant <= 0))
+                {
+                    CreateButton.IsEnabled = false;
+                    alertCourantLabel.Visibility = Visibility.Visible;
+                    alertDivisionsLabel.Visibility = Visibility.Hidden;
                 }
                 else
                 {
                     CreateButton.IsEnabled = false;
+                    alertCourantLabel.Visibility = Visibility.Visible;
                     alertDivisionsLabel.Visibility = Visibility.Visible;
                 }
 
