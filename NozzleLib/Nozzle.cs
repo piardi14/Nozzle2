@@ -244,7 +244,7 @@ namespace NozzleLib
             return fila;
         }
         // GetColumnPar creates a list of values of some property identified as an string  
-        public List<double> GetColumnPar(int col, string parameter, int steps, Position dimens, int finStep )  
+        public List<double> GetColumnPar(int col, string parameter, int steps, Position dimens, int finStep)
         {
             List<double> columna = new List<double>();
             int i = 0;
@@ -268,7 +268,7 @@ namespace NozzleLib
                         else if (parameter == "P")                                                             // dimensional P units are hPa
                         {
                             if (dimens.GetPressure() != 1)
-                                value = Math.Round(pos.GetPressure() * dimens.GetPressure(), 4) * dimens.R/100;
+                                value = Math.Round(pos.GetPressure() * dimens.GetPressure(), 4) * dimens.R / 100;
                             else
                                 value = Math.Round(pos.GetPressure() * dimens.GetPressure(), 4);
                         }
