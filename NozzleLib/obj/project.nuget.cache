@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "e4ND2hzKbEbnJCY1s4TFpSLBXxZfLxhUDgBKtIZ9hyGBxZ5oz49sybzTrQmJ7mQsszH3NfG80vvDj8SEmaHp6Q==",
+  "dgSpecHash": "nIMu9MP/1szF/ns+dQBozeymM44956cYnYgbWrDDdl2mf6+/fY4+aNuNyP5+wI3VRu72Wx1SJf9kQEb2geqWAg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\gerar\\Desktop\\Gerard\\4º año\\1er cuatri\\sim\\project final\\final project\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
+  "projectFilePath": "C:\\Users\\Diego Pisco Araujo\\Source\\Repos\\piardi14\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\gerar\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\gerar\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "C:\\Users\\Diego Pisco Araujo\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Diego Pisco Araujo\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
   ],
   "logs": []
 }
