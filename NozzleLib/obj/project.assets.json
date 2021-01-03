@@ -180,19 +180,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gerar\\.nuget\\packages\\": {}
+    "C:\\Users\\Diego Pisco Araujo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gerar\\Desktop\\Gerard\\4º año\\1er cuatri\\sim\\project final\\final project\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
+      "projectUniqueName": "C:\\Users\\Diego Pisco Araujo\\Source\\Repos\\piardi14\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
       "projectName": "NozzleLib",
-      "projectPath": "C:\\Users\\gerar\\Desktop\\Gerard\\4º año\\1er cuatri\\sim\\project final\\final project\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
-      "packagesPath": "C:\\Users\\gerar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gerar\\Desktop\\Gerard\\4º año\\1er cuatri\\sim\\project final\\final project\\Nozzle2\\NozzleLib\\obj\\",
+      "projectPath": "C:\\Users\\Diego Pisco Araujo\\Source\\Repos\\piardi14\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
+      "packagesPath": "C:\\Users\\Diego Pisco Araujo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Diego Pisco Araujo\\Source\\Repos\\piardi14\\Nozzle2\\NozzleLib\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\gerar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Diego Pisco Araujo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -200,7 +200,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Users\\Diego Pisco Araujo\\Downloads\\Package source": {},
+        "https://www.nuget.org/api/v2": {}
       },
       "frameworks": {
         "netstandard2.0": {
@@ -235,7 +236,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
