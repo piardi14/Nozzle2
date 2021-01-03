@@ -246,12 +246,6 @@ namespace SimuladorNozzle
                     nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions);
                 }
 
-                List<Position> una_lista = nozzlesim.position_initial_conditions;   //per afegir les condicions inicials que hem posat
-                una_lista.Capacity = nozzlesim.getN();
-                DataGrid1.ItemsSource = una_lista;                                  //ho fiquem al DataGrid1
-                DataGrid1.MinRowHeight = 20;
-                DataGrid1.Visibility = Visibility.Visible;
-
                 // computa todos los valores especificados
                 nozzlesim.ComputeUntilPos(1401);
                 calculateMinMax();
@@ -260,6 +254,14 @@ namespace SimuladorNozzle
                 //inizialitzem el step
                 steps = 0;
                 setDimensionlessCharts();
+
+                //llista de les condicions inicials
+                List<Position> condiciones_iniciales = nozzlesim.GetRow(steps);
+                condiciones_iniciales.Capacity = nozzlesim.getN();
+                DataGrid1.ItemsSource = condiciones_iniciales;
+                DataGrid1.Width = 500;
+                DataGrid1.MinRowHeight = 25;
+                AndersonTab.Visibility = Visibility.Visible;
 
                 //create the buttons of the charts
                 createButtCharts();
@@ -281,6 +283,7 @@ namespace SimuladorNozzle
             else
                 MessageBox.Show("Set some parameters first," + "\n" + "check if some of the boxes above are empty");
         }
+
         //CONTROLS SIMULATOR
         private void PropertiesBoxSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -809,7 +812,6 @@ namespace SimuladorNozzle
 
         private void CreateNozzle(Nozzle nozzle, int t)
         {
-
             NozzleCanvas.Children.RemoveRange(0, NozzleCanvas.Children.Count);
             double width = (double)435 / (nozzle.GetDivisions());
             int count = 0;
@@ -1436,7 +1438,7 @@ namespace SimuladorNozzle
                 }
                 else
                 {
-                    dimens = new Position(0, 1, 1, 1, 0);
+                    dimens = new Position(0, 1, 1, 1, 0, 0);
                 }
                 foreach (int pos in brushesPos)
                 {
@@ -1553,18 +1555,20 @@ namespace SimuladorNozzle
         {
             if (steps < 1401)
             {
-                if (steps == 1)
-                {
-                    List<Position> una_lista = nozzlesim.position_first_time_step;   //per afegir les condicions que hem posat
-                    una_lista.Capacity = nozzlesim.getN();
-                    DataGrid1.ItemsSource = una_lista;                                  //ho fiquem al DataGrid1
-                    DataGrid1.MinRowHeight = 20;
-                    DataGrid1.Visibility = Visibility.Visible;
-                }
+                AndersonTab.Visibility = Visibility.Hidden;
                 steps = steps + 1;
                 textStep.Content = steps.ToString();
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
                 CreateNozzle(nozzlesim, steps);
+                if (steps == 1 || steps == 1400)
+                {
+                    List<Position> step = nozzlesim.GetRow(steps);
+                    step.Capacity = nozzlesim.getN();
+                    DataGrid1.ItemsSource = step;
+                    DataGrid1.MinRowHeight = 25;
+                    DataGrid1.Width = 718;
+                    AndersonTab.Visibility = Visibility.Visible;
+                }
                 plotChanged = true;
                 SetChart();
                 
@@ -1733,6 +1737,8 @@ namespace SimuladorNozzle
                     set_advanced_study(new_Ratio, 1);
                 }
 
+                //Anderson tab
+                AndersonTab.Visibility = Visibility.Hidden;
                 //fiquem valors
                 CourantTextBox.Text = nozzlesim.getCourant().ToString();
                 DivisionsTextBox.Text = nozzlesim.getN().ToString();
@@ -1766,6 +1772,25 @@ namespace SimuladorNozzle
 
                 //creem el nozzle
                 CreateNozzle(nozzlesim, steps);
+
+                if (steps == 1 || steps == 1400)
+                {
+                    List<Position> step_1 = nozzlesim.GetRow(steps);
+                    step_1.Capacity = nozzlesim.getN();
+                    DataGrid1.ItemsSource = step_1;
+                    DataGrid1.MinRowHeight = 25;
+                    DataGrid1.Width = 718;
+                    AndersonTab.Visibility = Visibility.Visible;
+                }
+                else if (steps == 0)
+                {
+                    List<Position> step_1 = nozzlesim.GetRow(steps);
+                    step_1.Capacity = nozzlesim.getN();
+                    DataGrid1.ItemsSource = step_1;
+                    DataGrid1.MinRowHeight = 25;
+                    DataGrid1.Width = 500;
+                    AndersonTab.Visibility = Visibility.Visible;
+                }
 
                 //inizialitzem el clock
                 clock.Start();
@@ -1813,7 +1838,17 @@ namespace SimuladorNozzle
         {
             if (auto == true && steps<1401)
             {
+                AndersonTab.Visibility = Visibility.Hidden;
                 steps = steps + 1;
+                if (steps == 1 || steps == 1400)
+                {
+                    List<Position> step_1 = nozzlesim.GetRow(steps);
+                    step_1.Capacity = nozzlesim.getN();
+                    DataGrid1.ItemsSource = step_1;
+                    DataGrid1.MinRowHeight = 25;
+                    DataGrid1.Width = 718;
+                    AndersonTab.Visibility = Visibility.Visible;
+                }
                 clockTime = clockTime + clock.Interval;
                 textStep.Content = steps.ToString();
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
@@ -1956,6 +1991,7 @@ namespace SimuladorNozzle
                 case MessageBoxResult.OK:
                     Restart();
                     RestartAdvanced();
+                    AndersonTab.Visibility = Visibility.Hidden;
                     break;
                 case MessageBoxResult.Cancel:
                     break;

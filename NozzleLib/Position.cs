@@ -24,7 +24,7 @@ namespace NozzleLib
         public double Mach { get; set; }
 
         //CONSTRUCTORS
-        public Position(double x, double T, double ro, double V, double A)
+        public Position(double x, double T, double ro, double V, double A, int i)
         {
             this.x = x;
             this.T = T;
@@ -33,10 +33,7 @@ namespace NozzleLib
             this.p = T*ro;
             this.A = A;
             this.M = MachNumber();
-        }
 
-        public Position (double x, double T, double ro, double V, double A, int i)
-        {
             this.I = i;
             this.Position_x = x;
             this.Area = A;
@@ -46,6 +43,7 @@ namespace NozzleLib
             this.Pressure = T * ro;
             this.Mach = V / Math.Sqrt(T);
         }
+
         public Position()
         { }
 
