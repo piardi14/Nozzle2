@@ -496,21 +496,15 @@
             <TabItem Name="PDFTab" Header="PDF">
                 <Grid Background="#FFE5E5E5" Height="375" Width="775"  Margin="0,0,0,0"/>
             </TabItem>
-            <TabItem Name="AndersonTab" Header="Anderson Tables" Visibility="Hidden">
+            <TabItem Name="AndersonTab" Header="Anderson Tables" Visibility="Visible">
                 <Grid>
-                    <!--<Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0*"/>
-                        <ColumnDefinition Width="0*"/>
-                        <ColumnDefinition Width="27*"/>
-                        <ColumnDefinition Width="23*"/>
-                        <ColumnDefinition Width="660*"/>
-                    </Grid.ColumnDefinitions>-->
                     <DataGrid Name="DataGrid1" Margin="0,0,0,0" Width="500" Height="650" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Grid.ColumnSpan="3">
                     </DataGrid>
+                    <Image x:Name="image_Anderson" Height="630" Margin="577,10,0,0" VerticalAlignment="Top" Width="670"/>
                 </Grid>
-                <!--<Grid Background="#FFE5E5E5" Height="375" Width="775"  Margin="0,0,0,0"/>-->
             </TabItem>
         </TabControl>
+
 
     </Grid>
 </Window>

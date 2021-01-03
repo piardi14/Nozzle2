@@ -51,6 +51,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -123,6 +124,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\initial_conditions.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\first_step.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\1400_step.PNG" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
