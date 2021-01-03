@@ -229,15 +229,15 @@ namespace SimuladorNozzle
                 rectangleAutoStep.Visibility = Visibility.Visible;
 
                 RectanglesInitial(Visibility.Hidden);
-                
+
                 rayahorizontal.Visibility = Visibility.Visible;
                 Indicator.Visibility = Visibility.Visible;
                 panelShow.Visibility = Visibility.Hidden;
                 initiated = true;
 
 
-                
-                if(Advanced==true)
+
+                if (Advanced == true)
                 {
                     nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions, newRateArea);    //si estamos en el estudio avanzado, cambiará el area acorde a lo que se ha especificado
                 }
@@ -257,10 +257,10 @@ namespace SimuladorNozzle
 
                 //llista de les condicions inicials
                 List<Position> condiciones_iniciales = nozzlesim.GetRow(steps);
-                condiciones_iniciales.Capacity = nozzlesim.getN();
                 DataGrid1.ItemsSource = condiciones_iniciales;
                 DataGrid1.Width = 500;
                 DataGrid1.MinRowHeight = 25;
+                DataGrid1.IsReadOnly = true;
                 AndersonTab.Visibility = Visibility.Visible;
 
                 //create the buttons of the charts
@@ -1401,8 +1401,9 @@ namespace SimuladorNozzle
                 i++;
             }
         }
+
         // Function SetChart() is called when the users wants to upodate the charts, but some conditions have to be reached for that. Generrlay, this function will try to update charts
-        public void SetChart() 
+        public void SetChart()
         {
             if (nozzlesim.Getmalla() != null)   // if the matrix spacial-time is empty charts would be emprty
             {
@@ -1501,11 +1502,12 @@ namespace SimuladorNozzle
                 chartD.Series = new SeriesCollection();
             }
         }
+
         // This function creates an speciffic chart
         public void createChart(CartesianChart chart, List<List<double>> listV, List<Brush> ListBrush, Axis xAxis, string[] times)
         {
 
-            chart.Series = new SeriesCollection(); 
+            chart.Series = new SeriesCollection();
             int i = 0;
             while (i < listV.Count)                         // This while creates each of the series for each division, if some serie is not selected for plotting listV is empty  
             {                                               // so no plot wil be seen regardingf this position
@@ -1558,10 +1560,10 @@ namespace SimuladorNozzle
                 if (steps == 1 || steps == 1400)
                 {
                     List<Position> step = nozzlesim.GetRow(steps);
-                    step.Capacity = nozzlesim.getN();
                     DataGrid1.ItemsSource = step;
-                    DataGrid1.MinRowHeight = 25;
                     DataGrid1.Width = 718;
+                    DataGrid1.MinRowHeight = 25;
+                    DataGrid1.IsReadOnly = true;
                     AndersonTab.Visibility = Visibility.Visible;
                 }
                 plotChanged = true;
