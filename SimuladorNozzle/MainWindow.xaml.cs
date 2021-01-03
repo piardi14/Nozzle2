@@ -2171,6 +2171,8 @@ namespace SimuladorNozzle
             MaxPressure.Visibility = Visibility.Visible;
             MinPressure.Visibility = Visibility.Hidden;            //
 
+            alertCourantLabel.Visibility = Visibility.Hidden;      // Hidde the alert labels od courant and divisions
+            alertDivisionsLabel.Visibility = Visibility.Hidden;    //
             rayahorizontal.Visibility = Visibility.Hidden;         // We hidde the orizonthal longitudinal x variable on the nozzle panel
             Indicator.Visibility = Visibility.Hidden;
             panelShow.Visibility = Visibility.Hidden;
