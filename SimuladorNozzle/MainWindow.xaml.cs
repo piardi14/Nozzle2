@@ -61,6 +61,7 @@ namespace SimuladorNozzle
         double minD;
         double minP;
 
+        string path = "pack://application:,,,/" + "SimuladorNozzle" + ";component/" + "Resources/"; //posem el path de la imatge
 
 
         Nozzle nozzlesim;                   //Nozzle where we would simulate
@@ -106,13 +107,13 @@ namespace SimuladorNozzle
             xAxisV.MaxValue = 0.1;
             xAxisP.MaxValue = 0.1;
 
-
             //Set the timer
             clock.Tick += new EventHandler(clock_time_Tick);
             clock.Interval = new TimeSpan(2000000); //Pongo por defecto que haga un tick cada 1 segundo
             clockTime = new TimeSpan(0);
 
-
+            //Anderson tab
+            AndersonTab.IsEnabled = false;
         }
 
         //INITIAL SETTINGS
@@ -256,12 +257,30 @@ namespace SimuladorNozzle
                 setDimensionlessCharts();
 
                 //llista de les condicions inicials
-                List<Position> condiciones_iniciales = nozzlesim.GetRow(steps);
-                DataGrid1.ItemsSource = condiciones_iniciales;
-                DataGrid1.Width = 500;
-                DataGrid1.MinRowHeight = 25;
-                DataGrid1.IsReadOnly = true;
-                AndersonTab.Visibility = Visibility.Visible;
+                AndersonTab.IsEnabled = true;
+                if (nozzlesim.getN() == 31 && nozzlesim.getCourant() == 0.5)
+                {
+                    List<Position> lista_steps = nozzlesim.GetRow(steps);
+                    DataGrid1.ItemsSource = lista_steps;
+                    DataGrid1.MinRowHeight = 25;
+                    DataGrid1.IsReadOnly = true;
+
+                    if (steps == 0)
+                    {
+                        image_Anderson.Source = new BitmapImage(new Uri(path + "initial_conditions.PNG", UriKind.RelativeOrAbsolute));
+                        DataGrid1.Width = 500;
+                        AndersonTab.IsEnabled = true;
+                    }
+                    else
+                    {
+                        AndersonTab.IsEnabled = false;
+                    }
+                }
+                else
+                {
+                    AndersonTab.PreviewMouseLeftButtonDown += AndersonTab_PreviewMouseLeftButtonDown;
+                }
+                
 
                 //create the buttons of the charts
                 createButtCharts();
@@ -272,8 +291,6 @@ namespace SimuladorNozzle
 
                 lastLabeTick = new TimeSpan(0);
 
-
-
                 PropertiesBoxSelection.SelectedIndex = 0;
                 CreateNozzle(nozzlesim, 0);
                 plotChanged = true;
@@ -283,6 +300,21 @@ namespace SimuladorNozzle
             else
                 MessageBox.Show("Set some parameters first," + "\n" + "check if some of the boxes above are empty");
         }
+
+        private void AndersonTab_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBoxResult respuesta = MessageBox.Show("Anderson's tables can only be cheked for the Anderson\nparameters (divisions=31 and Courant = 0.5)", "Infromation", MessageBoxButton.OKCancel);
+            switch (respuesta)
+            {
+                case MessageBoxResult.OK:
+                    AndersonTab.IsEnabled = false;
+                    break;
+                case MessageBoxResult.Cancel:
+                    AndersonTab.IsEnabled = false;
+                    break;
+            }
+        }
+
 
         //CONTROLS SIMULATOR
         private void PropertiesBoxSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1552,19 +1584,39 @@ namespace SimuladorNozzle
         {
             if (steps < 1401)
             {
-                AndersonTab.Visibility = Visibility.Hidden;
                 steps = steps + 1;
                 textStep.Content = steps.ToString();
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
                 CreateNozzle(nozzlesim, steps);
-                if (steps == 1 || steps == 1400)
+
+                if (nozzlesim.getN() == 31 && nozzlesim.getCourant() == 0.5)
                 {
-                    List<Position> step = nozzlesim.GetRow(steps);
-                    DataGrid1.ItemsSource = step;
-                    DataGrid1.Width = 718;
+                    List<Position> lista_steps = nozzlesim.GetRow(steps);
+                    DataGrid1.ItemsSource = lista_steps;
                     DataGrid1.MinRowHeight = 25;
+                    DataGrid1.Width = 718;
                     DataGrid1.IsReadOnly = true;
-                    AndersonTab.Visibility = Visibility.Visible;
+                    if (steps == 1)
+                    {
+                        image_Anderson.Source = new BitmapImage(new Uri(path + "first_step.PNG", UriKind.RelativeOrAbsolute));
+                        image_Anderson.HorizontalAlignment = HorizontalAlignment.Right;
+                        AndersonTab.IsEnabled = true;
+                    }
+                    else if (steps == 8)
+                    {
+                        image_Anderson.Source = new BitmapImage(new Uri(path + "1400_step.PNG", UriKind.RelativeOrAbsolute));
+                        image_Anderson.HorizontalAlignment = HorizontalAlignment.Right;
+                        AndersonTab.IsEnabled = true;
+                    }
+                    else
+                    {
+                        AndersonTab.IsEnabled = false;
+                    }
+
+                }
+                else
+                {
+                    AndersonTab.PreviewMouseLeftButtonDown += AndersonTab_PreviewMouseLeftButtonDown;
                 }
                 plotChanged = true;
                 SetChart();
@@ -1773,19 +1825,32 @@ namespace SimuladorNozzle
                 if (steps == 1 || steps == 1400)
                 {
                     List<Position> step_1 = nozzlesim.GetRow(steps);
-                    step_1.Capacity = nozzlesim.getN();
                     DataGrid1.ItemsSource = step_1;
                     DataGrid1.MinRowHeight = 25;
                     DataGrid1.Width = 718;
+                    if (steps == 1)
+                    {
+                        image_Anderson.Source = new BitmapImage(new Uri(path + "first_step.PNG", UriKind.RelativeOrAbsolute));
+                        image_Anderson.HorizontalAlignment = HorizontalAlignment.Right;
+                    }
+                    else if (steps == 1400)
+                    {
+                        image_Anderson.Source = new BitmapImage(new Uri(path + "1400_step.PNG", UriKind.RelativeOrAbsolute));
+                        image_Anderson.HorizontalAlignment = HorizontalAlignment.Right;
+                    }
                     AndersonTab.Visibility = Visibility.Visible;
                 }
                 else if (steps == 0)
                 {
                     List<Position> step_1 = nozzlesim.GetRow(steps);
-                    step_1.Capacity = nozzlesim.getN();
                     DataGrid1.ItemsSource = step_1;
-                    DataGrid1.MinRowHeight = 25;
                     DataGrid1.Width = 500;
+                    DataGrid1.MinRowHeight = 25;
+                    DataGrid1.IsReadOnly = true;
+                    image_Anderson.Source = new BitmapImage(new Uri(path + "initial_conditions.PNG", UriKind.RelativeOrAbsolute));
+                    AndersonTab.Visibility = Visibility.Visible;
+
+
                     AndersonTab.Visibility = Visibility.Visible;
                 }
 
@@ -1835,17 +1900,38 @@ namespace SimuladorNozzle
         {
             if (auto == true && steps<1401)
             {
-                AndersonTab.Visibility = Visibility.Hidden;
                 steps = steps + 1;
-                if (steps == 1 || steps == 1400)
+
+                if (nozzlesim.getN() == 31 && nozzlesim.getCourant() == 0.5)
                 {
-                    List<Position> step_1 = nozzlesim.GetRow(steps);
-                    step_1.Capacity = nozzlesim.getN();
-                    DataGrid1.ItemsSource = step_1;
+                    List<Position> lista_steps = nozzlesim.GetRow(steps);
+                    DataGrid1.ItemsSource = lista_steps;
                     DataGrid1.MinRowHeight = 25;
                     DataGrid1.Width = 718;
-                    AndersonTab.Visibility = Visibility.Visible;
+                    DataGrid1.IsReadOnly = true;
+                    if (steps == 1)
+                    {
+                        image_Anderson.Source = new BitmapImage(new Uri(path + "first_step.PNG", UriKind.RelativeOrAbsolute));
+                        image_Anderson.HorizontalAlignment = HorizontalAlignment.Right;
+                        AndersonTab.IsEnabled = true;
+                    }
+                    else if (steps == 8)
+                    {
+                        image_Anderson.Source = new BitmapImage(new Uri(path + "1400_step.PNG", UriKind.RelativeOrAbsolute));
+                        image_Anderson.HorizontalAlignment = HorizontalAlignment.Right;
+                        AndersonTab.IsEnabled = true;
+                    }
+                    else
+                    {
+                        AndersonTab.IsEnabled = false;
+                    }
+
                 }
+                else
+                {
+                    AndersonTab.PreviewMouseLeftButtonDown += AndersonTab_PreviewMouseLeftButtonDown;
+                }
+
                 clockTime = clockTime + clock.Interval;
                 textStep.Content = steps.ToString();
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
@@ -1988,7 +2074,6 @@ namespace SimuladorNozzle
                 case MessageBoxResult.OK:
                     Restart();
                     RestartAdvanced();
-                    AndersonTab.Visibility = Visibility.Hidden;
                     break;
                 case MessageBoxResult.Cancel:
                     break;
@@ -2083,6 +2168,8 @@ namespace SimuladorNozzle
             gridRecChart.RowDefinitions.Clear();
             gridButtChart.Children.Clear();
             gridButtChart.RowDefinitions.Clear();                  //
+
+            AndersonTab.IsEnabled = false;
 
             PropertiesBoxSelection.SelectedIndex = -1;             // The propierties box selection is cleared
             //nozzlesim = new Nozzle(3, 800, 0.5, 0.5, 31);
