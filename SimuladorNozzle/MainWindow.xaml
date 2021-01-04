@@ -10,7 +10,7 @@
         Title="MainWindow" Height="730" Width="1280">
     <Grid Background="DarkSalmon" Margin="0,0,0,0">
         <TabControl Name="Pestañas" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top">
-            <TabItem Name="SimulatorTab" Header="Simulator" Height="22" VerticalAlignment="Top">
+            <TabItem Name="SimulatorTab" Header="Simulator" Cursor="Hand" Height="22" VerticalAlignment="Top">
                 <Grid Height="650" Width="1250" Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="163.4"></ColumnDefinition>
@@ -497,10 +497,10 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Name="PDFTab" Header="PDF">
+            <TabItem Name="PDFTab" Header="PDF" Cursor="Hand">
                 <Grid Background="#FFE5E5E5" Height="375" Width="775"  Margin="0,0,0,0"/>
             </TabItem>
-            <TabItem Name="AndersonTab" Header="Anderson Tables" Visibility="Visible">
+            <TabItem Name="AndersonTab" Header="Anderson Tables" Visibility="Visible" Cursor="Hand">
                 <StackPanel Margin="0,0,0,0">
                     <Label x:Name="labelAnderson" HorizontalAlignment="Left" Height="28" Width="500" Margin="0,0,0,0" FontSize="14" FontWeight="Bold" Background="#FFE5E5E5"></Label>
                     <Grid>
