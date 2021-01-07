@@ -317,7 +317,7 @@ namespace SimuladorNozzle
 
         private void AndersonTab_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (nozzlesim.getN() == 31 && nozzlesim.getCourant() == 0.5)
+            if (nozzlesim.getN() == 31 && nozzlesim.getCourant() == 0.5 && advanced==false)
             {
                 List<Position> lista_steps = new List<Position>();
                 if (steps == 0)
@@ -365,7 +365,7 @@ namespace SimuladorNozzle
             }
             else
             {
-                MessageBoxResult respuesta = MessageBox.Show("Anderson's tables can only be cheked for the Anderson\nparameters (divisions=31 and Courant = 0.5)", "Infromation", MessageBoxButton.OKCancel);
+                MessageBoxResult respuesta = MessageBox.Show("Anderson's tables can only be cheked for the Anderson parameters\n(divisions=31, Courant = 0.5 and Reservoir-Throat Area 5.95 : 1)", "Infromation", MessageBoxButton.OKCancel);
                 switch (respuesta)
                 {
                     case MessageBoxResult.OK:
@@ -1825,8 +1825,7 @@ namespace SimuladorNozzle
                     set_advanced_study(new_Ratio, 1);
                 }
 
-                //Anderson tab
-                AndersonTab.Visibility = Visibility.Hidden;
+                
                 //fiquem valors
                 CourantTextBox.Text = nozzlesim.getCourant().ToString();
                 DivisionsTextBox.Text = nozzlesim.getN().ToString();
@@ -1899,6 +1898,8 @@ namespace SimuladorNozzle
                 DefaultValuesButton.IsEnabled = false;
                 DivisionsTextBox.IsEnabled = false;
                 CourantTextBox.IsEnabled = false;
+                if (auto == false && nozzlesim.getCourant() == 0.5 && nozzlesim.GetDivisions() == 31)
+                    AndersonTab.IsEnabled = true;
             }
         }
 
@@ -2131,6 +2132,14 @@ namespace SimuladorNozzle
             MinTemperature.Visibility = Visibility.Hidden;
             MaxPressure.Visibility = Visibility.Visible;
             MinPressure.Visibility = Visibility.Hidden;            //
+            NoPointsLabelD.Visibility = Visibility.Hidden;         // Hide all the alert labels of thr charts
+            NoSeriesD.Visibility = Visibility.Hidden;
+            NoPointsLabelV.Visibility = Visibility.Hidden;
+            NoSeriesV.Visibility = Visibility.Hidden;
+            NoPointsLabelP.Visibility = Visibility.Hidden;
+            NoSeriesP.Visibility = Visibility.Hidden;
+            NoPointsLabelT.Visibility = Visibility.Hidden;
+            NoSeriesT.Visibility = Visibility.Hidden;              //
 
             alertCourantLabel.Visibility = Visibility.Hidden;      // Hidde the alert labels od courant and divisions
             alertDivisionsLabel.Visibility = Visibility.Hidden;    //
