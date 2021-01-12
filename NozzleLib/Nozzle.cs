@@ -6,23 +6,24 @@ namespace NozzleLib
 {
     public class Nozzle
     {
-        double gamma = 1.4;
-        double R = 286;
-        double deltax;
-        double deltatime;
+        double gamma = 1.4;             //Heat capacity ratio
+        double R = 286;                 //Gas constant
+        double deltax;                  //distance between positions in the nozzle    
+        double deltatime;               //time-step of the simulation
         List<double> TimeList = new List<double> { 0 };
         double C;                       //Courant value
         Position[,] malla;              //Position matrix rows=time steps and columns=space divisions
         int N;                     //Number of space divisions, 31 by default (Anderson value)
         double[] dimensionalvalues;     //Initial values to obtain dimensional values to magnitudes [L, T0, a0, p0, ro0]
-        Position dimensionalPos; 
+        Position dimensionalPos;         
         double throatposition;          //where is the throat
 
+        //CONSTRUCTORS
         public Nozzle(double L, double T0, double ro0, double A0, double C, int N) //A0 is the area of the throat
         {
             SetDimensionalValues(L, T0, ro0, A0);
             this.throatposition = L / 2;
-            this.deltax = L / (N-1);
+            this.deltax = L / (N-1);                //Depending on the ammount of divisions the nozzle has, distance between positions will vary
             this.N = N;
             this.C = C;
             this.malla = new Position[1401, N];
@@ -31,7 +32,7 @@ namespace NozzleLib
             {
                 double xi = 0 + i * deltax;
                 double temp = 1 - 0.2314 * xi;
-                Position pos = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Math.Pow(xi - throatposition, 2), i + 1);
+                Position pos = new Position(xi, temp, 1 - 0.3146 * xi, (0.1 + 1.09 * xi) * Math.Sqrt(temp), 1 + 2.2 * Math.Pow(xi - throatposition, 2), i + 1); //nozzle initial conditions
                 SetPosition(0, i, pos);
                 i++;
             }
@@ -62,6 +63,7 @@ namespace NozzleLib
 
         }
         //FUNCTIONS
+            //Extraction and setting of variables
         public Position GetPosition(int t, int i)
         {
             Position pos = this.malla[t, i];
@@ -99,7 +101,8 @@ namespace NozzleLib
         {
             return this.malla;
         }
-        //Función para coger valores intercalados de los tiempos
+        
+        //Function to get alternate time values for the charts, creates a list of time values depending on the number of time steps the simulation has run
         public List<double> getTimeList(int steps, int finalStep)
         {
             List<double> Times = new List<double>();
@@ -121,7 +124,7 @@ namespace NozzleLib
             }
             return Times;
         }
-
+        //Function to obtain a list of the area values the nozzle has
         public List<double> createListArea(int t)
         {
             List<double> Area = new List<double>();
@@ -136,7 +139,7 @@ namespace NozzleLib
             }
             return Area;
         }
-
+        //Function to obtain a list of the density values the nozzle has for a certain value of time
         public List<double> createListDensity(int t)
         {
             List<double> Density = new List<double>();
@@ -152,6 +155,7 @@ namespace NozzleLib
             }
             return Density;
         }
+        //Function to obtain a list of the velocity values the nozzle has for a certain value of time
         public List<double> createListVelocity(int t)
         {
             List<double> Velocity = new List<double>();
@@ -167,6 +171,7 @@ namespace NozzleLib
             }
             return Velocity;
         }
+        //Function to obtain a list of the temeperature values the nozzle has for a certain value of time
         public List<double> createListTemperature(int t)
         {
             List<double> Temperature = new List<double>();
@@ -182,6 +187,7 @@ namespace NozzleLib
             }
             return Temperature;
         }
+        //Function to set the dimensional values of the nozzle
         public void SetDimensionalValues(double L, double T0, double ro0, double A0)
         {
             dimensionalvalues = new double[5];
@@ -193,6 +199,7 @@ namespace NozzleLib
             dimensionalPos = new Position(0, T0,ro0, Math.Sqrt(gamma * R * T0),A0, N);
 
         }
+        //Obtain a certain row of 
         public List<Position> GetRow (int row)
         {
             List<Position> fila = new List<Position>();
@@ -205,45 +212,8 @@ namespace NozzleLib
             }
             return fila;
         }
-        public List<double> GetRowPar(int row, string parameter)
-        {
-            List<double> fila = new List<double>();
-            int i = 0;
-            while (i < N)
-            {
-                Position pos = GetPosition(row, i);
-                if (pos != null)
-                {
-                    double value;
-                    if (parameter == "x")
-                        value = pos.GetX();
-                    else if (parameter == "T")
-                        value = pos.GetTemperature();
-                    else if (parameter == "D")
-                        value = pos.GetDensity();
-                    else if (parameter == "V")
-                        value = pos.GetVelocity();
-                    else if (parameter == "P")
-                        value = pos.GetPressure();
-                    else if (parameter == "A")
-                        value = pos.GetArea();
-                    else if (parameter == "M")
-                        value = pos.MachNumber();
-                    else
-                        value = -2;
-
-                    if (value != -2)
-                        fila.Add(value);
-                    i++;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            return fila;
-        }
-        // GetColumnPar creates a list of values of some property identified as an string  
+        
+        //GetColumnPar creates a list of values of some property identified as an string  
         public List<double> GetColumnPar(int col, string parameter, int steps, Position dimens, int finStep)
         {
             List<double> columna = new List<double>();
@@ -296,6 +266,7 @@ namespace NozzleLib
             }
             return columna;
         }
+        //Function to obtain a column of the matrix, belonging to the values of a certain position along time
         public List<Position> GetColumn(int col)
         {
             List<Position> columna = new List<Position>();
@@ -312,6 +283,7 @@ namespace NozzleLib
                 
             
         }
+        //Computation of the time-step each step of the simulation has. Each position has a certain value, and for each step, the simulation picks the minimum value
         public double ComputeDeltaTime(int t)
         {
             List<Position> fila = this.GetRow(t);
@@ -337,11 +309,13 @@ namespace NozzleLib
             }
             return deltatime;
         }
+        //Function that, once the time-step is computed, it's added to the property of the nozzle and to the chart time list 
         public void SetDeltaTime(double deltatime)
         {
             this.deltatime = deltatime;
             this.TimeList.Add(Math.Round(TimeList[TimeList.Count-1]+deltatime,3));
         }
+        //Function to compute the next values of Positions in the nozzle, using MacCormack method
         public void ComputeNextTime()
         {
             int t=0;
@@ -352,16 +326,20 @@ namespace NozzleLib
                     t = i;
                 i++;
             }
-            SetDeltaTime(ComputeDeltaTime(t-1));
-            // List<double> ro_0, List<double> V0, List<double> E0, List<double> A0
+            SetDeltaTime(ComputeDeltaTime(t-1));                    //Computation of the time-step value
+
+            //Extraction of the properties' values
             List<double> ro_0 = createListDensity(t-1);
             List<double> V0 = createListVelocity(t-1);
             List<double> E0 = createListTemperature(t-1);
             List<double> A0 = createListArea(t-1);
 
+            //Definition of the differences' guesses lists
             List<double> continuity = new List<double>();
             List<double> momentum = new List<double>();
             List<double> energy = new List<double>();
+
+            //Computation of the first guess of the derivatives' values (forward differences)
             i = 0;
             while (i < ro_0.Count)
             {
@@ -391,12 +369,14 @@ namespace NozzleLib
             {
                 if (i == 0)
                 {
+                    //Inflow boundary conditions
                     DoAv.Add(1);
                     EoAv.Add(1);
                     VoAv.Add(1);
                 }
                 else if (i == ro_0.Count - 1)
                 {
+                    //Outflow boundary conditions (+ velocity inflow condition)
                     VoAv[0] = 2 * VoAv[1] - VoAv[2];
                     DoAv.Add(2 * VoAv[i - 1] - VoAv[i - 2]);
                     EoAv.Add(2 * EoAv[i - 1] - EoAv[i - 2]);
@@ -414,6 +394,8 @@ namespace NozzleLib
             List<double> continuityProm = new List<double>();
             List<double> momentumProm = new List<double>();
             List<double> energyProm = new List<double>();
+
+            //Computation of the second guess of the derivatives' values (backwards differences)
             i = 0;
             while (i < ro_0.Count)
             {
@@ -438,6 +420,8 @@ namespace NozzleLib
             List<double> continuityAv = new List<double>();
             List<double> momentumAv = new List<double>();
             List<double> energyAv = new List<double>();
+
+            //Computation of the average between the two guesses
             i = 0;
             while (i < continuity.Count)
             {
@@ -492,6 +476,7 @@ namespace NozzleLib
             }
         }
 
+        //Function to compute as many steps as one wants
         public void ComputeUntilPos(int finalPos)
         {
             int i = 1;
@@ -502,15 +487,6 @@ namespace NozzleLib
             }
         }
 
-        public void SetNewArea(double new_Rate)
-        {
-            double y = (new_Rate - 1) / 2.25;
-            int i = 0;
-            while (i<N)
-            {
-                malla[0,i].SetA(1 + y * Math.Pow(i*0.1 - 1.5, 2));
-            }
-        }
 
     }
 }
