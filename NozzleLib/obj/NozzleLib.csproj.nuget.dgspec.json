@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gerar\\Desktop\\Gerard\\4º año\\1er cuatri\\sim\\project final\\final project\\Nozzle2\\NozzleLib\\NozzleLib.csproj": {}
+    "C:\\Users\\gerar\\Desktop\\Gerard\\Nozzle2\\NozzleLib\\NozzleLib.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gerar\\Desktop\\Gerard\\4º año\\1er cuatri\\sim\\project final\\final project\\Nozzle2\\NozzleLib\\NozzleLib.csproj": {
+    "C:\\Users\\gerar\\Desktop\\Gerard\\Nozzle2\\NozzleLib\\NozzleLib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gerar\\Desktop\\Gerard\\4º año\\1er cuatri\\sim\\project final\\final project\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
+        "projectUniqueName": "C:\\Users\\gerar\\Desktop\\Gerard\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
         "projectName": "NozzleLib",
-        "projectPath": "C:\\Users\\gerar\\Desktop\\Gerard\\4º año\\1er cuatri\\sim\\project final\\final project\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
+        "projectPath": "C:\\Users\\gerar\\Desktop\\Gerard\\Nozzle2\\NozzleLib\\NozzleLib.csproj",
         "packagesPath": "C:\\Users\\gerar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gerar\\Desktop\\Gerard\\4º año\\1er cuatri\\sim\\project final\\final project\\Nozzle2\\NozzleLib\\obj\\",
+        "outputPath": "C:\\Users\\gerar\\Desktop\\Gerard\\Nozzle2\\NozzleLib\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\gerar\\AppData\\Roaming\\NuGet\\NuGet.Config",

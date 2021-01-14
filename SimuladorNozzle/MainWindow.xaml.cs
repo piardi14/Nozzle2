@@ -70,31 +70,22 @@ namespace SimuladorNozzle
         {
             InitializeComponent();
 
-            // mwake non enablen the button crate 
+            // make disabled the create button
             CreateButton.IsEnabled = false;
 
+            //When the simulator is run, the color indicator and the properties' box are created and set but hidden
             CreateIndicator(400);
             Indicator.Visibility = Visibility.Hidden;
             PropertiesBoxSelection.Items.Add("Temperature");
             PropertiesBoxSelection.Items.Add("Velocity");
             PropertiesBoxSelection.Items.Add("Density");
             PropertiesBoxSelection.Items.Add("Pressure");
-            // fill posChart of zeros
-            //fillSelectedList();
+           
 
-            //createBrushesList();
-            //// computa todos los valores especificados
-            //nozzlesim.ComputeUntilPos(1401);
-            //calculateMinMax();
-            ////inizialitzem el step
-            //steps = 0;
-            //setDimensionlessCharts();
-            //CreateListaButtons();
-
-            // hacemos no visibles los labels de step y time
+            // Step and time labels are hidden
             labelStep.Visibility = Visibility.Hidden;
             labelTime.Visibility = Visibility.Hidden;
-            // Hacemos Visibles los rectangulos transpoarentes que no nos dejan clicar a ningun sitio
+            //The transparent rectangles, just enabling the user use the initial settings part, are made visible
             rayahorizontal.Visibility = Visibility.Hidden;
             panelShow.Visibility = Visibility.Hidden;
 
@@ -110,7 +101,7 @@ namespace SimuladorNozzle
 
             //Set the timer
             clock.Tick += new EventHandler(clock_time_Tick);
-            clock.Interval = new TimeSpan(2000000); //Pongo por defecto que haga un tick cada 1 segundo
+            clock.Interval = new TimeSpan(2000000); //By default, it's one tick per second
             clockTime = new TimeSpan(0);
 
             //Anderson tab
@@ -121,31 +112,33 @@ namespace SimuladorNozzle
             PDFTab.PreviewMouseLeftButtonDown += PDFTab_PreviewMouseLeftButtonDown;
         }
 
+        //When the user clicks on the PDF tab
         private void PDFTab_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MessageBoxResult respuesta = MessageBox.Show("Do you want to download the Report?", "Infromation", MessageBoxButton.OKCancel);
+            MessageBoxResult respuesta = MessageBox.Show("Do you want to download the Report?", "Infromation", MessageBoxButton.OKCancel);  //A window appears allowing the user to decide whether he/she wants to download the report
             switch (respuesta)
             {
                 case MessageBoxResult.OK:
-                    download_Project();
+                    download_Project();         //If the user has clicked OK, the simulator downloads the project report into the user's computer
                     break;
             }
         }
-
+        //Function to download the Report pdf
         private void download_Project()
         {
             string filename = "Report final.pdf";
             Process.Start(filename);
         }
 
-        //INITIAL SETTINGS
+        //When the default values button is clicked, the initial settings values are defined as nº of divisions = 31 and Courant = 0.5
         private void DefaultValuesButton_Click(object sender, RoutedEventArgs e)
         {
             DefaultValues();
         }
+        //Function to define the initial settings as nº of divisions = 31 and Courant = 0.5
         public void DefaultValues()
         {
-            if (advanced == true && DivisionsTextBox.Text == "" && CourantTextBox.Text == "")
+            if (advanced == true && DivisionsTextBox.Text == "" && CourantTextBox.Text == "")   //When used in the advanced study, and if the user hasn't specified it, the default values are automatically  set
             {
                 DivisionsTextBox.Text = "31";
                 CourantTextBox.Text = "0.5";
@@ -159,12 +152,7 @@ namespace SimuladorNozzle
             }
         }
 
-        public void DefaultValuesClear()
-        {
-            DivisionsTextBox.Text = "";
-            CourantTextBox.Text = "";
-            CreateButton.IsEnabled = false;
-        }
+        //When the user introduces the divisions value, the simulator sets it into its initial settings
         private void DivisionsTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
@@ -174,7 +162,7 @@ namespace SimuladorNozzle
                 double courant = Convert.ToDouble(precourant);
 
                
-
+                //Only certain values are allowed, in order to get perfect simulations
                 if ((div == 11 || div == 21 || div == 31 || div == 41 || div == 51 || div == 61) &&(courant<1 && courant>0))
                 {
                     alertDivisionsLabel.Visibility = Visibility.Hidden;
@@ -243,22 +231,25 @@ namespace SimuladorNozzle
                 }
             }
         }
+
+        //What happens when the user clicks the Create button
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             Create(false, 0);
         }
 
-        public void Create(bool Advanced, double newRateArea)  // Create ow can be used on the advanced study also, Advanced == true needs a newRateArea to create, if rate= 5 : 1, newRateArea=5
+        public void Create(bool Advanced, double newRateArea)  // Create now can be used on the advanced study too, Advanced == true needs a newRateArea to create, if rate= 5 : 1, newRateArea=5
         {
             if (DivisionsTextBox.Text != "" && CourantTextBox.Text != "")
             {
+                //The simulator disables the initial settings part when it's simulating the nozzle
                 CreateButton.Content = "SIMULATING...";
                 CreateButton.IsEnabled = false;
                 DefaultValuesButton.IsEnabled = false;
-
                 DivisionsTextBox.IsEnabled = false;
                 CourantTextBox.IsEnabled = false;
 
+                //Initial simulation settings, included hiding the transparent rectangles and making other hidden parts visible
                 decimal c = decimal.Parse(CourantTextBox.Text.Replace('.', ','));
                 double C = Convert.ToDouble(c);
                 int divisions = Convert.ToInt32(DivisionsTextBox.Text);
@@ -277,23 +268,23 @@ namespace SimuladorNozzle
 
                 if (Advanced == true)
                 {
-                    nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions, newRateArea);    //si estamos en el estudio avanzado, cambiará el area acorde a lo que se ha especificado
+                    nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions, newRateArea);    //if the advanced study is run, a new RateArea is specified
                 }
                 else
                 {
                     nozzlesim = new Nozzle(3, 2800, 1.95, 2, C, divisions);
                 }
 
-                // computa todos los valores especificados
+                //all the specifies values are computed
                 nozzlesim.ComputeUntilPos(1401);
-                calculateMinMax();
-                //escribe los labels max y min en el indicador
+                calculateMinMax();  //computation of the maximum and minimum values of each property
+                //this max and min values are writen in the color indicator
                 WriteIndicatorMaxMin(0);
-                //inizialitzem el step
+                //nº steps simulated = 0
                 steps = 0;
                 setDimensionlessCharts();
 
-                //llista de les condicions inicials
+                //initial conditions are shown in the Anderson tables tab
                 AndersonTab.IsEnabled = true;
 
                 //create the buttons of the charts
@@ -306,15 +297,16 @@ namespace SimuladorNozzle
                 lastLabeTick = new TimeSpan(0);
 
                 PropertiesBoxSelection.SelectedIndex = 0;
-                CreateNozzle(nozzlesim, 0);
+                CreateNozzle(nozzlesim, 0);         //the nozzle is painted in the simulator using the initial conditions
                 plotChanged = true;
-                SetChart();
+                SetChart();                         //Charts are started
                 clock.Start();
             }
             else
                 MessageBox.Show("Set some parameters first," + "\n" + "check if some of the boxes above are empty");
         }
 
+         
         private void AndersonTab_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (nozzlesim.getN() == 31 && nozzlesim.getCourant() == 0.5 && advanced==false)
@@ -378,19 +370,19 @@ namespace SimuladorNozzle
             }
         }
 
-
-        //CONTROLS SIMULATOR
+        //When a property is selected in the PropertiesBox
         private void PropertiesBoxSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PropertiesBoxSelection.SelectedIndex != -1)
             {
                 WriteIndicatorMaxMin(PropertiesBoxSelection.SelectedIndex);
-                CreateNozzle(nozzlesim, steps);             //**de moment 0 el temps, pero ja veurem quan tingui un timestep diferent
+                CreateNozzle(nozzlesim, steps);             //The new nozzle is painted using the values of the selected property
             }
 
         }
 
         //CONTROLS CHARTS
+        //Expand the charts
         public double[] ampliate(double max, double min)
         {
             double[] MaxMin = new double[2] { max + (max - min) / 20, min - (max - min) / 20 };
@@ -658,7 +650,7 @@ namespace SimuladorNozzle
             MinPressure.Visibility = Visibility.Hidden;
         }
 
-        //FUNCTIONS SIMULATOR
+        //Function to create the color indicator, here the colors used in the simulation are decided
         private void CreateIndicator(int filas)
         {
             int change = Convert.ToInt32(filas / 20);
@@ -905,13 +897,16 @@ namespace SimuladorNozzle
             }
         }
 
+        //Function to paint the nozzle in the simulator
         private void CreateNozzle(Nozzle nozzle, int t)
         {
+            //when the function is called, it removes the previous nozzle from the canvas
             NozzleCanvas.Children.RemoveRange(0, NozzleCanvas.Children.Count);
-            double width = (double)435 / (nozzle.GetDivisions());
+            double width = (double)435 / (nozzle.GetDivisions());       //width of the rectangles comprising the nozzle, depending on the ammount of divisions set
             int count = 0;
-            while (count < nozzle.GetDivisions())
+            while (count < nozzle.GetDivisions())           //for each division
             {
+                //Obtaining the value of the property to be represented in the division
                 int propind = PropertiesBoxSelection.SelectedIndex;
                 double value = 0;
                 if (propind == 0)
@@ -931,20 +926,21 @@ namespace SimuladorNozzle
                 {
                     value = nozzle.GetPosition(t, count).GetPressure();
                 }
-                Color color = PrintColor(propind, value);
+                Color color = PrintColor(propind, value);       //when the value is found, this function is called to determine which color should be used in the division
 
+                //Painting the rectangle corresponding the division on the canvas
                 Button rectbutton = new Button();
                 rectbutton.Background = new SolidColorBrush(color);
                 rectbutton.Name = "button" + Convert.ToString(count);
-                rectbutton.Height = 100 + (nozzle.GetPosition(0, count).GetArea() - 1) * 200 / 4.95;
+                rectbutton.Height = 100 + (nozzle.GetPosition(0, count).GetArea() - 1) * 200 / 4.95;    //depending on the area value, the rectangle's height is determined
                 rectbutton.Width = width;
                 rectbutton.BorderBrush = new SolidColorBrush(color);
-                Canvas.SetLeft(rectbutton, 5 + width * count);
+                Canvas.SetLeft(rectbutton, 5 + width * count);                          //position of the rectangle in the canvas
                 Canvas.SetTop(rectbutton, 150 - (rectbutton.Height - 100) * 100 / 200);
-                rectbutton.Click += Rectbutton_Click;
-                rectbutton.MouseEnter += Rectbutton_MouseEnter;
+                rectbutton.Click += Rectbutton_Click;                   //Event for when the rectangle is clicked
+                rectbutton.MouseEnter += Rectbutton_MouseEnter;         //Event for when the mouse hovers over the rectangle
                 rectbutton.MouseLeave += Rectbutton_MouseLeave;
-                rectbutton.MouseRightButtonDown += Rectbutton_RightClick;
+                rectbutton.MouseRightButtonDown += Rectbutton_RightClick;   //Event for when the rectangle is right-clicked
                 NozzleCanvas.Children.Add(rectbutton);
                 count++;
             }
@@ -953,6 +949,7 @@ namespace SimuladorNozzle
             xAxiscolores.MaxValue = Convert.ToDouble(nozzlesim.GetDivisions()) * 3 / (Convert.ToDouble(nozzlesim.GetDivisions()) - 1);
         }
 
+        //When a rectangle is clicked it is added in the charts to be plotted
         private void Rectbutton_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
@@ -965,10 +962,14 @@ namespace SimuladorNozzle
                 }
             }
         }
+
+        //When the user hovers over a certain rectangle of the nozzle (division)
         private void Rectbutton_MouseEnter(object sender, RoutedEventArgs e)
         {
             WriteTable(sender);
         }
+
+        //Function to write on the table below the initial settings
         public void WriteTable(object sender)
         {
             Position position; Position Dimenssion; bool procede = true;
@@ -1019,6 +1020,8 @@ namespace SimuladorNozzle
                 leftClickTip.Visibility = Visibility.Visible;
             }
         }
+
+        //When the user right-clicks a certain rectangle (division), the table with its properties' values is fixed, or unfixed if it is already fixed
         private void Rectbutton_RightClick(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
@@ -1041,6 +1044,8 @@ namespace SimuladorNozzle
             }
             DimensionlessButtonShow.IsChecked = true;
         }
+
+        //If the user wants to see the properties in the table with dimension or non-dimensional
         private void CheckedBox_Show(object sender, RoutedEventArgs e)
         {
 
@@ -1072,6 +1077,8 @@ namespace SimuladorNozzle
             panelShow.Visibility = Visibility.Visible;
 
         }
+
+        //When the user stops hovering over a rectangle, the properties' table is hidden
         private void Rectbutton_MouseLeave(object sender, RoutedEventArgs e)
         {
             if (fixTable == false)
@@ -1079,6 +1086,8 @@ namespace SimuladorNozzle
 
             leftClickTip.Visibility = Visibility.Hidden;
         }
+
+        //Function to decide which color to paint
         private Color PrintColor(int propind, double i)
         {
 
@@ -1336,6 +1345,7 @@ namespace SimuladorNozzle
 
         }
 
+        //Function to compute the maximum and minimum values of all properties in the simulation
         public void calculateMinMax()
         {
             int i = 0;
@@ -1398,7 +1408,6 @@ namespace SimuladorNozzle
             }
         }
 
-        //FUNCTIONS CHARTS
 
         public void createBrushesList()
         {
@@ -1642,20 +1651,16 @@ namespace SimuladorNozzle
 
         /// Controls of the STEP AUTO PAUSE CLOCK...
 
-
+        //What happens when the Next-Step Button is clicked
         private void NextStepButton_Click(object sender, RoutedEventArgs e)
         {
             if (steps < 1401)
             {
-                steps = steps + 1;
+                steps = steps + 1;  //the number of steps is increased by one
                 textStep.Content = steps.ToString();
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
-                CreateNozzle(nozzlesim, steps);
+                CreateNozzle(nozzlesim, steps);     //the nozzle is painted in the canvas at the corresponding time-step 
 
-                //if (nozzlesim.getN() == 31 && nozzlesim.getCourant() == 0.5)
-                //{
-                //    AndersonTab.PreviewMouseLeftButtonDown += AndersonTab_PreviewMouseLeftButtonDown;
-                //}
 
                 plotChanged = true;
                 SetChart();
@@ -1667,6 +1672,7 @@ namespace SimuladorNozzle
             }
         }
 
+        //What happens when the user clicks on the Download Button
         private void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
             if (initiated == true)
@@ -1726,6 +1732,7 @@ namespace SimuladorNozzle
                 MessageBox.Show("Initialized the simulation", "", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
+        //What happens when the Upload button is clicked
         private void UploadButton_Click(object sender, RoutedEventArgs e)
         {
             List<int> provisional = new List<int>();
@@ -1903,16 +1910,16 @@ namespace SimuladorNozzle
             }
         }
 
-
+        //Every time the timer ticks
         private void clock_time_Tick(object sender, EventArgs e)
         {
-            if (auto == true && steps<1401)
+            if (auto == true && steps<1401)     //if the auto setting is selected and the maximum number of steps hasn't been reached yet
             {
-                steps = steps + 1;
+                steps = steps + 1;              //number of steps increases
                 clockTime = clockTime + clock.Interval;
-                textStep.Content = steps.ToString();
+                textStep.Content = steps.ToString();    
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
-                CreateNozzle(nozzlesim, steps);
+                CreateNozzle(nozzlesim, steps); //the nozzle is painted in the canvas at the corresponding time-step
                 plotChanged = true;
                 WriteTable(sender);
             }
@@ -1932,16 +1939,16 @@ namespace SimuladorNozzle
             ParpadeoLabels();
             SetChart();
         }
-        public void ParpadeoLabels()
+        public void ParpadeoLabels()               // the blinking labels
         {
-            lastLabeTick += clock.Interval;
-            // Parpadeo de labels de no hay steps
-            if (steps == 0)
+            lastLabeTick += clock.Interval;                                                // the last blink time is recorded
+            
+            if (steps == 0)                                                              // corresponds to the alert label of 'no steps'
             {
-                if (lastLabeTick > new TimeSpan(10000000))
-                {
-                    lastLabeTick = new TimeSpan(0);
-                    if (NoPointsLabelD.Visibility == Visibility.Visible)
+                if (lastLabeTick > new TimeSpan(10000000))                               // just blink if the blink time is higher than a second so it blinks each second
+                { 
+                    lastLabeTick = new TimeSpan(0);                                      // the blink time is setted back to 0
+                    if (NoPointsLabelD.Visibility == Visibility.Visible)                 // depending on the apparience of the labels those tur to visible on hidden to create the effectof blink
                     {
                         NoPointsLabelD.Visibility = Visibility.Hidden;
                         NoPointsLabelV.Visibility = Visibility.Hidden;
@@ -1953,11 +1960,11 @@ namespace SimuladorNozzle
                         NoPointsLabelD.Visibility = Visibility.Visible;
                         NoPointsLabelV.Visibility = Visibility.Visible;
                         NoPointsLabelT.Visibility = Visibility.Visible;
-                        NoPointsLabelP.Visibility = Visibility.Visible;
-                    }
+                        NoPointsLabelP.Visibility = Visibility.Visible; 
+                    }                                                                     //
                 }
             }
-            else if (steps != 0 && NoPointsLabelD.Visibility == Visibility.Visible)
+            else if (steps != 0 && NoPointsLabelD.Visibility == Visibility.Visible)       // just turn invisible if it has ended with bisible labels
             {
                 lastLabeTick = new TimeSpan(0);
                 NoPointsLabelD.Visibility = Visibility.Hidden;
@@ -1965,11 +1972,11 @@ namespace SimuladorNozzle
                 NoPointsLabelT.Visibility = Visibility.Hidden;
                 NoPointsLabelP.Visibility = Visibility.Hidden;
             }
-            else if (lastLabeTick > new TimeSpan(10000000))
+            else if (lastLabeTick > new TimeSpan(10000000))                               // corresponds to the alert label of 'no position selected of the charts' is the semae procedure
             {
                 lastLabeTick = new TimeSpan(0);
                 bool zeroSelected = true;
-                foreach (int pos in brushesPos)
+                foreach (int pos in brushesPos)                                           // the only difference is that has to count the selected positions 
                 {
                     if (pos != -1)
                     {
@@ -2005,11 +2012,13 @@ namespace SimuladorNozzle
 
         }
 
-        private void AutoButton_Click(object sender, RoutedEventArgs e)
+        //What happens when the user clicks on the Auto Button
+        private void AutoButton_Click(object sender, RoutedEventArgs e)   // clicking button auto
         {
             Auto();
         }
 
+        //If the Auto mode is selected
         public void Auto()
         {
             if (initiated == true)
@@ -2017,13 +2026,13 @@ namespace SimuladorNozzle
                 if (auto == false)
                 {
                     NextStepButton.IsEnabled = false;
-                    auto = true;
-                    Color colorset = Color.FromRgb(153, 144, 144);
+                    auto = true;                                             // this bolean is used to know weather the mode is selected
+                    Color colorset = Color.FromRgb(153, 144, 144);           // set the apparience of the button
                     Brush colorBrush = new SolidColorBrush(colorset);
                     AutoButton.Background = colorBrush;
-                    AutoButton.Content = "PAUSE";
+                    AutoButton.Content = "PAUSE";                            //
                 }
-                else
+                else                                                        // same code but changing to 'step by step'
                 {
                     NextStepButton.IsEnabled = true;
                     auto = false;
@@ -2036,21 +2045,18 @@ namespace SimuladorNozzle
             else
                 MessageBox.Show("The simulate has to be initiated first," + "\n" + "create the nozzle to start!!");
         }
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
-        {
-            NextStepButton.IsEnabled = true;
-        }
 
+        //What happpens when the restart button is clicked
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult respuesta = MessageBox.Show(
-                "Se va a reiniciar el simulador, se perderán los cambios", "Warning", MessageBoxButton.OKCancel);
+                "Se va a reiniciar el simulador, se perderán los cambios", "Warning", MessageBoxButton.OKCancel);   //the simulator allows the user to think twice his/her decision
 
             switch (respuesta)
             {
                 case MessageBoxResult.OK:
-                    Restart();
-                    RestartAdvanced();
+                    Restart();          //the simulation is restarted
+                    RestartAdvanced();  //the advanced study is restarted
                     break;
                 case MessageBoxResult.Cancel:
                     break;
@@ -2201,6 +2207,7 @@ namespace SimuladorNozzle
             }
         }
 
+        //When the user slides the slider, the simulator velocity changes
         private void AutoSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             double periodo = 1000000 / AutoSlider.Value;
@@ -2271,7 +2278,7 @@ namespace SimuladorNozzle
             recOld.Visibility = Visibility.Hidden;                                                    // 
         }
 
-        private void set_advanced_study(double Res, double Thr)
+        private void set_advanced_study(double Res, double Thr)                                     
         {
             if (Thr != 0)                                                                                                     // avoid zero value
             {
@@ -2397,7 +2404,7 @@ namespace SimuladorNozzle
                 }
             }
         }
-        private void buttCheckNewA_Click(object sender, RoutedEventArgs e)                            // We check the information of Area Rate thatb we have decided 
+        private void buttCheckNewA_Click(object sender, RoutedEventArgs e)                            // We check the information of Area Rate that we have decided, and we show the previsualization 
         {
             try                                                                                                                      // we define a try to aviod format exceptions
             {
@@ -2416,25 +2423,25 @@ namespace SimuladorNozzle
                         {
                             Res = Math.Round(Res / Thr,2);
                             
-                            textNewA.Text = ((Convert.ToDecimal(Res)).ToString() + " : 1").ToString().Replace(',', '.');
+                            textNewA.Text = ((Convert.ToDecimal(Res)).ToString() + " : 1").ToString().Replace(',', '.');             // we rewrite the information on the textbox (with the correct format)
                             buttCheckNewA.Background = Brushes.GreenYellow;
                             buttCheckNewA.Content = "checked";
-                            buttCheckNewA.IsEnabled = false;
-                            alertRateA.Visibility = Visibility.Hidden;
+                            buttCheckNewA.IsEnabled = false;                                                                         // disenable the button
+                            alertRateA.Visibility = Visibility.Hidden;                                                               // hidde te alert box
 
-                            chartA.Visibility = Visibility.Visible;
-                            CreateButtonAdvStudy.IsEnabled = true;
-                            chartA.Series = new SeriesCollection();
+                            chartA.Visibility = Visibility.Visible;                                                                  // we show the chart
+                            CreateButtonAdvStudy.IsEnabled = true;                                                                   // we enable the button to start simulation
+                            chartA.Series = new SeriesCollection();                                                                  // we define the series of the previsualization chart
                             int N = 31;
-                            List<double> listA = new List<double>();
+                            List<double> listA = new List<double>();                                                                 // here are defined the list of values regardind the old and new lines
                             List<double> listAold = new List<double>();
                             List<double> listAM = new List<double>();
-                            List<double> listAoldM = new List<double>();
+                            List<double> listAoldM = new List<double>();                                                             //
                             int i = 0;
-                            double Res0 = 2.2 * Math.Pow(0.0 - (N - 1)*0.1 / 2, 2);
-                            double Correction = (Res-1) / Res0;
-                            string[] x = new string[N];
-                            while (i < N)
+                            double Res0 = 2.2 * Math.Pow(0.0 - (N - 1)*0.1 / 2, 2);                                                  // we compute the old reservoir area
+                            double Correction = (Res-1) / Res0;                                                                      // and the correction parameter dor our new area cross sectinn 
+                            string[] x = new string[N];                                                                              // the values of the xaxis
+                            while (i < N)                                                                                            // here all lists are filled
                             {
                                 double xi = i * 0.1;
                                 double A = (1 + 2.2 * Correction * Math.Pow(xi - (N - 1)*0.1 / 2, 2));
@@ -2446,9 +2453,9 @@ namespace SimuladorNozzle
                                 double Aoldminus = -1*(1 + 2.2 * Math.Pow(xi - (N - 1) * 0.1 / 2, 2));
                                 listAoldM.Add(Aoldminus/2);
                                 x[i] = (i * 0.1).ToString();
-                                i++;
-                            }
-                            LineSeries linSerie = new LineSeries
+                                i++;                                                                                                   //                    
+                            } 
+                            LineSeries linSerie = new LineSeries                                                                       // all series are computed with the previous lists of numbers
                             {
                                 Title = textNewA.Text.ToString(),
                                 Name = "lineChartNewA",
@@ -2486,9 +2493,9 @@ namespace SimuladorNozzle
                                 PointGeometry = null,
                                 Fill = Brushes.Transparent,
                                 Stroke = Brushes.Black,
-                            };
-                            chartA.Series.Add(linSerie1M) ;
-                            xAxisA.Labels = x;
+                            };                                   
+                            chartA.Series.Add(linSerie1M) ;                                                                              //
+                            xAxisA.Labels = x;                                                        // we define the max and min values of the axis
                             xAxisA.MaxValue = x.Count() - 1;
                             SepA.Step= (x.Count() - 1)/2;
                             if (listA[0]>listAold[0])
@@ -2500,15 +2507,15 @@ namespace SimuladorNozzle
                             {
                                 yAxisA.MaxValue = listAold[0] * (1.1);
                                 yAxisA.MinValue = listAold[0] * (-1.1);
-                            }
+                            }                                                                          //
                             DataContext = this;
-                            chartA.Visibility = Visibility.Visible;
+                            chartA.Visibility = Visibility.Visible;                                    // we make all features visibles ( chart and covering rectangles) 
                             recNew.Visibility = Visibility.Visible;
                             recOld.Visibility = Visibility.Visible;
                             if (DivisionsTextBox.Text =="" && CourantTextBox.Text=="")
                                 DefaultValues();
                         }
-                        else if (Res / Thr > 8)
+                        else if (Res / Thr > 8)                                                      // then are defined the cases of arror in the textbox: (maximum value, rong nozzle type, same nozzle and others )
                         {
                             alertRateA.Visibility = Visibility.Visible;
                             CreateButtonAdvStudy.IsEnabled = false;
@@ -2531,40 +2538,41 @@ namespace SimuladorNozzle
                             CreateButtonAdvStudy.IsEnabled = false;
                             alertRateA.Visibility = Visibility.Visible;
                             textAlertA.Text = "Error in text format, check it!";
-                        }
+                        }                                                                           //
                     }
                 }
-                else
+                else                                                                                // null value error case
                 {
                     CreateButtonAdvStudy.IsEnabled = false;
                     alertRateA.Visibility = Visibility.Visible;
                     textAlertA.Text = "Error in text format, there is a null value";
-                }
+                }                                                                                   //
             }
-            catch (FormatException)
+            catch (FormatException)                                                                 // catch exception
             {
                 CreateButtonAdvStudy.IsEnabled = false;
                 alertRateA.Visibility = Visibility.Visible;
                 textAlertA.Text = "Error in text format, check it!";
-            }
+            }                                                                                        //
            
         }
 
-        private void CreateButtonAdvStudy_Click(object sender, RoutedEventArgs e)
+        //What happens when the advanced study Simulate BUtton is clicked
+        private void CreateButtonAdvStudy_Click(object sender, RoutedEventArgs e)                         // clickin the button SIMULATE of the advanced study
         {
-            decimal Ratio = decimal.Parse(textNewA.Text.Split(':')[0].Replace('.', ','));
-
-
+            decimal Ratio = decimal.Parse(textNewA.Text.Split(':')[0].Replace('.', ','));                 // we get the number from the textbox
             new_Ratio = Convert.ToDouble(Ratio);
-            Create(true, new_Ratio);
-            CreateButtonAdvStudy.IsEnabled = false;
+                                                                                                          //
+            Create(true, new_Ratio);                    //the nozzle is created using the new RateArea
+            CreateButtonAdvStudy.IsEnabled = false;                                                       // seted to the initial apparience
             buttCheckNewA.Visibility = Visibility.Hidden;
             buttonNewAdvanced.Visibility = Visibility.Visible;
-            rectangleAdvanced.Visibility = Visibility.Visible;
+            rectangleAdvanced.Visibility = Visibility.Visible;                                            //
 
         }
 
-        private void buttonNewAdvanced_Click(object sender, RoutedEventArgs e)
+        //What happens when the NewAdvancedStudy Button is clicked
+        private void buttonNewAdvanced_Click(object sender, RoutedEventArgs e)                                                                  // seme function than buttonAdvanced_Click
         {
             MessageBoxResult respuesta = MessageBox.Show(
                 "A new advanced study is getting started, the simulator will be reset" + "\n" +
@@ -2573,9 +2581,9 @@ namespace SimuladorNozzle
             switch (respuesta)
             {
                 case MessageBoxResult.OK:
-                    RestartAdvanced();
+                    RestartAdvanced();          //the advanced study is restarted
 
-                    Restart();
+                    Restart();                  //the simulation is restarted
                     buttonAdvanced.Visibility = Visibility.Hidden;
                     panelAdvanced2.Visibility = Visibility.Visible;
                     advanced = true;
@@ -2588,7 +2596,7 @@ namespace SimuladorNozzle
                     break;
             }
             
-        }
+        }                                                                                                                                        //
     } 
 }
 
