@@ -11,8 +11,8 @@ namespace NozzleLib
         double p;       //pressure in the cell
         double A;       //area in the position of the cell
         int i;          //divisions of the nozzle
-        double M;
-        public double R = 286;
+        double M;       //Mach number in the cell   
+        public double R = 286;  //Gas constant
 
         public int I { get; set; }
         public double Position_x { get; set; }
@@ -102,21 +102,25 @@ namespace NozzleLib
             this.A = A;
         }
 
-        //Math
+        //MATH FUNCTIONS
+            //Natural Logarithm computation
         public double LnA()
         {
             return Math.Log(this.A);
         }
+            //Speed of Sound computation from the temperature in the cell
         public double Speedofsound()
         {
             double a = Math.Sqrt(this.T);
             return a;
         }
+            //Computation of the time-step using the courant condition
         public double Deltatime(double C, double deltax)
         {
             double deltatime = C * deltax / (this.Speedofsound() + this.V);
             return deltatime;
         }
+            //Mach number computation of the cell
         public double MachNumber()
         {
             double Mach = this.V / this.Speedofsound();
