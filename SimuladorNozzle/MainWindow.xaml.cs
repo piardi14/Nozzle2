@@ -2050,13 +2050,13 @@ namespace SimuladorNozzle
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult respuesta = MessageBox.Show(
-                "Se va a reiniciar el simulador, se perderán los cambios", "Warning", MessageBoxButton.OKCancel);
+                "Se va a reiniciar el simulador, se perderán los cambios", "Warning", MessageBoxButton.OKCancel);   //the simulator allows the user to think twice his/her decision
 
             switch (respuesta)
             {
                 case MessageBoxResult.OK:
-                    Restart();
-                    RestartAdvanced();
+                    Restart();          //the simulation is restarted
+                    RestartAdvanced();  //the advanced study is restarted
                     break;
                 case MessageBoxResult.Cancel:
                     break;
@@ -2207,6 +2207,7 @@ namespace SimuladorNozzle
             }
         }
 
+        //When the user slides the slider, the simulator velocity changes
         private void AutoSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             double periodo = 1000000 / AutoSlider.Value;
@@ -2556,13 +2557,14 @@ namespace SimuladorNozzle
            
         }
 
+        //What happens when the advanced study Simulate BUtton is clicked
         private void CreateButtonAdvStudy_Click(object sender, RoutedEventArgs e)
         {
             decimal Ratio = decimal.Parse(textNewA.Text.Split(':')[0].Replace('.', ','));
 
 
             new_Ratio = Convert.ToDouble(Ratio);
-            Create(true, new_Ratio);
+            Create(true, new_Ratio);                    //the nozzle is created using the new RateArea
             CreateButtonAdvStudy.IsEnabled = false;
             buttCheckNewA.Visibility = Visibility.Hidden;
             buttonNewAdvanced.Visibility = Visibility.Visible;
@@ -2570,6 +2572,7 @@ namespace SimuladorNozzle
 
         }
 
+        //What happens when the NewAdvancedStudy Button is clicked
         private void buttonNewAdvanced_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult respuesta = MessageBox.Show(
@@ -2579,9 +2582,9 @@ namespace SimuladorNozzle
             switch (respuesta)
             {
                 case MessageBoxResult.OK:
-                    RestartAdvanced();
+                    RestartAdvanced();          //the advanced study is restarted
 
-                    Restart();
+                    Restart();                  //the simulation is restarted
                     buttonAdvanced.Visibility = Visibility.Hidden;
                     panelAdvanced2.Visibility = Visibility.Visible;
                     advanced = true;
