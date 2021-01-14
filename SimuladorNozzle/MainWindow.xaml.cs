@@ -949,6 +949,7 @@ namespace SimuladorNozzle
             xAxiscolores.MaxValue = Convert.ToDouble(nozzlesim.GetDivisions()) * 3 / (Convert.ToDouble(nozzlesim.GetDivisions()) - 1);
         }
 
+        //When a rectangle is clicked it is added in the charts to be plotted
         private void Rectbutton_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
@@ -961,10 +962,14 @@ namespace SimuladorNozzle
                 }
             }
         }
+
+        //When the user hovers over a certain rectangle of the nozzle (division)
         private void Rectbutton_MouseEnter(object sender, RoutedEventArgs e)
         {
             WriteTable(sender);
         }
+
+        //Function to write on the table below the initial settings
         public void WriteTable(object sender)
         {
             Position position; Position Dimenssion; bool procede = true;
@@ -1015,6 +1020,8 @@ namespace SimuladorNozzle
                 leftClickTip.Visibility = Visibility.Visible;
             }
         }
+
+        //When the user right-clicks a certain rectangle (division), the table with its properties' values is fixed, or unfixed if it is already fixed
         private void Rectbutton_RightClick(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
@@ -1037,6 +1044,8 @@ namespace SimuladorNozzle
             }
             DimensionlessButtonShow.IsChecked = true;
         }
+
+        //If the user wants to see the properties in the table with dimension or non-dimensional
         private void CheckedBox_Show(object sender, RoutedEventArgs e)
         {
 
@@ -1068,6 +1077,8 @@ namespace SimuladorNozzle
             panelShow.Visibility = Visibility.Visible;
 
         }
+
+        //When the user stops hovering over a rectangle, the properties' table is hidden
         private void Rectbutton_MouseLeave(object sender, RoutedEventArgs e)
         {
             if (fixTable == false)
@@ -1075,6 +1086,8 @@ namespace SimuladorNozzle
 
             leftClickTip.Visibility = Visibility.Hidden;
         }
+
+        //Function to decide which color to paint
         private Color PrintColor(int propind, double i)
         {
 
@@ -1332,6 +1345,7 @@ namespace SimuladorNozzle
 
         }
 
+        //Function to compute the maximum and minimum values of all properties in the simulation
         public void calculateMinMax()
         {
             int i = 0;
@@ -1394,7 +1408,6 @@ namespace SimuladorNozzle
             }
         }
 
-        //FUNCTIONS CHARTS
 
         public void createBrushesList()
         {
@@ -1638,20 +1651,16 @@ namespace SimuladorNozzle
 
         /// Controls of the STEP AUTO PAUSE CLOCK...
 
-
+        //What happens when the Next-Step Button is clicked
         private void NextStepButton_Click(object sender, RoutedEventArgs e)
         {
             if (steps < 1401)
             {
-                steps = steps + 1;
+                steps = steps + 1;  //the number of steps is increased by one
                 textStep.Content = steps.ToString();
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
-                CreateNozzle(nozzlesim, steps);
+                CreateNozzle(nozzlesim, steps);     //the nozzle is painted in the canvas at the corresponding time-step 
 
-                //if (nozzlesim.getN() == 31 && nozzlesim.getCourant() == 0.5)
-                //{
-                //    AndersonTab.PreviewMouseLeftButtonDown += AndersonTab_PreviewMouseLeftButtonDown;
-                //}
 
                 plotChanged = true;
                 SetChart();
@@ -1663,6 +1672,7 @@ namespace SimuladorNozzle
             }
         }
 
+        //What happens when the user clicks on the Download Button
         private void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
             if (initiated == true)
@@ -1722,6 +1732,7 @@ namespace SimuladorNozzle
                 MessageBox.Show("Initialized the simulation", "", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
+        //What happens when the Upload button is clicked
         private void UploadButton_Click(object sender, RoutedEventArgs e)
         {
             List<int> provisional = new List<int>();
@@ -1899,16 +1910,16 @@ namespace SimuladorNozzle
             }
         }
 
-
+        //Every time the timer ticks
         private void clock_time_Tick(object sender, EventArgs e)
         {
-            if (auto == true && steps<1401)
+            if (auto == true && steps<1401)     //if the auto setting is selected and the maximum number of steps hasn't been reached yet
             {
-                steps = steps + 1;
+                steps = steps + 1;              //number of steps increases
                 clockTime = clockTime + clock.Interval;
-                textStep.Content = steps.ToString();
+                textStep.Content = steps.ToString();    
                 textTime.Content = nozzlesim.getTimeList()[steps].ToString() + " sec";
-                CreateNozzle(nozzlesim, steps);
+                CreateNozzle(nozzlesim, steps); //the nozzle is painted in the canvas at the corresponding time-step
                 plotChanged = true;
                 WriteTable(sender);
             }
@@ -2001,11 +2012,13 @@ namespace SimuladorNozzle
 
         }
 
+        //What happens when the user clicks on the Auto Button
         private void AutoButton_Click(object sender, RoutedEventArgs e)
         {
             Auto();
         }
 
+        //If the Auto mode is selected
         public void Auto()
         {
             if (initiated == true)
@@ -2032,11 +2045,8 @@ namespace SimuladorNozzle
             else
                 MessageBox.Show("The simulate has to be initiated first," + "\n" + "create the nozzle to start!!");
         }
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
-        {
-            NextStepButton.IsEnabled = true;
-        }
 
+        //What happpens when the restart button is clicked
         private void RestartButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult respuesta = MessageBox.Show(
